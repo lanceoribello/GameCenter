@@ -21,4 +21,5 @@
     <string name="complexity">Complexity</string>
     <string name="select_game">Select which game to play:</string>
     <string name="sliding_tiles">Sliding Tiles</string>
+    <string name="snake">snake</string>
 </resources>
