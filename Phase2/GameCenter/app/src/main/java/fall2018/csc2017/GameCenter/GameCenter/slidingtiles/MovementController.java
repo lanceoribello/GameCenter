@@ -1,17 +1,16 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.slidingtiles;
 
 import android.content.Context;
 import android.widget.Toast;
 
-
 public class MovementController {
 
-    private BoardManager boardManager = null;
+    private SlidingTilesBoardManager boardManager = null;
 
     public MovementController() {
     }
 
-    public void setBoardManager(BoardManager boardManager) {
+    public void setBoardManager(SlidingTilesBoardManager boardManager) {
         this.boardManager = boardManager;
     }
 

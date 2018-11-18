@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.lobby;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +13,14 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
+import fall2018.csc2017.GameCenter.GameCenter.R;
+
 /**
  * The scoreboard screen that is displayed after "View Scoreboards" button is clicked.
  * Displays the per-user scoreboard (top user of each complexity) and the per-game scoreboard
  * (top score of current user for each complexity).
  */
-public class Scoreboard extends AppCompatActivity {
+public class ScoreboardActivity extends AppCompatActivity {
 
     /**
      * The user account file containing all UserAccount objects.

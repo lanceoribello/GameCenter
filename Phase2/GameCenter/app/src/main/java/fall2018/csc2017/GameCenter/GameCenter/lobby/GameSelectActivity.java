@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.lobby;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity;
+
 /**
  * The game select screen shown after login screen.
  */
-public class GameSelectScreen extends AppCompatActivity {
+public class GameSelectActivity extends AppCompatActivity {
 
     /**
      * The current user account obtained from the login screen.
@@ -19,7 +22,8 @@ public class GameSelectScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentUserAccount = (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
+        currentUserAccount = (UserAccount) getIntent().getSerializableExtra(
+                "currentUserAccount");
         setContentView(R.layout.activity_game_select);
         addSlidingTilesButtonListener();
     }
@@ -32,7 +36,7 @@ public class GameSelectScreen extends AppCompatActivity {
         slidingTilesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), StartingActivity.class);
+                Intent intent = new Intent(v.getContext(), SlidingTilesMenuActivity.class);
                 intent.putExtra("currentUserAccount", currentUserAccount);
                 startActivity(intent);
             }

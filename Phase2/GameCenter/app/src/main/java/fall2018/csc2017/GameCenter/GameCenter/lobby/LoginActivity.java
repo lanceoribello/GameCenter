@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.lobby;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +17,14 @@ import java.io.ObjectOutputStream;
 
 import java.util.ArrayList;
 
+import fall2018.csc2017.GameCenter.GameCenter.R;
+
 /**
  * The login screen shown upon initial startup of the game.
  * Processes sign ups and logins of userAccounts.
- * Passes on the current signed-in userAccount to StartingActivity.
+ * Passes on the current signed-in userAccount to SlidingTilesMenuActivity.
  */
-public class LoginScreen extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     /**
      * The file containing an arrayList of all created instances of UserAccounts.
@@ -35,7 +37,7 @@ public class LoginScreen extends AppCompatActivity {
     public static ArrayList<UserAccount> userAccountList;
 
     /**
-     * The UserAccount that will be logged in; will be passed onto StartingActivity.
+     * The UserAccount that will be logged in; will be passed onto SlidingTilesMenuActivity.
      */
     private UserAccount currentUserAccount;
 
@@ -69,7 +71,8 @@ public class LoginScreen extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
+            Log.e("login activity", "File contained unexpected data type: "
+                    + e.toString());
         }
     }
 
@@ -138,15 +141,15 @@ public class LoginScreen extends AppCompatActivity {
 
     /**
      * Called when the user taps the login button.
-     * If the login credentials are valid, sends the currentUserAccount to StartingActivity
-     * then sets the view to StartingActivity.
+     * If the login credentials are valid, sends the currentUserAccount to SlidingTilesMenuActivity
+     * then sets the view to SlidingTilesMenuActivity.
      */
     public void onClick(View view) {
         EditText usernameView = findViewById(R.id.Username);
         EditText passwordView = findViewById(R.id.Password);
         String username = usernameView.getText().toString();
         String password = passwordView.getText().toString();
-        Intent intent = new Intent(view.getContext(), GameSelectScreen.class);
+        Intent intent = new Intent(view.getContext(), GameSelectActivity.class);
         boolean success = successfulLogin(username, password);
 
         if (success) {

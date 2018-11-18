@@ -1,14 +1,16 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.lobby;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
+
 /**
  * Stores a user's account information.
  */
-class UserAccount implements Serializable {
+public class UserAccount implements Serializable {
 
     /**
      * The account user's username.
@@ -38,7 +40,7 @@ class UserAccount implements Serializable {
     /**
      * The names of the account user's past games.
      */
-    private Map<String, BoardManager> gameNames;
+    private Map<String, SlidingTilesBoardManager> gameNames;
 
     /**
      * An instance of an account with a username, password, and a blank list of game names.
@@ -61,7 +63,7 @@ class UserAccount implements Serializable {
      *
      * @return the account's username
      */
-    String getUsername() {
+    public String getUsername() {
         return username;
     }
 
@@ -79,7 +81,7 @@ class UserAccount implements Serializable {
      *
      * @return the account's top score for boards of 3x3 complexity.
      */
-    int getTop3x3() {
+    public int getTop3x3() {
         return top3x3;
     }
 
@@ -88,7 +90,7 @@ class UserAccount implements Serializable {
      *
      * @param top3x3 the account's new top 3x3 score
      */
-    void setTop3x3(int top3x3) {
+    public void setTop3x3(int top3x3) {
         this.top3x3 = top3x3;
     }
 
@@ -97,7 +99,7 @@ class UserAccount implements Serializable {
      *
      * @return the account's top score for boards of 4x4 complexity.
      */
-    int getTop4x4() {
+    public int getTop4x4() {
         return top4x4;
     }
 
@@ -106,7 +108,7 @@ class UserAccount implements Serializable {
      *
      * @param top4x4 the account's new top 4x4 score
      */
-    void setTop4x4(int top4x4) {
+    public void setTop4x4(int top4x4) {
         this.top4x4 = top4x4;
     }
 
@@ -115,7 +117,7 @@ class UserAccount implements Serializable {
      *
      * @return the account's top score for boards of 5x5 complexity.
      */
-    int getTop5x5() {
+    public int getTop5x5() {
         return top5x5;
     }
 
@@ -124,7 +126,7 @@ class UserAccount implements Serializable {
      *
      * @param top5x5 the account's new top 5x5 score
      */
-    void setTop5x5(int top5x5) {
+    public void setTop5x5(int top5x5) {
         this.top5x5 = top5x5;
     }
 
@@ -133,14 +135,14 @@ class UserAccount implements Serializable {
      *
      * @param newName a new name added to the account
      */
-    void addGame(String newName, BoardManager game) {
+    public void addGame(String newName, SlidingTilesBoardManager game) {
         this.gameNames.put(newName, game);
     }
 
     /**
      * Get a game saved by the name gameName.
      */
-    BoardManager getGame(String gameName) {
+    public SlidingTilesBoardManager getGame(String gameName) {
         if (this.gameNames.containsKey(gameName)) {
             return this.gameNames.get(gameName);
         } else {
@@ -152,7 +154,7 @@ class UserAccount implements Serializable {
      * Returns this UserAccount's key set of saved game names.
      * @return key set of this UserAccount's saved game names
      */
-    Set<String> getGameNames() {
+    public Set<String> getGameNames() {
         return gameNames.keySet();
     }
 }

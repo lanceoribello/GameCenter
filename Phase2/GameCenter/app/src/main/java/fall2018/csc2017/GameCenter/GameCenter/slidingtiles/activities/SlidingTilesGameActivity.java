@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -16,15 +16,23 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.CustomAdapter;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.GestureDetectGridView;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
+
 /**
  * The game activity.
  */
-public class GameActivity extends AppCompatActivity implements Observer {
+public class SlidingTilesGameActivity extends AppCompatActivity implements Observer {
 
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private SlidingTilesBoardManager boardManager;
 
     /**
      * The account obtained from the login screen.
@@ -160,7 +168,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * @param numMoves   the number of moves committed in BoardManager
      */
     private void updateUserAccounts(int complexity, int numMoves) {
-        LoginScreen.userAccountList.remove(currentUserAccount);
+        LoginActivity.userAccountList.remove(currentUserAccount);
         if (complexity == 3) {
             currentUserAccount.setTop3x3(numMoves);
         } else if (complexity == 4) {
@@ -168,32 +176,18 @@ public class GameActivity extends AppCompatActivity implements Observer {
         } else {
             currentUserAccount.setTop5x5(numMoves);
         }
-        LoginScreen.userAccountList.add(currentUserAccount);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    openFileOutput(LoginScreen.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
-            outputStream.writeObject(LoginScreen.userAccountList);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+        LoginActivity.userAccountList.add(currentUserAccount);
+        userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
     }
 
     /**
      * Writes the current boardManager to file to create an autoSave for currentUserAccount.
      */
     private void createAutoSave() {
-        LoginScreen.userAccountList.remove(currentUserAccount);
+        LoginActivity.userAccountList.remove(currentUserAccount);
         currentUserAccount.addGame("autoSave", boardManager);
-        LoginScreen.userAccountList.add(currentUserAccount);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    openFileOutput(LoginScreen.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
-            outputStream.writeObject(LoginScreen.userAccountList);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+        LoginActivity.userAccountList.add(currentUserAccount);
+        userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
     }
 
     /**
@@ -202,10 +196,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     private void loadFromTempFile() {
         try {
-            InputStream inputStream = this.openFileInput(StartingActivity.TEMP_SAVE_FILENAME);
+            InputStream inputStream = this.openFileInput(
+                    SlidingTilesMenuActivity.TEMP_SAVE_FILENAME);
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
-                boardManager = (BoardManager) input.readObject();
+                boardManager = (SlidingTilesBoardManager) input.readObject();
                 inputStream.close();
             }
         } catch (FileNotFoundException e) {
@@ -213,7 +208,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
+            Log.e("login activity", "File contained unexpected data type: "
+                    + e.toString());
         }
     }
 
@@ -224,8 +220,24 @@ public class GameActivity extends AppCompatActivity implements Observer {
     public void saveToTempFile() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(StartingActivity.TEMP_SAVE_FILENAME, MODE_PRIVATE));
+                    this.openFileOutput(SlidingTilesMenuActivity.TEMP_SAVE_FILENAME, MODE_PRIVATE));
             outputStream.writeObject(boardManager);
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    /**
+     * Saves the LoginActivity.userAccountList to a file.
+     *
+     * @param fileName the name of the file
+     */
+    public void userAccountsToFile(String fileName) {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(
+                    this.openFileOutput(fileName, MODE_PRIVATE));
+            outputStream.writeObject(LoginActivity.userAccountList);
             outputStream.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());

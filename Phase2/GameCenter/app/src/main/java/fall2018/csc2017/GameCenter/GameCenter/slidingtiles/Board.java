@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.slidingtiles;
 
 import android.support.annotation.NonNull;
 
@@ -17,12 +17,12 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
     /**
      * The number of rows.
      */
-    static int numRows;
+    public static int numRows;
 
     /**
      * The number of cols.
      */
-    static int numCols;
+    public static int numCols;
 
     /**
      * The tiles on the board in row-major order.
@@ -31,7 +31,7 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
 
     /**
      * A new board of tiles in row-major order.
-     * Precondition: len(tiles) == NUM_ROWS * NUM_COLS
+     * Precondition: len(tiles) == numRows * numCols
      *
      * @param tiles the tiles for the board
      */
@@ -89,7 +89,7 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
      * @param col the tile column
      * @return the tile at (row, col)
      */
-    Tile getTile(int row, int col) {
+    public Tile getTile(int row, int col) {
         return tiles[row][col];
     }
 
