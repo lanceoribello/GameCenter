@@ -143,6 +143,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                         Object selectedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
                         String selectedGame = selectedItem.toString();
                         boardManager = currentUserAccount.getGame(selectedGame);
+                        Board.numRows = Board.numCols = boardManager.getComplexity();
                         makeToastLoadedText();
                         dialog.dismiss();
                         switchToGame();
