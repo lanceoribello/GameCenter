@@ -239,6 +239,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                             }
                         }
                         boardManager = currentUserAccount.getGame("autoSave");
+                        Board.numRows = Board.numCols = boardManager.getComplexity();
                         switchToGame();
                     } else {
                         makeToastLoadAutoSaveFailText();
