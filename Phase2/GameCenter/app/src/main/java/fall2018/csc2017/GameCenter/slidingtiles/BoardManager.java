@@ -59,10 +59,8 @@ class BoardManager implements Serializable {
 
     /**
      * Manage a new shuffled board.
-     * Determines whether jorjani mode is activated and the complexity of the board being managed.
      */
-    BoardManager(int complexity, boolean jorjani) {
-        Board.jorjani = jorjani;
+    BoardManager(int complexity) {
         Board.numRows = Board.numCols = complexity;
         List<Tile> tiles = new ArrayList<>();
         final int numTiles = Board.numRows * Board.numCols;

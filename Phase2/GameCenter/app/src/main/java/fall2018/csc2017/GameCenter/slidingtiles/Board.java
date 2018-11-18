@@ -14,12 +14,6 @@ import java.util.Observable;
  * The sliding tiles board.
  */
 public class Board extends Observable implements Serializable, Iterable<Tile> {
-
-    /**
-     * Checks whether Jorjani mode is activated
-     */
-    static boolean jorjani;
-
     /**
      * The number of rows.
      */
