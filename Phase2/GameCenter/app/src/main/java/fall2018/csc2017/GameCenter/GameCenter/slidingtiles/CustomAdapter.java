@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.slidingtiles;
 
 /*
 Taken from:

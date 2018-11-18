@@ -1,8 +1,10 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.slidingtiles;
 
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+
+import fall2018.csc2017.GameCenter.GameCenter.R;
 
 /**
  * A Tile in a sliding tiles puzzle.

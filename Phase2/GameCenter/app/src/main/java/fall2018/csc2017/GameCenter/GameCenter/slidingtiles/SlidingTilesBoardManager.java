@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.slidingtiles;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  * Also keeps track of the number of moves made and the boards corresponding to each move.
  */
-class SlidingTilesBoardManager implements Serializable {
+public class SlidingTilesBoardManager implements Serializable {
 
     /**
      * The board being managed.
@@ -27,7 +27,7 @@ class SlidingTilesBoardManager implements Serializable {
      *
      * @return this BoardManager's saved boards
      */
-    ArrayList<Board> getSavedBoards() {
+    public ArrayList<Board> getSavedBoards() {
         return savedBoards;
     }
 
@@ -41,7 +41,7 @@ class SlidingTilesBoardManager implements Serializable {
      *
      * @return this BoardManager's complexity.
      */
-    int getComplexity() {
+    public int getComplexity() {
         return complexity;
     }
 
@@ -53,14 +53,14 @@ class SlidingTilesBoardManager implements Serializable {
     /**
      * Return the current board.
      */
-    Board getBoard() {
+    public Board getBoard() {
         return board;
     }
 
     /**
      * Manage a new shuffled board.
      */
-    SlidingTilesBoardManager(int complexity) {
+    public SlidingTilesBoardManager(int complexity) {
         Board.numRows = Board.numCols = complexity;
         List<Tile> tiles = new ArrayList<>();
         final int numTiles = Board.numRows * Board.numCols;
@@ -78,7 +78,7 @@ class SlidingTilesBoardManager implements Serializable {
      *
      * @return whether the tiles are in row-major order
      */
-    boolean puzzleSolved() {
+    public boolean puzzleSolved() {
         Iterator<Tile> iter = board.iterator();
         int prevId = 0;
         for (int a = 0; a != board.numTiles(); a++) {
@@ -152,7 +152,7 @@ class SlidingTilesBoardManager implements Serializable {
      *
      * @return the number of moves made so far in the game
      */
-    int getMoves() {
+    public int getMoves() {
         return numMoves;
     }
 
@@ -170,7 +170,7 @@ class SlidingTilesBoardManager implements Serializable {
      *
      * @param numTurns the number of turns that are undone
      */
-    void undo(int numTurns) {
+    public void undo(int numTurns) {
         for (int i = 1; i != savedBoards.size(); i++) {
             if (i == numTurns) {
                 this.setBoard(savedBoards.get(savedBoards.size() - i));

@@ -1,8 +1,7 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.slidingtiles;
 
 import android.content.Context;
 import android.widget.Toast;
-
 
 public class MovementController {
 

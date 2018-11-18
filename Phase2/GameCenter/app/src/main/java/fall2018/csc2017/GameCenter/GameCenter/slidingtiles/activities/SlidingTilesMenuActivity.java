@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +22,13 @@ import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.ScoreboardActivity;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
 
 /**
  * The activity for starting the sliding puzzle tile game.
@@ -174,13 +181,13 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                 DateFormat dateFormat =
                         DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
                 String datetime = dateFormat.format(c.getTime());
-                LoginScreen.userAccountList.remove(currentUserAccount);
+                LoginActivity.userAccountList.remove(currentUserAccount);
                 currentUserAccount.addGame(datetime, boardManager);
-                LoginScreen.userAccountList.add(currentUserAccount);
+                LoginActivity.userAccountList.add(currentUserAccount);
                 try {
                     ObjectOutputStream outputStream = new ObjectOutputStream(
-                            openFileOutput(LoginScreen.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
-                    outputStream.writeObject(LoginScreen.userAccountList);
+                            openFileOutput(LoginActivity.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
+                    outputStream.writeObject(LoginActivity.userAccountList);
                     outputStream.close();
                 } catch (IOException e) {
                     Log.e("Exception", "File write failed: " + e.toString());
@@ -198,7 +205,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Activate the View Scoreboard button.
+     * Activate the View ScoreboardActivity button.
      */
     private void addScoreboardButtonListener() {
         Button scoreboardButton = findViewById(R.id.ScoreboardButton);
@@ -211,10 +218,10 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Switch to the Scoreboard view to view the per-user and per-game scoreboards.
+     * Switch to the ScoreboardActivity view to view the per-user and per-game scoreboards.
      */
     private void switchToScoreboard() {
-        Intent tmp = new Intent(this, Scoreboard.class);
+        Intent tmp = new Intent(this, ScoreboardActivity.class);
         tmp.putExtra("currentUserAccount", currentUserAccount);
         startActivity(tmp);
     }
@@ -229,7 +236,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     ArrayList<UserAccount> userAccountList;
-                    InputStream inputStream = openFileInput(LoginScreen.USER_ACCOUNTS_FILENAME);
+                    InputStream inputStream = openFileInput(LoginActivity.USER_ACCOUNTS_FILENAME);
                     if (inputStream != null) {
                         ObjectInputStream input = new ObjectInputStream(inputStream);
                         userAccountList = (ArrayList<UserAccount>) input.readObject();

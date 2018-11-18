@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +15,14 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+
+import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.CustomAdapter;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.GestureDetectGridView;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
 
 /**
  * The game activity.
@@ -160,7 +168,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
      * @param numMoves   the number of moves committed in BoardManager
      */
     private void updateUserAccounts(int complexity, int numMoves) {
-        LoginScreen.userAccountList.remove(currentUserAccount);
+        LoginActivity.userAccountList.remove(currentUserAccount);
         if (complexity == 3) {
             currentUserAccount.setTop3x3(numMoves);
         } else if (complexity == 4) {
@@ -168,18 +176,18 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
         } else {
             currentUserAccount.setTop5x5(numMoves);
         }
-        LoginScreen.userAccountList.add(currentUserAccount);
-        userAccountsToFile(LoginScreen.USER_ACCOUNTS_FILENAME);
+        LoginActivity.userAccountList.add(currentUserAccount);
+        userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
     }
 
     /**
      * Writes the current boardManager to file to create an autoSave for currentUserAccount.
      */
     private void createAutoSave() {
-        LoginScreen.userAccountList.remove(currentUserAccount);
+        LoginActivity.userAccountList.remove(currentUserAccount);
         currentUserAccount.addGame("autoSave", boardManager);
-        LoginScreen.userAccountList.add(currentUserAccount);
-        userAccountsToFile(LoginScreen.USER_ACCOUNTS_FILENAME);
+        LoginActivity.userAccountList.add(currentUserAccount);
+        userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
     }
 
     /**
@@ -221,7 +229,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
     }
 
     /**
-     * Saves the LoginScreen.userAccountList to a file.
+     * Saves the LoginActivity.userAccountList to a file.
      *
      * @param fileName the name of the file
      */
@@ -229,7 +237,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(LoginScreen.userAccountList);
+            outputStream.writeObject(LoginActivity.userAccountList);
             outputStream.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());

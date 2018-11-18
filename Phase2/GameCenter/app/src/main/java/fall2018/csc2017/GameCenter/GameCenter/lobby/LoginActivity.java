@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.slidingtiles;
+package fall2018.csc2017.GameCenter.GameCenter.lobby;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,12 +17,14 @@ import java.io.ObjectOutputStream;
 
 import java.util.ArrayList;
 
+import fall2018.csc2017.GameCenter.GameCenter.R;
+
 /**
  * The login screen shown upon initial startup of the game.
  * Processes sign ups and logins of userAccounts.
  * Passes on the current signed-in userAccount to SlidingTilesMenuActivity.
  */
-public class LoginScreen extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     /**
      * The file containing an arrayList of all created instances of UserAccounts.
@@ -147,7 +149,7 @@ public class LoginScreen extends AppCompatActivity {
         EditText passwordView = findViewById(R.id.Password);
         String username = usernameView.getText().toString();
         String password = passwordView.getText().toString();
-        Intent intent = new Intent(view.getContext(), GameSelectScreen.class);
+        Intent intent = new Intent(view.getContext(), GameSelectActivity.class);
         boolean success = successfulLogin(username, password);
 
         if (success) {
