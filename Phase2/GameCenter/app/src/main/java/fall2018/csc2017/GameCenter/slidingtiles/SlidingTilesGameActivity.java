@@ -24,7 +24,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private SlidingTilesBoardManager boardManager;
 
     /**
      * The account obtained from the login screen.
@@ -206,7 +206,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
                     SlidingTilesMenuActivity.TEMP_SAVE_FILENAME);
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
-                boardManager = (BoardManager) input.readObject();
+                boardManager = (SlidingTilesBoardManager) input.readObject();
                 inputStream.close();
             }
         } catch (FileNotFoundException e) {
