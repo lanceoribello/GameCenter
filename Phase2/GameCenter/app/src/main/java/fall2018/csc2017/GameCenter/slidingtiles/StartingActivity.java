@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,9 +28,8 @@ import java.util.Calendar;
  * The activity for starting the sliding puzzle tile game.
  */
 public class StartingActivity extends AppCompatActivity {
-
     /**
-     * A temporary save file.
+     * The file containing aa temp version of the save
      */
     public static final String TEMP_SAVE_FILENAME = "save_file_tmp.ser";
 
@@ -47,7 +47,7 @@ public class StartingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boardManager = new BoardManager(3);
-        saveToFile(TEMP_SAVE_FILENAME);
+        saveToTempFile();
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         setContentView(R.layout.activity_starting_);
@@ -66,13 +66,21 @@ public class StartingActivity extends AppCompatActivity {
     public void undoMoves(View view) {
         EditText movesView = findViewById(R.id.Undoers);
         String moves = movesView.getText().toString();
-        int numberMoves = Integer.parseInt(moves);
-        if (numberMoves > boardManager.getSavedBoards().size()) {
-            Toast.makeText(this, "Invalid number of undoes", Toast.LENGTH_SHORT).show();
-        } else {
-            boardManager.undo(numberMoves);
-            switchToGame();
+        try {
+            int numberMoves = Integer.parseInt(moves);
+            if (numberMoves > boardManager.getSavedBoards().size()) {
+                Toast.makeText(this,
+                        "Invalid number of undoes", Toast.LENGTH_SHORT).show();
+            } else {
+                boardManager.undo(numberMoves);
+                switchToGame();
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this,
+                    "Please enter a valid number of undoes", Toast.LENGTH_SHORT).show();
+            Log.e("undo moves", "Text entered was not an integer: " + e.toString());
         }
+
     }
 
     /**
@@ -84,7 +92,7 @@ public class StartingActivity extends AppCompatActivity {
     public void newGame(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(StartingActivity.this);
         builder.setTitle("Choose a Complexity");
-        String[] levels = {"3x3", "4x4", "5x5", "3x3-Jorjani", "4x4-Jorjani", "5x5-Jorjani"};
+        String[] levels = {"3x3", "4x4", "5x5"};
         builder.setItems(levels, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -160,7 +168,8 @@ public class StartingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Calendar c = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
+                DateFormat dateFormat =
+                        DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
                 String datetime = dateFormat.format(c.getTime());
                 LoginScreen.userAccountList.remove(currentUserAccount);
                 currentUserAccount.addGame(datetime, boardManager);
@@ -196,6 +205,15 @@ public class StartingActivity extends AppCompatActivity {
                 switchToScoreboard();
             }
         });
+    }
+
+    /**
+     * Switch to the Scoreboard view to view the per-user and per-game scoreboards.
+     */
+    private void switchToScoreboard() {
+        Intent tmp = new Intent(this, Scoreboard.class);
+        tmp.putExtra("currentUserAccount", currentUserAccount);
+        startActivity(tmp);
     }
 
     /**
@@ -248,7 +266,7 @@ public class StartingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadFromFile(TEMP_SAVE_FILENAME);
+        loadFromTempFile();
     }
 
     /**
@@ -257,27 +275,17 @@ public class StartingActivity extends AppCompatActivity {
     private void switchToGame() {
         Intent tmp = new Intent(this, GameActivity.class);
         tmp.putExtra("currentUserAccount", currentUserAccount);
-        saveToFile(StartingActivity.TEMP_SAVE_FILENAME);
+        saveToTempFile();
         startActivity(tmp);
     }
 
     /**
-     * Switch to the Scoreboard view to view the per-user and per-game scoreboards.
+     * Load the board manager from save_file_tmp.ser, the file used for temporarily holding a
+     * boardManager.
      */
-    private void switchToScoreboard() {
-        Intent tmp = new Intent(this, Scoreboard.class);
-        tmp.putExtra("currentUserAccount", currentUserAccount);
-        startActivity(tmp);
-    }
-
-    /**
-     * Load the board manager from fileName.
-     *
-     * @param fileName the name of the file
-     */
-    private void loadFromFile(String fileName) {
+    private void loadFromTempFile() {
         try {
-            InputStream inputStream = this.openFileInput(fileName);
+            InputStream inputStream = this.openFileInput("save_file_tmp.ser");
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
                 boardManager = (BoardManager) input.readObject();
@@ -293,14 +301,13 @@ public class StartingActivity extends AppCompatActivity {
     }
 
     /**
-     * Save the board manager to fileName.
-     *
-     * @param fileName the name of the file
+     * Save the board manager to save_file_tmp.ser, the file used for temporarily holding a
+     * boardManager.
      */
-    public void saveToFile(String fileName) {
+    private void saveToTempFile() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
+                    this.openFileOutput(TEMP_SAVE_FILENAME, MODE_PRIVATE));
             outputStream.writeObject(boardManager);
             outputStream.close();
         } catch (IOException e) {
