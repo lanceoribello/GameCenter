@@ -19,7 +19,8 @@ public class GameSelectScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentUserAccount = (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
+        currentUserAccount = (UserAccount) getIntent().getSerializableExtra(
+                "currentUserAccount");
         setContentView(R.layout.activity_game_select);
         addSlidingTilesButtonListener();
     }
@@ -32,7 +33,7 @@ public class GameSelectScreen extends AppCompatActivity {
         slidingTilesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), StartingActivity.class);
+                Intent intent = new Intent(v.getContext(), SlidingTilesMenuActivity.class);
                 intent.putExtra("currentUserAccount", currentUserAccount);
                 startActivity(intent);
             }

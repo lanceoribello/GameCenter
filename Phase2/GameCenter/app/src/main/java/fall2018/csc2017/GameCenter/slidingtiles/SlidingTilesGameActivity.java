@@ -19,7 +19,7 @@ import java.util.Observer;
 /**
  * The game activity.
  */
-public class GameActivity extends AppCompatActivity implements Observer {
+public class SlidingTilesGameActivity extends AppCompatActivity implements Observer {
 
     /**
      * The board manager.
@@ -202,7 +202,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     private void loadFromTempFile() {
         try {
-            InputStream inputStream = this.openFileInput(StartingActivity.TEMP_SAVE_FILENAME);
+            InputStream inputStream = this.openFileInput(
+                    SlidingTilesMenuActivity.TEMP_SAVE_FILENAME);
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
                 boardManager = (BoardManager) input.readObject();
@@ -213,7 +214,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
+            Log.e("login activity", "File contained unexpected data type: "
+                    + e.toString());
         }
     }
 
@@ -224,7 +226,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     public void saveToTempFile() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(StartingActivity.TEMP_SAVE_FILENAME, MODE_PRIVATE));
+                    this.openFileOutput(SlidingTilesMenuActivity.TEMP_SAVE_FILENAME, MODE_PRIVATE));
             outputStream.writeObject(boardManager);
             outputStream.close();
         } catch (IOException e) {

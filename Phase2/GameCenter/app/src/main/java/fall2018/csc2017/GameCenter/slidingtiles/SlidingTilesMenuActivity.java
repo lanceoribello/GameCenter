@@ -20,14 +20,13 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
  * The activity for starting the sliding puzzle tile game.
  */
-public class StartingActivity extends AppCompatActivity {
+public class SlidingTilesMenuActivity extends AppCompatActivity {
 
     /**
      * The file containing a temp version of the boardManager.
@@ -42,12 +41,12 @@ public class StartingActivity extends AppCompatActivity {
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private SlidingTilesBoardManager boardManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boardManager = new BoardManager(3);
+        boardManager = new SlidingTilesBoardManager(3);
         saveToTempFile();
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
@@ -91,7 +90,8 @@ public class StartingActivity extends AppCompatActivity {
      * @param view the current view.
      */
     public void newGame(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(StartingActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                SlidingTilesMenuActivity.this);
         builder.setTitle("Choose a Complexity");
         String[] levels = {"3x3", "4x4", "5x5"};
         builder.setItems(levels, new DialogInterface.OnClickListener() {
@@ -99,15 +99,15 @@ public class StartingActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        boardManager = new BoardManager(3);
+                        boardManager = new SlidingTilesBoardManager(3);
                         switchToGame();
                         break;
                     case 1:
-                        boardManager = new BoardManager(4);
+                        boardManager = new SlidingTilesBoardManager(4);
                         switchToGame();
                         break;
                     case 2:
-                        boardManager = new BoardManager(5);
+                        boardManager = new SlidingTilesBoardManager(5);
                         switchToGame();
                         break;
                 }
@@ -127,7 +127,8 @@ public class StartingActivity extends AppCompatActivity {
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(StartingActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        SlidingTilesMenuActivity.this);
                 builder.setTitle("Choose a game");
                 String[] games = new String[(currentUserAccount.getGameNames().size())];
                 int i = 0;
@@ -247,7 +248,8 @@ public class StartingActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     Log.e("login activity", "Can not read file: " + e.toString());
                 } catch (ClassNotFoundException e) {
-                    Log.e("login activity", "File contained unexpected data type: " + e.toString());
+                    Log.e("login activity", "File contained unexpected data type: "
+                            + e.toString());
                 }
             }
         }));
@@ -271,10 +273,10 @@ public class StartingActivity extends AppCompatActivity {
     }
 
     /**
-     * Switch to the GameActivity view to play the game.
+     * Switch to the SlidingTilesGameActivity view to play the game.
      */
     private void switchToGame() {
-        Intent tmp = new Intent(this, GameActivity.class);
+        Intent tmp = new Intent(this, SlidingTilesGameActivity.class);
         tmp.putExtra("currentUserAccount", currentUserAccount);
         saveToTempFile();
         startActivity(tmp);
@@ -289,7 +291,7 @@ public class StartingActivity extends AppCompatActivity {
             InputStream inputStream = this.openFileInput(TEMP_SAVE_FILENAME);
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
-                boardManager = (BoardManager) input.readObject();
+                boardManager = (SlidingTilesBoardManager) input.readObject();
                 inputStream.close();
             }
         } catch (FileNotFoundException e) {
@@ -297,7 +299,8 @@ public class StartingActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
+            Log.e("login activity", "File contained unexpected data type: "
+                    + e.toString());
         }
     }
 
