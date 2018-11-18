@@ -31,7 +31,7 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
 
     /**
      * A new board of tiles in row-major order.
-     * Precondition: len(tiles) == NUM_ROWS * NUM_COLS
+     * Precondition: len(tiles) == numRows * numCols
      *
      * @param tiles the tiles for the board
      */
