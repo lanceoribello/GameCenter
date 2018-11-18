@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Scoreboard"/>
-        <activity android:name=".GameActivity"/>
+        <activity android:name=".SlidingTilesGameActivity"/>
     </application>
 
 </manifest>

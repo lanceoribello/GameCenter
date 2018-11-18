@@ -273,10 +273,10 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Switch to the GameActivity view to play the game.
+     * Switch to the SlidingTilesGameActivity view to play the game.
      */
     private void switchToGame() {
-        Intent tmp = new Intent(this, GameActivity.class);
+        Intent tmp = new Intent(this, SlidingTilesGameActivity.class);
         tmp.putExtra("currentUserAccount", currentUserAccount);
         saveToTempFile();
         startActivity(tmp);
