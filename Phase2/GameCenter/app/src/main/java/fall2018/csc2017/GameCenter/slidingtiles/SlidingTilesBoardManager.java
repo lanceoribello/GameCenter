@@ -10,7 +10,7 @@ import java.util.List;
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  * Also keeps track of the number of moves made and the boards corresponding to each move.
  */
-class BoardManager implements Serializable {
+class SlidingTilesBoardManager implements Serializable {
 
     /**
      * The board being managed.
@@ -60,7 +60,7 @@ class BoardManager implements Serializable {
     /**
      * Manage a new shuffled board.
      */
-    BoardManager(int complexity) {
+    SlidingTilesBoardManager(int complexity) {
         Board.numRows = Board.numCols = complexity;
         List<Tile> tiles = new ArrayList<>();
         final int numTiles = Board.numRows * Board.numCols;

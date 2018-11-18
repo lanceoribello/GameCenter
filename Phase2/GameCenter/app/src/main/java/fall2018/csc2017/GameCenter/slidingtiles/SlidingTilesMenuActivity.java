@@ -41,12 +41,12 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private SlidingTilesBoardManager boardManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boardManager = new BoardManager(3);
+        boardManager = new SlidingTilesBoardManager(3);
         saveToTempFile();
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
@@ -99,15 +99,15 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        boardManager = new BoardManager(3);
+                        boardManager = new SlidingTilesBoardManager(3);
                         switchToGame();
                         break;
                     case 1:
-                        boardManager = new BoardManager(4);
+                        boardManager = new SlidingTilesBoardManager(4);
                         switchToGame();
                         break;
                     case 2:
-                        boardManager = new BoardManager(5);
+                        boardManager = new SlidingTilesBoardManager(5);
                         switchToGame();
                         break;
                 }
@@ -291,7 +291,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             InputStream inputStream = this.openFileInput(TEMP_SAVE_FILENAME);
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
-                boardManager = (BoardManager) input.readObject();
+                boardManager = (SlidingTilesBoardManager) input.readObject();
                 inputStream.close();
             }
         } catch (FileNotFoundException e) {

@@ -38,7 +38,7 @@ class UserAccount implements Serializable {
     /**
      * The names of the account user's past games.
      */
-    private Map<String, BoardManager> gameNames;
+    private Map<String, SlidingTilesBoardManager> gameNames;
 
     /**
      * An instance of an account with a username, password, and a blank list of game names.
@@ -133,14 +133,14 @@ class UserAccount implements Serializable {
      *
      * @param newName a new name added to the account
      */
-    void addGame(String newName, BoardManager game) {
+    void addGame(String newName, SlidingTilesBoardManager game) {
         this.gameNames.put(newName, game);
     }
 
     /**
      * Get a game saved by the name gameName.
      */
-    BoardManager getGame(String gameName) {
+    SlidingTilesBoardManager getGame(String gameName) {
         if (this.gameNames.containsKey(gameName)) {
             return this.gameNames.get(gameName);
         } else {
