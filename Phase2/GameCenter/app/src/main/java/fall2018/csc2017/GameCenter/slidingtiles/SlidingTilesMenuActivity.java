@@ -85,7 +85,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
 
     /**
      * Activate the start button. Once the start button is pressed, a new alert dialog
-     * prompts the user to choose between the 3 complexities and whether Jorjani mode is activated.
+     * prompts the user to choose between the 3 complexities.
      *
      * @param view the current view.
      */

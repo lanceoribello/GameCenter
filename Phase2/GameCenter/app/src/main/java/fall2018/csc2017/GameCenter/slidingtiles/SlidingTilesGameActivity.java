@@ -169,14 +169,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
             currentUserAccount.setTop5x5(numMoves);
         }
         LoginScreen.userAccountList.add(currentUserAccount);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    openFileOutput(LoginScreen.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
-            outputStream.writeObject(LoginScreen.userAccountList);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+        userAccountsToFile(LoginScreen.USER_ACCOUNTS_FILENAME);
     }
 
     /**
@@ -186,14 +179,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
         LoginScreen.userAccountList.remove(currentUserAccount);
         currentUserAccount.addGame("autoSave", boardManager);
         LoginScreen.userAccountList.add(currentUserAccount);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    openFileOutput(LoginScreen.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
-            outputStream.writeObject(LoginScreen.userAccountList);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+        userAccountsToFile(LoginScreen.USER_ACCOUNTS_FILENAME);
     }
 
     /**
@@ -228,6 +214,22 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(SlidingTilesMenuActivity.TEMP_SAVE_FILENAME, MODE_PRIVATE));
             outputStream.writeObject(boardManager);
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    /**
+     * Saves the LoginScreen.userAccountList to a file.
+     *
+     * @param fileName the name of the file
+     */
+    public void userAccountsToFile(String fileName) {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(
+                    this.openFileOutput(fileName, MODE_PRIVATE));
+            outputStream.writeObject(LoginScreen.userAccountList);
             outputStream.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
