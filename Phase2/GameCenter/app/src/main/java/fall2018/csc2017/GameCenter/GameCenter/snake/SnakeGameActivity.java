@@ -38,11 +38,6 @@ class SnakeGameActivity extends SurfaceView implements Runnable {
     // This will be a reference to the Activity
     private Context m_context;
 
-    // Sound
-    private SoundPool m_SoundPool;
-    private int m_get_mouse_sound = -1;
-    private int m_dead_sound = -1;
-
     // For tracking movement m_Direction
     public enum Direction {UP, RIGHT, DOWN, LEFT}
     // Start by heading to the right
@@ -164,7 +159,7 @@ class SnakeGameActivity extends SurfaceView implements Runnable {
         spawnMouse();
         //add to the m_Score
         m_Score = m_Score + 1;
-        m_SoundPool.play(m_get_mouse_sound, 1, 1, 0, 0, 1);
+
     }
 
     private void moveSnake(){
@@ -229,7 +224,6 @@ class SnakeGameActivity extends SurfaceView implements Runnable {
 
         if (detectDeath()) {
             //start again
-            m_SoundPool.play(m_dead_sound, 1, 1, 0, 0, 1);
 
             startGame();
         }
