@@ -84,7 +84,7 @@ public class StartingActivity extends AppCompatActivity {
     public void newGame(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(StartingActivity.this);
         builder.setTitle("Choose a Complexity");
-        String[] levels = {"3x3", "4x4", "5x5", "3x3-Jorjani", "4x4-Jorjani", "5x5-Jorjani"};
+        String[] levels = {"3x3", "4x4", "5x5"};
         builder.setItems(levels, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
