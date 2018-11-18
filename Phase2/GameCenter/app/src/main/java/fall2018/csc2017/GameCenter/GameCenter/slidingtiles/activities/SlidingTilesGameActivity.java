@@ -144,14 +144,14 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
         int complexity = boardManager.getComplexity();
         int numMoves = boardManager.getMoves();
         if (boardManager.puzzleSolved()) {
-            if (complexity == 3 && currentUserAccount.getTop3x3() > numMoves) {
-                currentUserAccount.setTop3x3(numMoves);
+            if (complexity == 3 && currentUserAccount.getSlidingTilesTop3x3() > numMoves) {
+                currentUserAccount.setSlidingTilesTop3x3(numMoves);
                 scoreUpdated = true;
-            } else if (complexity == 4 && currentUserAccount.getTop4x4() > numMoves) {
-                currentUserAccount.setTop4x4(numMoves);
+            } else if (complexity == 4 && currentUserAccount.getSlidingTilesTop4x4() > numMoves) {
+                currentUserAccount.setSlidingTilesTop4x4(numMoves);
                 scoreUpdated = true;
-            } else if (complexity == 5 && currentUserAccount.getTop5x5() > numMoves) {
-                currentUserAccount.setTop5x5(numMoves);
+            } else if (complexity == 5 && currentUserAccount.getSlidingTilesTop5x5() > numMoves) {
+                currentUserAccount.setSlidingTilesTop5x5(numMoves);
                 scoreUpdated = true;
             }
         }
@@ -170,11 +170,11 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
     private void updateUserAccounts(int complexity, int numMoves) {
         LoginActivity.userAccountList.remove(currentUserAccount);
         if (complexity == 3) {
-            currentUserAccount.setTop3x3(numMoves);
+            currentUserAccount.setSlidingTilesTop3x3(numMoves);
         } else if (complexity == 4) {
-            currentUserAccount.setTop4x4(numMoves);
+            currentUserAccount.setSlidingTilesTop4x4(numMoves);
         } else {
-            currentUserAccount.setTop5x5(numMoves);
+            currentUserAccount.setSlidingTilesTop5x5(numMoves);
         }
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
@@ -185,7 +185,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
      */
     private void createAutoSave() {
         LoginActivity.userAccountList.remove(currentUserAccount);
-        currentUserAccount.addGame("autoSave", boardManager);
+        currentUserAccount.addSlidingTilesGame("autoSave", boardManager);
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
     }

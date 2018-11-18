@@ -137,9 +137,9 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         SlidingTilesMenuActivity.this);
                 builder.setTitle("Choose a game");
-                String[] games = new String[(currentUserAccount.getGameNames().size())];
+                String[] games = new String[(currentUserAccount.getSlidingTilesGameNames().size())];
                 int i = 0;
-                for (String s : currentUserAccount.getGameNames()) {
+                for (String s : currentUserAccount.getSlidingTilesGameNames()) {
                     games[i++] = s;
                 }
                 int checkedItem = 1;
@@ -149,7 +149,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                         ListView lw = ((AlertDialog) dialog).getListView();
                         Object selectedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
                         String selectedGame = selectedItem.toString();
-                        boardManager = currentUserAccount.getGame(selectedGame);
+                        boardManager = currentUserAccount.getSlidingTilesGame(selectedGame);
                         Board.numRows = Board.numCols = boardManager.getComplexity();
                         makeToastLoadedText();
                         dialog.dismiss();
@@ -182,7 +182,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                         DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
                 String datetime = dateFormat.format(c.getTime());
                 LoginActivity.userAccountList.remove(currentUserAccount);
-                currentUserAccount.addGame(datetime, boardManager);
+                currentUserAccount.addSlidingTilesGame(datetime, boardManager);
                 LoginActivity.userAccountList.add(currentUserAccount);
                 try {
                     ObjectOutputStream outputStream = new ObjectOutputStream(
@@ -246,7 +246,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                                 currentUserAccount = ua;
                             }
                         }
-                        boardManager = currentUserAccount.getGame("autoSave");
+                        boardManager = currentUserAccount.getSlidingTilesGame("autoSave");
                         Board.numRows = Board.numCols = boardManager.getComplexity();
                         switchToGame();
                     } else {
