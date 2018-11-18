@@ -2,6 +2,7 @@ package fall2018.csc2017.GameCenter.slidingtiles;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import java.lang.annotation.Retention;
 import java.util.ArrayList;
 
 
@@ -38,7 +40,7 @@ public class LoginScreen extends AppCompatActivity {
     /**
      * The UserAccount that will be logged in; will be passed onto StartingActivity.
      */
-    private static UserAccount currentUserAccount;
+    private UserAccount currentUserAccount;
 
 
     @Override

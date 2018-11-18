@@ -29,7 +29,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     /**
      * The account obtained from the login screen.
      */
-    public static UserAccount currentUserAccount;
+    private UserAccount currentUserAccount;
 
     /**
      * The buttons to display.

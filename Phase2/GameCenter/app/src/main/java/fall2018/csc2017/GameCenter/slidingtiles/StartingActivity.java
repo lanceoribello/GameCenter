@@ -36,7 +36,7 @@ public class StartingActivity extends AppCompatActivity {
     /**
      * The current user account obtained from the game select screen.
      */
-    public static UserAccount currentUserAccount;
+    private UserAccount currentUserAccount;
 
     /**
      * The board manager.
