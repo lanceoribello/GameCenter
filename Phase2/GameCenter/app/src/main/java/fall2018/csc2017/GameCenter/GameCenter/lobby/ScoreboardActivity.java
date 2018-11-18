@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
 
@@ -44,21 +45,15 @@ public class ScoreboardActivity extends AppCompatActivity {
         setUserAccountList(USER_ACCOUNTS_FILENAME);
         this.currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
-        TableLayout scoreboardTable = (TableLayout) findViewById(R.id.scoreboardsTable);
+        TableLayout scoreboardTable = findViewById(R.id.scoreboardsTable);
         String[] topScorers = findTopScorers();
         String[] topScores = findTopScores();
-        for (int i = 0; i < 3; i++) {
+        String[] headings = {"3x3", "4x4", "5x5", "Easy Mode", "Hard Mode"};
+        int i = 0;
+        for (String heading : headings) {
             TableRow scoreboardRow = new TableRow(this);
             TextView headingView = new TextView(this);
-            if (i == 0) {
-                headingView.setText(R.string.three_by_three);
-            }
-            if (i == 1) {
-                headingView.setText(R.string.four_by_four);
-            }
-            if (i == 2) {
-                headingView.setText(R.string.five_by_five);
-            }
+            headingView.setText(heading);
             scoreboardRow.addView(headingView);
             String scorer = topScorers[i];
             String score = topScores[i];
@@ -69,6 +64,7 @@ public class ScoreboardActivity extends AppCompatActivity {
             scoreboardRow.addView(scorerView);
             scoreboardRow.addView(scoreView);
             scoreboardTable.addView(scoreboardRow);
+            i++;
         }
     }
 
@@ -79,25 +75,30 @@ public class ScoreboardActivity extends AppCompatActivity {
      * @return topScorers, a list of usernames of the top scorer for each complexity.
      */
     private String[] findTopScorers() {
-        String[] topScorers = new String[3];
-        topScorers[0] = "None";
-        topScorers[1] = "None";
-        topScorers[2] = "None";
-        int top3x3 = 1000000;
-        int top4x4 = 1000000;
-        int top5x5 = 1000000;
+        String[] topScorers = new String[5];
+        Arrays.fill(topScorers, "None");
+        int top3x3 = 1000000, top4x4 = 1000000, top5x5 = 1000000;
+        int easySnakeScore = 0, hardSnakeScore = 0;
         for (UserAccount user : this.userAccountList) {
-            if (user.getTop3x3() < top3x3) {
-                topScorers[0] = (user.getUsername() + ": " + String.valueOf(user.getTop3x3()));
-                top3x3 = user.getTop3x3();
+            if (user.getSlidingTilesTop3x3() < top3x3) {
+                topScorers[0] = (user.getUsername() + ": " + String.valueOf(user.getSlidingTilesTop3x3()));
+                top3x3 = user.getSlidingTilesTop3x3();
             }
-            if (user.getTop4x4() < top4x4) {
-                topScorers[1] = (user.getUsername() + ": " + String.valueOf(user.getTop4x4()));
-                top4x4 = user.getTop4x4();
+            if (user.getSlidingTilesTop4x4() < top4x4) {
+                topScorers[1] = (user.getUsername() + ": " + String.valueOf(user.getSlidingTilesTop4x4()));
+                top4x4 = user.getSlidingTilesTop4x4();
             }
-            if (user.getTop5x5() < top5x5) {
-                topScorers[2] = (user.getUsername() + ": " + String.valueOf(user.getTop5x5()));
-                top5x5 = user.getTop5x5();
+            if (user.getSlidingTilesTop5x5() < top5x5) {
+                topScorers[2] = (user.getUsername() + ": " + String.valueOf(user.getSlidingTilesTop5x5()));
+                top5x5 = user.getSlidingTilesTop5x5();
+            }
+            if (user.getEasySnakeScore() > easySnakeScore) {
+                topScorers[3] = (user.getUsername() + ": " + String.valueOf(user.getEasySnakeScore()));
+                easySnakeScore = user.getEasySnakeScore();
+            }
+            if (user.getHardSnakeScore() > hardSnakeScore) {
+                topScorers[4] = (user.getUsername() + ": " + String.valueOf(user.getHardSnakeScore()));
+                hardSnakeScore = user.getHardSnakeScore();
             }
         }
         return topScorers;
@@ -110,19 +111,26 @@ public class ScoreboardActivity extends AppCompatActivity {
      * @return topScores, a list of scores of the current user for each complexity.
      */
     private String[] findTopScores() {
-        String[] topScores = new String[3];
+        String[] topScores = new String[5];
         UserAccount current;
         setUserAccountList(USER_ACCOUNTS_FILENAME);
         for (UserAccount user : this.userAccountList) {
             if (user.getUsername().equals(this.currentUserAccount.getUsername())) {
                 current = user;
-                topScores[0] = String.valueOf(current.getTop3x3());
-                topScores[1] = String.valueOf(current.getTop4x4());
-                topScores[2] = String.valueOf(current.getTop5x5());
+                topScores[0] = String.valueOf(current.getSlidingTilesTop3x3());
+                topScores[1] = String.valueOf(current.getSlidingTilesTop4x4());
+                topScores[2] = String.valueOf(current.getSlidingTilesTop5x5());
+                topScores[3] = String.valueOf(current.getEasySnakeScore());
+                topScores[4] = String.valueOf(current.getHardSnakeScore());
             }
         }
-        for (int i = 0; i <3; i++) {
+        for (int i = 0; i < 3; i++) {
             if (topScores[i].equals("1000000") || topScores[i] == null) {
+                topScores[i] = "None";
+            }
+        }
+        for (int i = 3; i < 5; i++) {
+            if (topScores[i] == null || topScores[i].equals("0")) {
                 topScores[i] = "None";
             }
         }
