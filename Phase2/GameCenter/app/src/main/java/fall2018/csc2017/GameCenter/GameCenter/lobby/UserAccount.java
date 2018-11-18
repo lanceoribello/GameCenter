@@ -23,24 +23,75 @@ public class UserAccount implements Serializable {
     private String password;
 
     /**
-     * The account user's top score for boards of 3x3 complexity.
+     * The account user's top score for Snake on easy mode.
      */
-    private int top3x3;
+    private int easySnakeScore;
 
     /**
-     * The account user's top score for boards of 4x4 complexity.
+     * The account user's top score for Snake on hard mode.
      */
-    private int top4x4;
+    private int hardSnakeScore;
 
     /**
-     * The account user's top score for boards of 5x5 complexity.
+     * Returns the user account's top score for Snake on easy mode.
+     *
+     * @return the user's top score for Snake on easy mode.
      */
-    private int top5x5;
+    public int getEasySnakeScore() {
+        return easySnakeScore;
+    }
 
     /**
-     * The names of the account user's past games.
+     * Sets the account top score for Snake on easy mode.
+     *
+     * @param easySnakeScore the account's new top score for Snake on easy mode
      */
-    private Map<String, SlidingTilesBoardManager> gameNames;
+    public void setEasySnakeScore(int easySnakeScore) {
+        this.easySnakeScore = easySnakeScore;
+    }
+
+    /**
+     * Returns the user account's top score for Snake on hard mode.
+     *
+     * @return the user's top score for Snake on hard mode.
+     */
+    public int getHardSnakeScore() {
+        return hardSnakeScore;
+    }
+
+    /**
+     * Sets the account top score for Snake on hard mode.
+     *
+     * @param hardSnakeScore the account's new top score for Snake on hard mode
+     */
+    public void setHardSnakeScore(int hardSnakeScore) {
+        this.hardSnakeScore = hardSnakeScore;
+    }
+
+    /**
+     * The account user's top score for boards of 3x3 complexity in Sliding Tiles.
+     */
+    private int slidingTilesTop3x3;
+
+    /**
+     * The account user's top score for boards of 4x4 complexity in Sliding Tiles.
+     */
+    private int slidingTilesTop4x4;
+
+    /**
+     * The account user's top score for boards of 5x5 complexity in Sliding Tiles.
+     */
+    private int slidingTilesTop5x5;
+
+    /**
+     * The names of the account user's past Sliding Tiles games.
+     */
+    private Map<String, SlidingTilesBoardManager> slidingTilesGameNames;
+
+    /**
+     * The names of the account user's past Snake games.
+     */
+    private Map<String, SlidingTilesBoardManager> snakeGameNames;
 
     /**
      * An instance of an account with a username, password, and a blank list of game names.
@@ -52,11 +103,13 @@ public class UserAccount implements Serializable {
     UserAccount(String username, String password) {
         this.username = username;
         this.password = password;
-        this.gameNames = new HashMap<>();
-        this.top3x3 = 1000000;
-        this.top4x4 = 1000000;
-        this.top5x5 = 1000000;
+        this.slidingTilesGameNames = new HashMap<>();
+        this.snakeGameNames = new HashMap<>();
+        this.slidingTilesTop3x3 = 1000000;
+        this.slidingTilesTop4x4 = 1000000;
+        this.slidingTilesTop5x5 = 1000000;
     }
+
 
     /**
      * Returns the username of the account.
@@ -77,57 +130,57 @@ public class UserAccount implements Serializable {
     }
 
     /**
-     * Returns the account's top score for boards of 3x3 complexity.
+     * Returns the account's top score for boards of 3x3 complexity in Sliding Tiles.
      *
-     * @return the account's top score for boards of 3x3 complexity.
+     * @return the account's top score for boards of 3x3 complexity in Sliding Tiles.
      */
-    public int getTop3x3() {
-        return top3x3;
+    public int getSlidingTilesTop3x3() {
+        return slidingTilesTop3x3;
     }
 
     /**
-     * Sets the account's top score for boards of 3x3 complexity.
+     * Sets the account's top score for boards of 3x3 complexity in Sliding Tiles.
      *
-     * @param top3x3 the account's new top 3x3 score
+     * @param top3x3 the account's new top 3x3 score in Sliding Tiles
      */
-    public void setTop3x3(int top3x3) {
-        this.top3x3 = top3x3;
+    public void setSlidingTilesTop3x3(int top3x3) {
+        this.slidingTilesTop3x3 = top3x3;
     }
 
     /**
-     * Returns the account's top score for boards of 4x4 complexity.
+     * Returns the account's top score for boards of 4x4 complexity in Sliding Tiles.
      *
-     * @return the account's top score for boards of 4x4 complexity.
+     * @return the account's top score for boards of 4x4 complexity in Sliding Tiles
      */
-    public int getTop4x4() {
-        return top4x4;
+    public int getSlidingTilesTop4x4() {
+        return slidingTilesTop4x4;
     }
 
     /**
-     * Sets the account's top score for boards of 4x4 complexity.
+     * Sets the account's top score for boards of 4x4 complexity in Sliding Tiles.
      *
-     * @param top4x4 the account's new top 4x4 score
+     * @param top4x4 the account's new top 4x4 score in Sliding Tiles
      */
-    public void setTop4x4(int top4x4) {
-        this.top4x4 = top4x4;
+    public void setSlidingTilesTop4x4(int top4x4) {
+        this.slidingTilesTop4x4 = top4x4;
     }
 
     /**
-     * Returns the account's top score for boards of 5x5 complexity.
+     * Returns the account's top score for boards of 5x5 complexity in Sliding Tiles.
      *
-     * @return the account's top score for boards of 5x5 complexity.
+     * @return the account's top score for boards of 5x5 complexity in Sliding Tiles
      */
-    public int getTop5x5() {
-        return top5x5;
+    public int getSlidingTilesTop5x5() {
+        return slidingTilesTop5x5;
     }
 
     /**
-     * Sets the account's top score for boards of 5x5 complexity.
+     * Sets the account's top score for boards of 5x5 complexity in Sliding Tiles.
      *
-     * @param top5x5 the account's new top 5x5 score
+     * @param top5x5 the account's new top 5x5 score in Sliding Tiles
      */
-    public void setTop5x5(int top5x5) {
-        this.top5x5 = top5x5;
+    public void setSlidingTilesTop5x5(int top5x5) {
+        this.slidingTilesTop5x5 = top5x5;
     }
 
     /**
@@ -135,16 +188,16 @@ public class UserAccount implements Serializable {
      *
      * @param newName a new name added to the account
      */
-    public void addGame(String newName, SlidingTilesBoardManager game) {
-        this.gameNames.put(newName, game);
+    public void addSlidingTilesGame(String newName, SlidingTilesBoardManager game) {
+        this.slidingTilesGameNames.put(newName, game);
     }
 
     /**
      * Get a game saved by the name gameName.
      */
-    public SlidingTilesBoardManager getGame(String gameName) {
-        if (this.gameNames.containsKey(gameName)) {
-            return this.gameNames.get(gameName);
+    public SlidingTilesBoardManager getSlidingTilesGame(String gameName) {
+        if (this.slidingTilesGameNames.containsKey(gameName)) {
+            return this.slidingTilesGameNames.get(gameName);
         } else {
             return null;
         }
@@ -154,7 +207,7 @@ public class UserAccount implements Serializable {
      * Returns this UserAccount's key set of saved game names.
      * @return key set of this UserAccount's saved game names
      */
-    public Set<String> getGameNames() {
-        return gameNames.keySet();
+    public Set<String> getSlidingTilesGameNames() {
+        return slidingTilesGameNames.keySet();
     }
 }
