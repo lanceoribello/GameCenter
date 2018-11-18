@@ -40,7 +40,7 @@ public class Tile implements Comparable<Tile>, Serializable {
     /**
      * A tile with a background id; look up and set the id.
      *
-     * @param backgroundId the background id of the tile
+     * @param backgroundId the background id of this Tile
      */
     Tile(int backgroundId) {
         id = backgroundId + 1;
