@@ -32,7 +32,7 @@ public class StartingActivity extends AppCompatActivity {
     /**
      * The current user account obtained from the game select screen.
      */
-    private static UserAccount currentUserAccount;
+    private UserAccount currentUserAccount;
 
     /**
      * The board manager.
@@ -42,7 +42,7 @@ public class StartingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boardManager = new BoardManager(3, false);
+        boardManager = new BoardManager(3);
         saveToTempFile();
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
@@ -94,15 +94,15 @@ public class StartingActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        boardManager = new BoardManager(3, false);
+                        boardManager = new BoardManager(3);
                         switchToGame();
                         break;
                     case 1:
-                        boardManager = new BoardManager(4, false);
+                        boardManager = new BoardManager(4);
                         switchToGame();
                         break;
                     case 2:
-                        boardManager = new BoardManager(5, false);
+                        boardManager = new BoardManager(5);
                         switchToGame();
                         break;
                 }
