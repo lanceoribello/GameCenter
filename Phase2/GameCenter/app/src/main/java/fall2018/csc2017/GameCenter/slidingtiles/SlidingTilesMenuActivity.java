@@ -20,14 +20,13 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
  * The activity for starting the sliding puzzle tile game.
  */
-public class StartingActivity extends AppCompatActivity {
+public class SlidingTilesMenuActivity extends AppCompatActivity {
 
     /**
      * The file containing a temp version of the boardManager.
@@ -91,7 +90,8 @@ public class StartingActivity extends AppCompatActivity {
      * @param view the current view.
      */
     public void newGame(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(StartingActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                SlidingTilesMenuActivity.this);
         builder.setTitle("Choose a Complexity");
         String[] levels = {"3x3", "4x4", "5x5"};
         builder.setItems(levels, new DialogInterface.OnClickListener() {
@@ -127,7 +127,8 @@ public class StartingActivity extends AppCompatActivity {
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(StartingActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        SlidingTilesMenuActivity.this);
                 builder.setTitle("Choose a game");
                 String[] games = new String[(currentUserAccount.getGameNames().size())];
                 int i = 0;
@@ -247,7 +248,8 @@ public class StartingActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     Log.e("login activity", "Can not read file: " + e.toString());
                 } catch (ClassNotFoundException e) {
-                    Log.e("login activity", "File contained unexpected data type: " + e.toString());
+                    Log.e("login activity", "File contained unexpected data type: "
+                            + e.toString());
                 }
             }
         }));
@@ -297,7 +299,8 @@ public class StartingActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
+            Log.e("login activity", "File contained unexpected data type: "
+                    + e.toString());
         }
     }
 

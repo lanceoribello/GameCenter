@@ -32,7 +32,7 @@ public class GameSelectScreen extends AppCompatActivity {
         slidingTilesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), StartingActivity.class);
+                Intent intent = new Intent(v.getContext(), SlidingTilesMenuActivity.class);
                 intent.putExtra("currentUserAccount", currentUserAccount);
                 startActivity(intent);
             }

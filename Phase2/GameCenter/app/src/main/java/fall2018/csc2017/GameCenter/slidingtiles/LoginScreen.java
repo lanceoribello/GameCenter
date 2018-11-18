@@ -2,7 +2,6 @@ package fall2018.csc2017.GameCenter.slidingtiles;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,13 +15,12 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import java.lang.annotation.Retention;
 import java.util.ArrayList;
 
 /**
  * The login screen shown upon initial startup of the game.
  * Processes sign ups and logins of userAccounts.
- * Passes on the current signed-in userAccount to StartingActivity.
+ * Passes on the current signed-in userAccount to SlidingTilesMenuActivity.
  */
 public class LoginScreen extends AppCompatActivity {
 
@@ -37,7 +35,7 @@ public class LoginScreen extends AppCompatActivity {
     public static ArrayList<UserAccount> userAccountList;
 
     /**
-     * The UserAccount that will be logged in; will be passed onto StartingActivity.
+     * The UserAccount that will be logged in; will be passed onto SlidingTilesMenuActivity.
      */
     private UserAccount currentUserAccount;
 
@@ -140,8 +138,8 @@ public class LoginScreen extends AppCompatActivity {
 
     /**
      * Called when the user taps the login button.
-     * If the login credentials are valid, sends the currentUserAccount to StartingActivity
-     * then sets the view to StartingActivity.
+     * If the login credentials are valid, sends the currentUserAccount to SlidingTilesMenuActivity
+     * then sets the view to SlidingTilesMenuActivity.
      */
     public void onClick(View view) {
         EditText usernameView = findViewById(R.id.Username);
