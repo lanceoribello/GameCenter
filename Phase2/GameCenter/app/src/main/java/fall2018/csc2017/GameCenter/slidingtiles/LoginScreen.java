@@ -45,22 +45,21 @@ public class LoginScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userAccountList = new ArrayList<>();
-        setUserAccountList(USER_ACCOUNTS_FILENAME);
+        setUserAccountList();
 
         setContentView(R.layout.activity_login);
         addSignupButtonListener();
     }
 
     /**
-     * Sets the userAccountList to the list of UserAccounts read from the file.
-     *
-     * @param fileName the name of the file
+     * Sets the userAccountList to the list of UserAccounts read from
+     * the file USER_ACCOUNTS_FILENAME.
      */
-    public void setUserAccountList(String fileName) {
+    private void setUserAccountList() {
         try {
-            InputStream inputStream = this.openFileInput(fileName);
+            InputStream inputStream = this.openFileInput(USER_ACCOUNTS_FILENAME);
             if (inputStream == null) {
-                userAccountsToFile(fileName);
+                userAccountsToFile(USER_ACCOUNTS_FILENAME);
             } else {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
                 userAccountList = (ArrayList<UserAccount>) input.readObject();
@@ -86,7 +85,7 @@ public class LoginScreen extends AppCompatActivity {
      */
     private boolean successfulLogin(String username, String password) {
         boolean loginSuccess = false;
-        setUserAccountList(USER_ACCOUNTS_FILENAME);
+        setUserAccountList();
         for (UserAccount userAccount : userAccountList) {
             if (userAccount.getUsername().equals(username)
                     && userAccount.getPassword().equals(password)) {
