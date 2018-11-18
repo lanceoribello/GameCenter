@@ -235,7 +235,7 @@ class SnakeGameActivity extends SurfaceView implements Runnable {
             m_Canvas = m_Holder.lockCanvas();
 
             // Clear the screen with my favorite color
-            m_Canvas.drawColor(Color.argb(255, 120, 197, 87));
+            m_Canvas.drawColor(Color.argb(255, 102, 204, 255));
 
             // Set the color of the paint to draw the snake and mouse with
             m_Paint.setColor(Color.argb(255, 255, 255, 255));
