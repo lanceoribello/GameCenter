@@ -19,7 +19,6 @@ import java.io.ObjectOutputStream;
 import java.lang.annotation.Retention;
 import java.util.ArrayList;
 
-
 /**
  * The login screen shown upon initial startup of the game.
  * Processes sign ups and logins of userAccounts.

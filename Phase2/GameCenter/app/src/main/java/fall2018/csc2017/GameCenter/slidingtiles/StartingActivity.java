@@ -28,8 +28,9 @@ import java.util.Calendar;
  * The activity for starting the sliding puzzle tile game.
  */
 public class StartingActivity extends AppCompatActivity {
+
     /**
-     * The file containing aa temp version of the save
+     * The file containing a temp version of the boardManager.
      */
     public static final String TEMP_SAVE_FILENAME = "save_file_tmp.ser";
 
@@ -285,7 +286,7 @@ public class StartingActivity extends AppCompatActivity {
      */
     private void loadFromTempFile() {
         try {
-            InputStream inputStream = this.openFileInput("save_file_tmp.ser");
+            InputStream inputStream = this.openFileInput(TEMP_SAVE_FILENAME);
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
                 boardManager = (BoardManager) input.readObject();

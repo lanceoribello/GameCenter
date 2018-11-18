@@ -44,7 +44,6 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * Set up the background image for each button based on the master list
      * of positions, and then call the adapter to set the view.
      */
-    // Display
     public void display() {
         updateTileButtons();
         gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
@@ -53,7 +52,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadFromFile(StartingActivity.TEMP_SAVE_FILENAME);
+        loadFromTempFile();
         createTileButtons(this);
         setContentView(R.layout.activity_main);
         currentUserAccount =
@@ -116,7 +115,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onPause() {
         super.onPause();
-        saveToFile(StartingActivity.TEMP_SAVE_FILENAME);
+        saveToTempFile();
         updateHighScores();
         createAutoSave();
     }
@@ -124,7 +123,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onStop() {
         super.onStop();
-//        saveToFile(StartingActivity.TEMP_SAVE_FILENAME);
+        saveToTempFile();
         updateHighScores();
         createAutoSave();
     }
@@ -198,13 +197,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     /**
-     * Load the board manager from fileName.
-     *
-     * @param fileName the name of the file
+     * Load the board manager from save_file_tmp.ser, the file used for temporarily holding a
+     * boardManager.
      */
-    private void loadFromFile(String fileName) {
+    private void loadFromTempFile() {
         try {
-            InputStream inputStream = this.openFileInput(fileName);
+            InputStream inputStream = this.openFileInput(StartingActivity.TEMP_SAVE_FILENAME);
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
                 boardManager = (BoardManager) input.readObject();
@@ -220,14 +218,13 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     /**
-     * Save the board manager to fileName.
-     *
-     * @param fileName the name of the file
+     * Save the board manager to save_file_tmp.ser, the file used for temporarily holding a
+     * boardManager.
      */
-    public void saveToFile(String fileName) {
+    public void saveToTempFile() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
+                    this.openFileOutput(StartingActivity.TEMP_SAVE_FILENAME, MODE_PRIVATE));
             outputStream.writeObject(boardManager);
             outputStream.close();
         } catch (IOException e) {
