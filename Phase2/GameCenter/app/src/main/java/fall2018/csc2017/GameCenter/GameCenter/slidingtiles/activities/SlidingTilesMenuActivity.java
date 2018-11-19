@@ -60,7 +60,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_starting_);
         addLoadButtonListener();
         addSaveButtonListener();
-        addScoreboardButtonListener();
         addLoadAutoSaveButtonListener();
     }
 
@@ -202,28 +201,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
      */
     private void makeToastSavedText() {
         Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Activate the View ScoreboardActivity button.
-     */
-    private void addScoreboardButtonListener() {
-        Button scoreboardButton = findViewById(R.id.ScoreboardButton);
-        scoreboardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchToScoreboard();
-            }
-        });
-    }
-
-    /**
-     * Switch to the ScoreboardActivity view to view the per-user and per-game scoreboards.
-     */
-    private void switchToScoreboard() {
-        Intent tmp = new Intent(this, ScoreboardActivity.class);
-        tmp.putExtra("currentUserAccount", currentUserAccount);
-        startActivity(tmp);
     }
 
     /**

@@ -45,6 +45,11 @@ public class ScoreboardActivity extends AppCompatActivity {
         setUserAccountList(USER_ACCOUNTS_FILENAME);
         this.currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
+        // Set the title of the Scoreboard screen
+        TextView scoreboardTitle = findViewById(R.id.scoreboardTitle);
+        String userScoreboardTitle = "Scoreboard of " + this.currentUserAccount.getUsername();
+        scoreboardTitle.setText(userScoreboardTitle);
+        // Set the table of scores by iterating each type of top score
         TableLayout scoreboardTable = findViewById(R.id.scoreboardsTable);
         String[] topScorers = findTopScorers();
         String[] topScores = findTopScores();
@@ -81,23 +86,28 @@ public class ScoreboardActivity extends AppCompatActivity {
         int easySnakeScore = 0, hardSnakeScore = 0;
         for (UserAccount user : this.userAccountList) {
             if (user.getSlidingTilesTop3x3() < top3x3) {
-                topScorers[0] = (user.getUsername() + ": " + String.valueOf(user.getSlidingTilesTop3x3()));
+                topScorers[0] = (user.getUsername() + ": "
+                        + String.valueOf(user.getSlidingTilesTop3x3()));
                 top3x3 = user.getSlidingTilesTop3x3();
             }
             if (user.getSlidingTilesTop4x4() < top4x4) {
-                topScorers[1] = (user.getUsername() + ": " + String.valueOf(user.getSlidingTilesTop4x4()));
+                topScorers[1] = (user.getUsername() + ": "
+                        + String.valueOf(user.getSlidingTilesTop4x4()));
                 top4x4 = user.getSlidingTilesTop4x4();
             }
             if (user.getSlidingTilesTop5x5() < top5x5) {
-                topScorers[2] = (user.getUsername() + ": " + String.valueOf(user.getSlidingTilesTop5x5()));
+                topScorers[2] = (user.getUsername() + ": "
+                        + String.valueOf(user.getSlidingTilesTop5x5()));
                 top5x5 = user.getSlidingTilesTop5x5();
             }
             if (user.getEasySnakeScore() > easySnakeScore) {
-                topScorers[3] = (user.getUsername() + ": " + String.valueOf(user.getEasySnakeScore()));
+                topScorers[3] = (user.getUsername() + ": "
+                        + String.valueOf(user.getEasySnakeScore()));
                 easySnakeScore = user.getEasySnakeScore();
             }
             if (user.getHardSnakeScore() > hardSnakeScore) {
-                topScorers[4] = (user.getUsername() + ": " + String.valueOf(user.getHardSnakeScore()));
+                topScorers[4] = (user.getUsername() + ": "
+                        + String.valueOf(user.getHardSnakeScore()));
                 hardSnakeScore = user.getHardSnakeScore();
             }
         }
@@ -155,7 +165,8 @@ public class ScoreboardActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("login activity", "Can not read file: " + e.toString());
         } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
+            Log.e("login activity", "File contained unexpected data type: "
+                    + e.toString());
         }
     }
 }
