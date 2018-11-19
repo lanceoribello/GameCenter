@@ -214,7 +214,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
-    private boolean detectDeath() {
+    public boolean detectDeath() {
         // Has the snake died?
         boolean dead = false;
 
@@ -304,6 +304,8 @@ public class SnakeView extends SurfaceView implements Runnable {
 
         return false;
     }
+
+    public int getScore() { return score; }
 
     @Override
     public boolean performClick() {
