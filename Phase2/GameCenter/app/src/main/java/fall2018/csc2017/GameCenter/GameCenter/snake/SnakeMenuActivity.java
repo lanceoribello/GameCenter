@@ -51,7 +51,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
     public void newGame(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 SnakeMenuActivity.this);
-        builder.setTitle("Choose a Complexity");
+        builder.setTitle("Choose a Difficulty Level");
         String[] difficulties = {"Easy", "Hard"};
         builder.setItems(difficulties, new DialogInterface.OnClickListener() {
             @Override
