@@ -71,6 +71,8 @@ public class SnakeView extends SurfaceView implements Runnable {
     private final int NUM_BLOCKS_WIDE = 40;
     private int numBlocksHigh; // determined dynamically;
 
+    Object[] saveData;
+
     public SnakeView(Context context) {
         super(context);
     }
@@ -104,12 +106,12 @@ public class SnakeView extends SurfaceView implements Runnable {
         // The check for playing prevents a crash at the start
         // You could also extend the code to provide a pause feature
         while (playing) {
-
             // Update 10 times a second
             if(checkForUpdate()) {
                 updateGame();
                 drawGame();
             }
+            setSavePoints();
         }
     }
 
@@ -213,6 +215,22 @@ public class SnakeView extends SurfaceView implements Runnable {
         return dead;
     }
 
+    public void setSavePoints(){
+        if(checkForSavePoint()){
+            int [] savedSnakeXs = snakeXs;
+            int [] savedSnakeYs = snakeYs;
+            int savedMouseX = mouseX;
+            int savedMouseY = mouseY;
+            this.saveData = new Object[]{savedSnakeXs, savedSnakeYs, savedMouseX, savedMouseY,
+                    score};
+        }
+
+    }
+
+    public boolean checkForSavePoint(){
+        return score % 3 == 0;
+    }
+
     public void updateGame() {
         // Did the head of the snake touch the mouse?
         if (snakeXs[0] == mouseX && snakeYs[0] == mouseY) {
@@ -263,6 +281,11 @@ public class SnakeView extends SurfaceView implements Runnable {
                     (mouseX * blockSize) + blockSize,
                     (mouseY * blockSize) + blockSize,
                     paint);
+
+            if(checkForSavePoint()){
+                paint.setTextSize(150);
+                canvas.drawText("Save point created!", 10, 200, paint);
+            }
 
             // Draw the whole frame
             holder.unlockCanvasAndPost(canvas);
@@ -331,8 +354,4 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
         return true;
     }
-
-
-
-
 }
