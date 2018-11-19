@@ -23,14 +23,18 @@ public class SnakeMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_snake_menu);
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
-//        addLoadButtonListener();
-//        addSaveButtonListener();
-//        addLoadAutoSaveButtonListener();
-          addNewGameListener();
+        addLoadButtonListener();
+        addSaveButtonListener();
+        addLoadAutoSaveButtonListener();
+        addNewGameListener();
     }
-    private void addNewGameListener(){
+
+    /**
+     * Activate the new game button.
+     */
+    private void addNewGameListener() {
         Button newGame = findViewById(R.id.NewSnake);
-        newGame.setOnClickListener(new View.OnClickListener(){
+        newGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent tmp = new Intent(getApplicationContext(), SnakeStartingActivity.class);
@@ -38,6 +42,40 @@ public class SnakeMenuActivity extends AppCompatActivity {
                 startActivity(tmp);
             }
         });
-
     }
+
+    /**
+     * Activate the load game button.
+     */
+    private void addLoadButtonListener() {
+        Button newGame = findViewById(R.id.LoadSnake);
+        newGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+    }
+    /**
+     * Activate the load game button.
+     */
+    private void addSaveButtonListener() {
+        Button newGame = findViewById(R.id.SaveSnake);
+        newGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+    }
+    /**
+     * Activate the load game button.
+     */
+    private void addLoadAutoSaveButtonListener() {
+        Button newGame = findViewById(R.id.AutoSnake);
+        newGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+    }
+
 }
