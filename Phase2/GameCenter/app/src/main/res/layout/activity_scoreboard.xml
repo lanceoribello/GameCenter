@@ -13,7 +13,9 @@
         android:gravity="center"
         android:padding="20dip"
         android:stretchColumns="*"
-        tools:context="fall2018.csc2017.GameCenter.GameCenter.lobby.ScoreboardActivity">
+        tools:context="fall2018.csc2017.GameCenter.GameCenter.lobby.ScoreboardActivity"
+        tools:layout_editor_absoluteX="189dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TableRow>
 
@@ -56,5 +58,17 @@
             android:background="#FF909090" />
 
     </TableLayout>
+
+    <TextView
+        android:id="@+id/scoreboardTitle"
+        android:layout_width="294dp"
+        android:layout_height="52dp"
+        android:gravity="center"
+        android:text="@string/scoreboard_title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.257" />
 
 </android.support.constraint.ConstraintLayout>

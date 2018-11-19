@@ -13,6 +13,7 @@
     <string name="create_account">Create Account</string>
     <string name="load_autosave">load auto save</string>
     <string name="scoreboards">Scoreboards</string>
+    <string name="scoreboard_title">Scoreboard of User</string>
     <string name="per_user">Per-User</string>
     <string name="per_game">Per-Game</string>
     <string name="three_by_three">3x3</string>
