@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".lobby.ScoreboardActivity" />
         <activity android:name=".slidingtiles.activities.SlidingTilesGameActivity" />
-        <activity android:name=".snake.SnakeStartingActivity" />
+        <activity android:name=".snake.activities.SnakeStartingActivity" />
         <activity android:name=".snake.SnakeMenuActivity"></activity>
     </application>
 

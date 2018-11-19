@@ -19,7 +19,7 @@ import java.util.Random;
 Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
  */
 
-class SnakeGameActivity extends SurfaceView implements Runnable {
+public class SnakeView extends SurfaceView implements Runnable {
 
     // All the code will run separately to the UI
     private Thread m_Thread = null;
@@ -76,7 +76,7 @@ class SnakeGameActivity extends SurfaceView implements Runnable {
     private final int NUM_BLOCKS_WIDE = 40;
     private int m_NumBlocksHigh; // determined dynamically;
 
-    public SnakeGameActivity(Context context, Point size) {
+    public SnakeView(Context context, Point size) {
         super(context);
 
         m_context = context;
