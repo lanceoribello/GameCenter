@@ -47,13 +47,14 @@ public class ScoreboardActivity extends AppCompatActivity {
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         // Set the title of the Scoreboard screen
         TextView scoreboardTitle = findViewById(R.id.scoreboardTitle);
-        String userScoreboardTitle = "Scoreboard of " + this.currentUserAccount.getUsername();
+        String userScoreboardTitle = "Scoreboard of User: " + this.currentUserAccount.getUsername();
         scoreboardTitle.setText(userScoreboardTitle);
         // Set the table of scores by iterating each type of top score
         TableLayout scoreboardTable = findViewById(R.id.scoreboardsTable);
         String[] topScorers = findTopScorers();
         String[] topScores = findTopScores();
-        String[] headings = {"3x3", "4x4", "5x5", "Easy Mode", "Hard Mode"};
+        String[] headings = {"Sliding Tiles 3x3", "Sliding Tiles 4x4", "Sliding Tiles 5x5",
+                "Snake Easy Mode", "Snake Hard Mode"};
         int i = 0;
         for (String heading : headings) {
             TableRow scoreboardRow = new TableRow(this);

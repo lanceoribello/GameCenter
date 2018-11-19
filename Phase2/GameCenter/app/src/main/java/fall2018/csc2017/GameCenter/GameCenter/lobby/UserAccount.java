@@ -108,6 +108,8 @@ public class UserAccount implements Serializable {
         this.slidingTilesTop3x3 = 1000000;
         this.slidingTilesTop4x4 = 1000000;
         this.slidingTilesTop5x5 = 1000000;
+        this.easySnakeScore = 0;
+        this.hardSnakeScore = 0;
     }
 
 
