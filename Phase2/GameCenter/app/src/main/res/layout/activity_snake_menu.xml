@@ -6,4 +6,65 @@
     android:layout_height="match_parent"
     tools:context="fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity">
 
+    <TextView
+        android:id="@+id/SnakeGameText"
+        android:layout_width="148dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="176dp"
+        android:text="Wellcome to snake. Get your pyth ON."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/LoadSnake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="275dp"
+        android:layout_marginBottom="244dp"
+        android:text="@string/loadsnake"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/NewSnake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="272dp"
+        android:layout_marginEnd="38dp"
+        android:text="@string/newsnake"
+        app:layout_constraintEnd_toStartOf="@+id/SaveSnake"
+        app:layout_constraintStart_toEndOf="@+id/LoadSnake"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/SaveSnake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="274dp"
+        android:layout_marginBottom="245dp"
+        android:text="@string/savesnake"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/NewSnake"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/AutoSnake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="125dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="150dp"
+        android:text="@string/load_autosave"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

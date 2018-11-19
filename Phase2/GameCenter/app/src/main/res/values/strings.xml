@@ -23,4 +23,9 @@
     <string name="select_game">Select which game to play:</string>
     <string name="sliding_tiles">Sliding Tiles</string>
     <string name="snake">snake</string>
+    <string name="SnakeGameText">Welcome to snake. Get your Pyth ON.</string>
+    <string name="loadsnake">Load Game</string>
+    <string name="newsnake">New Game</string>
+    <string name="savesnake">Save Game</string>
+    <string name="snakesavedpoint">Load Saved Point</string>
 </resources>
