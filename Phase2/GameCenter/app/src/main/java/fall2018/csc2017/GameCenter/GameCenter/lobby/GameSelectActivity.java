@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity;
+import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeStartingActivity;
 
 /**
@@ -54,7 +55,8 @@ public class GameSelectActivity extends AppCompatActivity {
         slidingTilesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SnakeStartingActivity.class);
+                Intent intent = new Intent(v.getContext(), SnakeMenuActivity.class);
+                intent.putExtra("currentUserAccount", currentUserAccount);
                 startActivity(intent);
             }
         });

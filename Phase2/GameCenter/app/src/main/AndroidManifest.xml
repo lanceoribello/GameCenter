@@ -26,6 +26,7 @@
         <activity android:name="fall2018.csc2017.GameCenter.GameCenter.lobby.ScoreboardActivity"/>
         <activity android:name="fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesGameActivity"/>
         <activity android:name="fall2018.csc2017.GameCenter.GameCenter.snake.SnakeStartingActivity"/>
+        <activity android:name="fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity"/>
 
     </application>
 
