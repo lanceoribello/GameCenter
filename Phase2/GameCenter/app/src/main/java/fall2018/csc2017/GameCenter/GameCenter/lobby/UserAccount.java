@@ -91,7 +91,7 @@ public class UserAccount implements Serializable {
     /**
      * The names of the account user's past Snake games.
      */
-    private Map<String, SlidingTilesBoardManager> snakeGameNames;
+    private Map<String, Object[]> snakeGameNames;
 
     /**
      * An instance of an account with a username, password, and a blank list of game names.
@@ -212,4 +212,30 @@ public class UserAccount implements Serializable {
     public Set<String> getSlidingTilesGameNames() {
         return slidingTilesGameNames.keySet();
     }
+    /**
+     * Adds a new game name to this account
+     *
+     * @param newName a new name added to the account
+     */
+    public void addSnakeGame(String newName, Object[] savedData) {
+        this.snakeGameNames.put(newName, savedData);
+    }
+    /**
+     * Get a game saved by the name gameName.
+     */
+    public Object[] getSnakeGame(String gameName) {
+        if (this.snakeGameNames.containsKey(gameName)) {
+            return this.snakeGameNames.get(gameName);
+        } else {
+            return null;
+        }
+    }
+    /**
+     * Returns this UserAccount's key set of saved game names.
+     * @return key set of this UserAccount's saved game names
+     */
+    public Set<String> getSnakeGameNames() {
+        return snakeGameNames.keySet();
+    }
+
 }

@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
 import java.util.Random;
 
 /*
@@ -34,7 +35,10 @@ public class SnakeView extends SurfaceView implements Runnable {
     Context context;
 
     // For tracking movement direction
-    public enum Direction {UP, RIGHT, DOWN, LEFT}
+    public enum Direction {
+        UP, RIGHT, DOWN, LEFT
+    }
+
     // Start by heading to the right
     private Direction direction = Direction.RIGHT;
 
@@ -45,7 +49,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     // Control pausing between updates
     private long nextFrameTime;
     // Update the game 10 times per second
-    final long FPS = 10;
+    long FPS = 10;
     // There are 1000 milliseconds in a second
     final long MILLIS_IN_A_SECOND = 1000;
     // We will draw the frame much more often
@@ -71,11 +75,13 @@ public class SnakeView extends SurfaceView implements Runnable {
     private final int NUM_BLOCKS_WIDE = 40;
     private int numBlocksHigh; // determined dynamically;
 
+    Object[] savePointData;
+
     public SnakeView(Context context) {
         super(context);
     }
 
-    public SnakeView(Context context, Point size) {
+    public SnakeView(Context context, Point size, String difficulty, Object[] oldSaveData) {
         super(context);
 
         this.context = context;
@@ -96,19 +102,28 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeXs = new int[200];
         snakeYs = new int[200];
 
-        // Start the game
-        startGame();
+        if (difficulty.equals("easy")) {
+            FPS = 10;
+        } else {
+            FPS = 14;
+        }
+
+        try {
+            resumeOldGame(oldSaveData);
+        } catch (NullPointerException e) {
+            startGame();
+        }
     }
+
     @Override
     public void run() {
         // The check for playing prevents a crash at the start
         // You could also extend the code to provide a pause feature
         while (playing) {
-
-            // Update 10 times a second
-            if(checkForUpdate()) {
+            if (checkForUpdate()) {
                 updateGame();
                 drawGame();
+                setAutoSavePoint();
             }
         }
     }
@@ -129,19 +144,30 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     public void startGame() {
-        // Start with just a head, in the middle of the screen
         snakeLength = 1;
         snakeXs[0] = NUM_BLOCKS_WIDE / 2;
         snakeYs[0] = numBlocksHigh / 2;
-
-        // And a mouse to eat
         spawnMouse();
-
-        // Reset the score
         score = 0;
 
         // Setup nextFrameTime so an update is triggered immediately
         nextFrameTime = System.currentTimeMillis();
+    }
+
+    public void resumeOldGame(Object[] oldSaveData) {
+        snakeXs = (int[]) oldSaveData[0];
+        snakeYs = (int[]) oldSaveData[1];
+        spawnMouse((int) oldSaveData[2], (int) oldSaveData[3]);
+        snakeLength = (int) oldSaveData[4];
+        score = (int) oldSaveData[5];
+
+        // Setup nextFrameTime so an update is triggered immediately
+        nextFrameTime = System.currentTimeMillis();
+    }
+
+    public void spawnMouse(int x, int y) {
+        mouseX = x;
+        mouseY = y;
     }
 
     public void spawnMouse() {
@@ -150,18 +176,13 @@ public class SnakeView extends SurfaceView implements Runnable {
         mouseY = random.nextInt(numBlocksHigh - 1) + 1;
     }
 
-    private void eatMouse(){
-        //  Got one! Squeak!!
-        // Increase the size of the snake
+    private void eatMouse() {
         snakeLength++;
-        //replace the mouse
         spawnMouse();
-        //add to the score
         score = score + 1;
-
     }
 
-    private void moveSnake(){
+    private void moveSnake() {
         // Move the body
         for (int i = snakeLength; i > 0; i--) {
             // Start at the back and move it
@@ -193,7 +214,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
-    private boolean detectDeath(){
+    public boolean detectDeath() {
         // Has the snake died?
         boolean dead = false;
 
@@ -213,6 +234,10 @@ public class SnakeView extends SurfaceView implements Runnable {
         return dead;
     }
 
+    public void setAutoSavePoint() {
+        savePointData = new Object[]{snakeXs, snakeYs, mouseX, mouseY, snakeLength, score};
+    }
+
     public void updateGame() {
         // Did the head of the snake touch the mouse?
         if (snakeXs[0] == mouseX && snakeYs[0] == mouseY) {
@@ -220,12 +245,6 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
 
         moveSnake();
-
-        if (detectDeath()) {
-            //start again
-
-            startGame();
-        }
     }
 
     public void drawGame() {
@@ -252,6 +271,11 @@ public class SnakeView extends SurfaceView implements Runnable {
                         paint);
             }
 
+            if (detectDeath()) {
+                paint.setTextSize(150);
+                canvas.drawText("GAME OVER", 10, 200, paint);
+            }
+
             //draw the mouse
             canvas.drawRect(mouseX * blockSize,
                     (mouseY * blockSize),
@@ -267,11 +291,11 @@ public class SnakeView extends SurfaceView implements Runnable {
     public boolean checkForUpdate() {
 
         // Are we due to update the frame
-        if(nextFrameTime <= System.currentTimeMillis()){
+        if (nextFrameTime <= System.currentTimeMillis()) {
             // Tenth of a second has passed
 
             // Setup when the next update will be triggered
-            nextFrameTime =System.currentTimeMillis() + MILLIS_IN_A_SECOND / FPS;
+            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND / FPS;
 
             // Return true so that the update and draw
             // functions are executed
@@ -281,10 +305,12 @@ public class SnakeView extends SurfaceView implements Runnable {
         return false;
     }
 
+    public int getScore() { return score; }
+
     @Override
-    public boolean performClick(){
-       super.performClick();
-       return true;
+    public boolean performClick() {
+        super.performClick();
+        return true;
     }
 
     @Override
@@ -293,7 +319,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 if (motionEvent.getX() >= screenWidth / 2) {
-                    switch(direction){
+                    switch (direction) {
                         case UP:
                             direction = Direction.RIGHT;
                             break;
@@ -308,7 +334,7 @@ public class SnakeView extends SurfaceView implements Runnable {
                             break;
                     }
                 } else {
-                    switch(direction){
+                    switch (direction) {
                         case UP:
                             direction = Direction.LEFT;
                             break;
@@ -326,8 +352,4 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
         return true;
     }
-
-
-
-
 }

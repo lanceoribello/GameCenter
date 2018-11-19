@@ -15,7 +15,7 @@
         android:layout_marginEnd="176dp"
         android:text="Wellcome to snake. Get your pyth ON."
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,36 +23,32 @@
         android:id="@+id/LoadSnake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="275dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="244dp"
         android:text="@string/loadsnake"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/NewSnake"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/NewSnake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="47dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="272dp"
+        android:layout_marginEnd="38dp"
+        android:onClick="newGame"
         android:text="@string/newsnake"
-        app:layout_constraintBottom_toTopOf="@+id/AutoSnake"
         app:layout_constraintEnd_toStartOf="@+id/SaveSnake"
         app:layout_constraintStart_toEndOf="@+id/LoadSnake"
-        app:layout_constraintTop_toBottomOf="@+id/SnakeGameText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/SaveSnake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="274dp"
         android:layout_marginBottom="245dp"
         android:text="@string/savesnake"
