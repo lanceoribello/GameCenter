@@ -221,11 +221,11 @@ public class SnakeView extends SurfaceView implements Runnable {
 
         moveSnake();
 
-        if (detectDeath()) {
-            //start again
-
-            startGame();
-        }
+//        if (detectDeath()) {
+//            //start again
+//
+//            startGame();
+//        }
     }
 
     public void drawGame() {
@@ -250,6 +250,11 @@ public class SnakeView extends SurfaceView implements Runnable {
                         (snakeXs[i] * blockSize) + blockSize,
                         (snakeYs[i] * blockSize) + blockSize,
                         paint);
+            }
+
+            if (detectDeath()) {
+                paint.setTextSize(150);
+                canvas.drawText("GAME OVER", 10, 200, paint);
             }
 
             //draw the mouse
