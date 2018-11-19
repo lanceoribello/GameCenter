@@ -9,25 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name="fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity">
+        <activity android:name=".lobby.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="fall2018.csc2017.GameCenter.GameCenter.lobby.GameSelectActivity"></activity>
-        <activity android:name="fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity">
+        <activity android:name=".lobby.GameSelectActivity" />
+        <activity android:name=".slidingtiles.activities.SlidingTilesMenuActivity">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
-
             </intent-filter>
         </activity>
-        <activity android:name="fall2018.csc2017.GameCenter.GameCenter.lobby.ScoreboardActivity"/>
-        <activity android:name="fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesGameActivity"/>
-        <activity android:name="fall2018.csc2017.GameCenter.GameCenter.snake.SnakeStartingActivity"/>
-        <activity android:name="fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity"/>
-
+        <activity android:name=".lobby.ScoreboardActivity" />
+        <activity android:name=".slidingtiles.activities.SlidingTilesGameActivity" />
+        <activity android:name=".snake.SnakeStartingActivity" />
+        <activity android:name=".snake.SnakeMenuActivity"></activity>
     </application>
 
 </manifest>

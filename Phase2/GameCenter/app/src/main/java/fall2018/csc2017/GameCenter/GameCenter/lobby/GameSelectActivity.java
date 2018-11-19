@@ -9,7 +9,6 @@ import android.widget.Button;
 import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity;
-import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeStartingActivity;
 
 /**
  * The game select screen shown after login screen.
