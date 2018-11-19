@@ -1,18 +1,13 @@
 package fall2018.csc2017.GameCenter.GameCenter.snake;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import java.io.IOException;
 import java.util.Random;
 
 /*
@@ -29,14 +24,14 @@ public class SnakeView extends SurfaceView implements Runnable {
     private volatile boolean m_Playing;
 
     // This is what we draw on
-    private Canvas m_Canvas;
+    Canvas m_Canvas;
     // This is required by the Canvas class to do the drawing
     private SurfaceHolder m_Holder;
     // This lets us control colors etc
     private Paint m_Paint;
 
     // This will be a reference to the Activity
-    private Context m_context;
+    Context m_context;
 
     // For tracking movement m_Direction
     public enum Direction {UP, RIGHT, DOWN, LEFT}
@@ -45,14 +40,14 @@ public class SnakeView extends SurfaceView implements Runnable {
 
     // What is the screen resolution
     private int m_ScreenWidth;
-    private int m_ScreenHeight;
+    int m_ScreenHeight;
 
     // Control pausing between updates
     private long m_NextFrameTime;
     // Update the game 10 times per second
-    private final long FPS = 10;
+    final long FPS = 10;
     // There are 1000 milliseconds in a second
-    private final long MILLIS_IN_A_SECOND = 1000;
+    final long MILLIS_IN_A_SECOND = 1000;
     // We will draw the frame much more often
 
     // The current m_Score
@@ -75,6 +70,10 @@ public class SnakeView extends SurfaceView implements Runnable {
     // The size in segments of the playable area
     private final int NUM_BLOCKS_WIDE = 40;
     private int m_NumBlocksHigh; // determined dynamically;
+
+    public SnakeView(Context context) {
+        super(context);
+    }
 
     public SnakeView(Context context, Point size) {
         super(context);
@@ -283,8 +282,14 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
+    public boolean performClick(){
+       super.performClick();
+       return true;
+    }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        performClick();
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 if (motionEvent.getX() >= m_ScreenWidth / 2) {
