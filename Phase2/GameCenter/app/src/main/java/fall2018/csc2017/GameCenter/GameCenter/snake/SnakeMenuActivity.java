@@ -3,10 +3,13 @@ package fall2018.csc2017.GameCenter.GameCenter.snake;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesGameActivity;
+import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeStartingActivity;
 
 public class SnakeMenuActivity extends AppCompatActivity {
     /**
@@ -26,8 +29,15 @@ public class SnakeMenuActivity extends AppCompatActivity {
           addNewGameListener();
     }
     private void addNewGameListener(){
-        Intent tmp = new Intent(this, SnakeMenuActivity.class);
-        tmp.putExtra("currentUserAccount", currentUserAccount);
-        startActivity(tmp);
+        Button newGame = findViewById(R.id.NewSnake);
+        newGame.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent tmp = new Intent(getApplicationContext(), SnakeStartingActivity.class);
+                tmp.putExtra("currentUserAccount", currentUserAccount);
+                startActivity(tmp);
+            }
+        });
+
     }
 }

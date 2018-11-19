@@ -5,12 +5,17 @@ import android.os.Bundle;
 import android.view.Display;
 import android.graphics.Point;
 
+import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 /*
 Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
  */
 
 public class SnakeStartingActivity extends AppCompatActivity{
+    /**
+     * The current user account obtained from the game select screen.
+     */
+    private UserAccount currentUserAccount;
 
     // Declare an instance of SnakeView
     SnakeView snakeView;
@@ -27,7 +32,8 @@ public class SnakeStartingActivity extends AppCompatActivity{
         // Load the resolution into a Point object
         Point size = new Point();
         display.getSize(size);
-
+        currentUserAccount =
+                (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         // Create a new View based on the SnakeView class
         snakeView = new SnakeView(this, size);
 
