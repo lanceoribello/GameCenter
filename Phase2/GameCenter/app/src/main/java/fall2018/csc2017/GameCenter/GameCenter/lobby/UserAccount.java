@@ -41,6 +41,12 @@ public class UserAccount implements Serializable {
     private Map<String, Integer> scores;
 
     /**
+     * String Array of the game level names.
+     */
+    public static final String[] gameLevels = {"Sliding Tiles 3x3", "Sliding Tiles 4x4",
+            "Sliding Tiles 5x5", "Snake Easy Mode", "Snake Hard Mode"};
+
+    /**
      * An instance of a user account with a username, password, and a blank list of game names.
      * Default top score for Sliding Tiles is 1000000, which displays as "None" on the scoreboard.
      * Default top score for Snake and Blocks is 0, which displays as "None" on the scoreboard.
@@ -48,17 +54,19 @@ public class UserAccount implements Serializable {
      * @param username the username of the user account
      * @param password the password of the user account
      */
-    UserAccount(String username, String password) {
+    public UserAccount(String username, String password) {
         this.username = username;
         this.password = password;
         this.slidingTilesGameNames = new HashMap<>();
         this.snakeGameNames = new HashMap<>();
         this.scores = new HashMap<>();
-        this.scores.put("Sliding Tiles 3x3", 1000000);
-        this.scores.put("Sliding Tiles 4x4", 1000000);
-        this.scores.put("Sliding Tiles 5x5", 1000000);
-        this.scores.put("Snake Easy Mode", 0);
-        this.scores.put("Snake Hard Mode", 0);
+        for (int i = 0; i < gameLevels.length; i++) {
+            if (i < 3) {
+                this.scores.put(gameLevels[i], 1000000);
+            } else {
+                this.scores.put(gameLevels[i], 0);
+            }
+        }
     }
 
     /**
@@ -75,7 +83,7 @@ public class UserAccount implements Serializable {
      *
      * @return the user account's password
      */
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
 

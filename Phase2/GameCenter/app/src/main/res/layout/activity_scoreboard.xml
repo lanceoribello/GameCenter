@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fall2018.csc2017.GameCenter.GameCenter.lobby.ScoreboardActivity">
+    tools:context="fall2018.csc2017.GameCenter.GameCenter.lobby.activities.ScoreboardActivity">
 
     <TableLayout
         android:id="@+id/scoreboardsTable"
@@ -13,7 +13,7 @@
         android:gravity="center"
         android:padding="20dip"
         android:stretchColumns="*"
-        tools:context="fall2018.csc2017.GameCenter.GameCenter.lobby.ScoreboardActivity"
+        tools:context="fall2018.csc2017.GameCenter.GameCenter.lobby.activities.ScoreboardActivity"
         tools:layout_editor_absoluteX="189dp"
         tools:layout_editor_absoluteY="0dp">
 

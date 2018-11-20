@@ -9,7 +9,7 @@ import android.graphics.Point;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 

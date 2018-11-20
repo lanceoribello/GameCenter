@@ -24,13 +24,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
-import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
 
 /**
- * The activity for starting the sliding puzzle tile game.
+ * The menu activity for the Sliding Tile game.
  */
 public class SlidingTilesMenuActivity extends AppCompatActivity {
 

@@ -17,11 +17,15 @@ import java.text.DateFormat;
 import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
-import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeStartingActivity;
 
+/**
+ * The menu activity for the Snake game.
+ */
 public class SnakeMenuActivity extends AppCompatActivity {
+
     /**
      * The current user account obtained from the game select screen.
      */
@@ -31,6 +35,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
      * The current User snake game saved data.
      */
     private Object[] savedData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +84,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     /**
      * Activate the save button listener.
      */
@@ -92,7 +98,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                         DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
                 String datetime = dateFormat.format(c.getTime());
                 LoginActivity.userAccountList.remove(currentUserAccount);
-                currentUserAccount.addSnakeGame(datetime, null ); //Need savedData here.
+                currentUserAccount.addSnakeGame(datetime, null); //Need savedData here.
                 LoginActivity.userAccountList.add(currentUserAccount);
                 try {
                     ObjectOutputStream outputStream = new ObjectOutputStream(
@@ -106,6 +112,10 @@ public class SnakeMenuActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Activate the load button listener.
+     */
     private void addLoadButtonListener() {
         Button loadButton = findViewById(R.id.LoadButton);
         loadButton.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +155,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
     private void makeToastSavedText() {
         Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
     }
+
     /**
      * Display that a game was loaded successfully.
      */

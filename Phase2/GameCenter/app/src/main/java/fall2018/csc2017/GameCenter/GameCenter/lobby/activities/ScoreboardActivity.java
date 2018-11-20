@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.GameCenter.lobby;
+package fall2018.csc2017.GameCenter.GameCenter.lobby.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 
 /**
  * The scoreboard activity that is displayed when "View Scoreboards" button is clicked in
@@ -41,8 +42,7 @@ public class ScoreboardActivity extends AppCompatActivity {
     /**
      * String Array of the game level names.
      */
-    private String[] gameLevels = {"Sliding Tiles 3x3", "Sliding Tiles 4x4", "Sliding Tiles 5x5",
-            "Snake Easy Mode", "Snake Hard Mode"};
+    private String[] gameLevels = UserAccount.gameLevels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.GameCenter.lobby;
+package fall2018.csc2017.GameCenter.GameCenter.lobby.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,10 +18,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 
 /**
  * The login screen shown upon initial startup of the game.
- * Processes sign ups and logins of userAccounts.
+ * Processes sign ups and log ins of userAccounts.
  * Passes on the current signed-in userAccount to SlidingTilesMenuActivity.
  */
 public class LoginActivity extends AppCompatActivity {
@@ -40,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
      * The UserAccount that will be logged in; will be passed onto SlidingTilesMenuActivity.
      */
     private UserAccount currentUserAccount;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

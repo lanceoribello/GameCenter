@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.GameCenter.lobby;
+package fall2018.csc2017.GameCenter.GameCenter.lobby.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +14,13 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity;
 
 /**
- * The game select screen shown after login screen.
+ * The game select screen shown after login screen. User can select a game to play or view the
+ * scoreboards of all the games.
  */
 public class GameSelectActivity extends AppCompatActivity {
 

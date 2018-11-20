@@ -17,7 +17,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
-import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.CustomAdapter;
