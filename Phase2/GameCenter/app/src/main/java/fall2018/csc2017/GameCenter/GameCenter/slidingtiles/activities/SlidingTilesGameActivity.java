@@ -25,7 +25,7 @@ import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.GestureDetectGridView
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
 
 /**
- * The game activity.
+ * The Sliding Tiles game activity.
  */
 public class SlidingTilesGameActivity extends AppCompatActivity implements Observer {
 
@@ -43,6 +43,16 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
      * The buttons to display.
      */
     private ArrayList<Button> tileButtons;
+
+    /**
+     * String Array of the game level names.
+     */
+    private String[] gameLevels = {"Sliding Tiles 3x3", "Sliding Tiles 4x4", "Sliding Tiles 5x5"};
+
+    /**
+     * Integer Array of the Sliding Tiles complexities.
+     */
+    private Integer[] complexities = {3, 4, 5};
 
     // Grid View and calculated column height and width based on device size
     private GestureDetectGridView gridView;
@@ -128,6 +138,9 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
         createAutoSave();
     }
 
+    /**
+     * Dispatch onStop() to fragments.
+     */
     @Override
     protected void onStop() {
         super.onStop();
@@ -144,15 +157,12 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
         int complexity = boardManager.getComplexity();
         int numMoves = boardManager.getMoves();
         if (boardManager.puzzleSolved()) {
-            if (complexity == 3 && currentUserAccount.getSlidingTilesTop3x3() > numMoves) {
-                currentUserAccount.setSlidingTilesTop3x3(numMoves);
-                scoreUpdated = true;
-            } else if (complexity == 4 && currentUserAccount.getSlidingTilesTop4x4() > numMoves) {
-                currentUserAccount.setSlidingTilesTop4x4(numMoves);
-                scoreUpdated = true;
-            } else if (complexity == 5 && currentUserAccount.getSlidingTilesTop5x5() > numMoves) {
-                currentUserAccount.setSlidingTilesTop5x5(numMoves);
-                scoreUpdated = true;
+            for (int i = 0; i < this.gameLevels.length; i++) {
+                if (complexity == this.complexities[i] &&
+                        this.currentUserAccount.getTopScore(this.gameLevels[i]) > numMoves) {
+                    this.currentUserAccount.setTopScore(this.gameLevels[i], numMoves);
+                    scoreUpdated = true;
+                }
             }
         }
         if (scoreUpdated) {
@@ -169,12 +179,11 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
      */
     private void updateUserAccounts(int complexity, int numMoves) {
         LoginActivity.userAccountList.remove(currentUserAccount);
-        if (complexity == 3) {
-            currentUserAccount.setSlidingTilesTop3x3(numMoves);
-        } else if (complexity == 4) {
-            currentUserAccount.setSlidingTilesTop4x4(numMoves);
-        } else {
-            currentUserAccount.setSlidingTilesTop5x5(numMoves);
+        for (int i = 0; i < this.gameLevels.length; i++) {
+            if (complexity == this.complexities[i] &&
+                    this.currentUserAccount.getTopScore(this.gameLevels[i]) > numMoves) {
+                this.currentUserAccount.setTopScore(this.gameLevels[i], numMoves);
+            }
         }
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);

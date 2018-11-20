@@ -19,10 +19,6 @@ import java.util.Calendar;
 import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesGameActivity;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeStartingActivity;
 
 public class SnakeMenuActivity extends AppCompatActivity {

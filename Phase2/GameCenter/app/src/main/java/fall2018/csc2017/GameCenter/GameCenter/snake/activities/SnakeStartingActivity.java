@@ -12,33 +12,37 @@ import java.io.ObjectOutputStream;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
+
 /*
 Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
  */
 
-public class SnakeStartingActivity extends AppCompatActivity{
+/**
+ * The Snake starting activity.
+ */
+public class SnakeStartingActivity extends AppCompatActivity {
+
     /**
      * The current user account obtained from the game select screen.
      */
     private UserAccount currentUserAccount;
 
     /**
-     * The selected complexity for the game (easy = 0, hard = 1).
+     * The selected complexity for the game (easy, hard).
      */
     private String difficulty;
 
-    // Declare an instance of SnakeView
+    /**
+     * An instance of SnakeView that will initialized in onCreate after getting more details
+     * about the device.
+     */
     SnakeView snakeView;
-    // We will initialize it in onCreate
-    // once we have more details about the Player's device
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //find out the width and height of the screen
         Display display = getWindowManager().getDefaultDisplay();
-
         // Load the resolution into a Point object
         Point size = new Point();
         display.getSize(size);
@@ -57,16 +61,10 @@ public class SnakeStartingActivity extends AppCompatActivity{
     private void updateHighScore() {
         boolean scoreUpdated = false;
         int finalScore = snakeView.getScore();
-        if (snakeView.detectDeath()) {
-            if (difficulty.equals("easy") &&
-                    currentUserAccount.getEasySnakeScore() < finalScore) {
-                currentUserAccount.setEasySnakeScore(finalScore);
-                scoreUpdated = true;
-            } else if (difficulty.equals("hard") &&
-                    currentUserAccount.getHardSnakeScore() < finalScore) {
-                currentUserAccount.setHardSnakeScore(finalScore);
-                scoreUpdated = true;
-            }
+        if (snakeView.detectDeath() &&
+                this.currentUserAccount.getTopScore(difficulty) < finalScore) {
+            this.currentUserAccount.setTopScore(difficulty, finalScore);
+            scoreUpdated = true;
         }
         if (scoreUpdated) {
             updateUserAccounts(difficulty, finalScore);
@@ -82,11 +80,7 @@ public class SnakeStartingActivity extends AppCompatActivity{
      */
     private void updateUserAccounts(String difficulty, int finalScore) {
         LoginActivity.userAccountList.remove(currentUserAccount);
-        if (difficulty.equals("easy")) {
-            currentUserAccount.setEasySnakeScore(finalScore);
-        } else if (difficulty.equals("hard")) {
-            currentUserAccount.setHardSnakeScore(finalScore);
-        }
+        this.currentUserAccount.setTopScore(difficulty, finalScore);
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
     }

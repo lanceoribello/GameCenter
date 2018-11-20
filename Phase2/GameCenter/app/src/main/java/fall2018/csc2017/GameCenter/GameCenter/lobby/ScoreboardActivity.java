@@ -17,9 +17,9 @@ import java.util.Arrays;
 import fall2018.csc2017.GameCenter.GameCenter.R;
 
 /**
- * The scoreboard screen that is displayed after "View Scoreboards" button is clicked.
- * Displays the per-user scoreboard (top user of each complexity) and the per-game scoreboard
- * (top score of current user for each complexity).
+ * The scoreboard activity that is displayed when "View Scoreboards" button is clicked in
+ * game select activity. Displays the per-user scoreboard (top user of each game level)
+ * and the per-game scoreboard(top score of current user for each game level).
  */
 public class ScoreboardActivity extends AppCompatActivity {
 
@@ -29,7 +29,7 @@ public class ScoreboardActivity extends AppCompatActivity {
     private static final String USER_ACCOUNTS_FILENAME = "accounts.ser";
 
     /**
-     * Array List of UserAccount objects, which store account usernames and passwords.
+     * Array List of UserAccount objects, which store user account user names and passwords.
      */
     private ArrayList<UserAccount> userAccountList;
 
@@ -38,28 +38,32 @@ public class ScoreboardActivity extends AppCompatActivity {
      */
     private UserAccount currentUserAccount;
 
+    /**
+     * String Array of the game level names.
+     */
+    private String[] gameLevels = {"Sliding Tiles 3x3", "Sliding Tiles 4x4", "Sliding Tiles 5x5",
+            "Snake Easy Mode", "Snake Hard Mode"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scoreboard);
-        setUserAccountList(USER_ACCOUNTS_FILENAME);
         this.currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
+        setUserAccountList(USER_ACCOUNTS_FILENAME);
         // Set the title of the Scoreboard screen
         TextView scoreboardTitle = findViewById(R.id.scoreboardTitle);
         String userScoreboardTitle = "Scoreboard of User: " + this.currentUserAccount.getUsername();
         scoreboardTitle.setText(userScoreboardTitle);
-        // Set the table of scores by iterating each type of top score
+        // Set the table of scores by iterating over each game level
         TableLayout scoreboardTable = findViewById(R.id.scoreboardsTable);
         String[] topScorers = findTopScorers();
         String[] topScores = findTopScores();
-        String[] headings = {"Sliding Tiles 3x3", "Sliding Tiles 4x4", "Sliding Tiles 5x5",
-                "Snake Easy Mode", "Snake Hard Mode"};
         int i = 0;
-        for (String heading : headings) {
+        for (String gameLevel : gameLevels) {
             TableRow scoreboardRow = new TableRow(this);
             TextView headingView = new TextView(this);
-            headingView.setText(heading);
+            headingView.setText(gameLevel);
             scoreboardRow.addView(headingView);
             String scorer = topScorers[i];
             String score = topScores[i];
@@ -75,81 +79,63 @@ public class ScoreboardActivity extends AppCompatActivity {
     }
 
     /**
-     * Returns an array of the three top scorers for each complexity, in order of 3x3, 4x4, 5x5.
-     * Default top score is 1000000, which displays as "None".
+     * Returns an array of the top scorers for each game level.
+     * Default top score for Sliding Tiles is 1000000, which displays as "None" on the scoreboard.
+     * Default top score for Snake is 0, which displays as "None" on the scoreboard.
      *
-     * @return topScorers, a list of usernames of the top scorer for each complexity.
+     * @return topScorers, a list of top scorers and their scores for each game level
      */
     private String[] findTopScorers() {
-        String[] topScorers = new String[5];
+        String[] topScorers = new String[this.gameLevels.length];
         Arrays.fill(topScorers, "None");
-        int top3x3 = 1000000, top4x4 = 1000000, top5x5 = 1000000;
-        int easySnakeScore = 0, hardSnakeScore = 0;
+        Integer[] baseTopScores = {1000000, 1000000, 1000000, 0, 0};
+        setUserAccountList(USER_ACCOUNTS_FILENAME);
         for (UserAccount user : this.userAccountList) {
-            if (user.getSlidingTilesTop3x3() < top3x3) {
-                topScorers[0] = (user.getUsername() + ": "
-                        + String.valueOf(user.getSlidingTilesTop3x3()));
-                top3x3 = user.getSlidingTilesTop3x3();
-            }
-            if (user.getSlidingTilesTop4x4() < top4x4) {
-                topScorers[1] = (user.getUsername() + ": "
-                        + String.valueOf(user.getSlidingTilesTop4x4()));
-                top4x4 = user.getSlidingTilesTop4x4();
-            }
-            if (user.getSlidingTilesTop5x5() < top5x5) {
-                topScorers[2] = (user.getUsername() + ": "
-                        + String.valueOf(user.getSlidingTilesTop5x5()));
-                top5x5 = user.getSlidingTilesTop5x5();
-            }
-            if (user.getEasySnakeScore() > easySnakeScore) {
-                topScorers[3] = (user.getUsername() + ": "
-                        + String.valueOf(user.getEasySnakeScore()));
-                easySnakeScore = user.getEasySnakeScore();
-            }
-            if (user.getHardSnakeScore() > hardSnakeScore) {
-                topScorers[4] = (user.getUsername() + ": "
-                        + String.valueOf(user.getHardSnakeScore()));
-                hardSnakeScore = user.getHardSnakeScore();
+            for (int i = 0; i < this.gameLevels.length; i++) {
+                // Update score if less than base score for Sliding Tiles
+                if (i < 3) {
+                    if (user.getTopScore(this.gameLevels[i]) < baseTopScores[i]) {
+                        topScorers[i] = (user.getUsername() + ": "
+                                + String.valueOf(user.getTopScore(this.gameLevels[i])));
+                        baseTopScores[i] = user.getTopScore(this.gameLevels[i]);
+                    }
+                }
+                // Update score if greater than base score for Snake and Blocks
+                else {
+                    if (user.getTopScore(this.gameLevels[i]) > baseTopScores[i]) {
+                        topScorers[i] = (user.getUsername() + ": "
+                                + String.valueOf(user.getTopScore(this.gameLevels[i])));
+                        baseTopScores[i] = user.getTopScore(this.gameLevels[i]);
+                    }
+                }
             }
         }
         return topScorers;
     }
 
     /**
-     * Returns an array of the three top scores for each complexity, in order of 3x3, 4x4, 5x5.
-     * Default top score is 1000000, which displays as "None".
+     * Returns an array of the top scores for each game level for the current user account.
+     * Default top score for Sliding Tiles is 1000000, which displays as "None" on the scoreboard.
+     * Default top score for Snake is 0, which displays as "None" on the scoreboard.
      *
-     * @return topScores, a list of scores of the current user for each complexity.
+     * @return topScores, a list of scores of the current user account for each game level
      */
     private String[] findTopScores() {
-        String[] topScores = new String[5];
-        UserAccount current;
+        String[] topScores = new String[this.gameLevels.length];
+        Arrays.fill(topScores, "None");
         setUserAccountList(USER_ACCOUNTS_FILENAME);
-        for (UserAccount user : this.userAccountList) {
-            if (user.getUsername().equals(this.currentUserAccount.getUsername())) {
-                current = user;
-                topScores[0] = String.valueOf(current.getSlidingTilesTop3x3());
-                topScores[1] = String.valueOf(current.getSlidingTilesTop4x4());
-                topScores[2] = String.valueOf(current.getSlidingTilesTop5x5());
-                topScores[3] = String.valueOf(current.getEasySnakeScore());
-                topScores[4] = String.valueOf(current.getHardSnakeScore());
-            }
-        }
-        for (int i = 0; i < 3; i++) {
-            if (topScores[i].equals("1000000") || topScores[i] == null) {
-                topScores[i] = "None";
-            }
-        }
-        for (int i = 3; i < 5; i++) {
-            if (topScores[i] == null || topScores[i].equals("0")) {
-                topScores[i] = "None";
+        for (int i = 0; i < this.gameLevels.length; i++) {
+            Integer userTopScore = this.currentUserAccount.getTopScore(this.gameLevels[i]);
+            // Update top score if not set as default in the user account
+            if (userTopScore != 1000000 && userTopScore != 0) {
+                topScores[i] = String.valueOf(userTopScore);
             }
         }
         return topScores;
     }
 
     /**
-     * Set list of user accounts from fileName.
+     * Set list of user accounts from fileName and updates current user account.
      *
      * @param fileName the name of the file
      */
@@ -159,6 +145,12 @@ public class ScoreboardActivity extends AppCompatActivity {
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
                 this.userAccountList = (ArrayList<UserAccount>) input.readObject();
+                // Update current user account from file
+                for (UserAccount user : this.userAccountList) {
+                    if (user.getUsername().equals(this.currentUserAccount.getUsername())) {
+                        this.currentUserAccount = user;
+                    }
+                }
                 inputStream.close();
             }
         } catch (FileNotFoundException e) {
@@ -169,5 +161,14 @@ public class ScoreboardActivity extends AppCompatActivity {
             Log.e("login activity", "File contained unexpected data type: "
                     + e.toString());
         }
+    }
+
+    /**
+     * Update current user account from file.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUserAccountList(USER_ACCOUNTS_FILENAME);
     }
 }
