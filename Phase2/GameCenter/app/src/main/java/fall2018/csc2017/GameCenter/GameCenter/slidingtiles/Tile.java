@@ -101,7 +101,7 @@ public class Tile implements Comparable<Tile>, Serializable {
                 if (Board.numRows == 4) {
                     background = R.drawable.blank;
                 } else {
-                    background = R.drawable.tile_16_real;
+                    background = R.drawable.tile_16;
                 }
                 break;
             case 17:
