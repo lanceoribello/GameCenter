@@ -40,9 +40,6 @@ public class SnakeStartingActivity extends AppCompatActivity {
      * An instance of SnakeView that will initialized in onCreate after getting more details
      * about the device.
      */
-    /**
-     *
-     */
     SnakeView snakeView;
 
     @Override
@@ -76,22 +73,26 @@ public class SnakeStartingActivity extends AppCompatActivity {
             scoreUpdated = true;
         }
         if (scoreUpdated) {
-            updateUserAccounts(difficulty, finalScore);
+            updateUserAccounts();
         }
     }
 
     /**
      * Writes new high scores to file.
      * Helper method for updateHighScore.
-     *
-     * @param difficulty either easy or hard
-     * @param finalScore the final score of the game
      */
-    private void updateUserAccounts(String difficulty, int finalScore) {
+    private void updateUserAccounts() {
         LoginActivity.userAccountList.remove(currentUserAccount);
-        this.currentUserAccount.setTopScore(difficulty, finalScore);
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
+    }
+
+    /**
+     * Writes the current boardManager to the current userAccount.
+     */
+    private void createAutoSave() {
+        currentUserAccount.addSnakeGame("autoSave", snakeView.getSavePointData());
+        updateUserAccounts();
     }
 
     /**
@@ -121,15 +122,29 @@ public class SnakeStartingActivity extends AppCompatActivity {
     }
 
     /**
-     * Make sure the thread in snakeView is stopped if this Activity is about to be closed.
+     * Dispatch onPause() to fragments.
      */
     @Override
     protected void onPause() {
         super.onPause();
         saveToTempFile();
+        createAutoSave();
         snakeView.pause();
         updateHighScore();
     }
+
+    /**
+     * Dispatch onStop() to fragments.
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveToTempFile();
+        createAutoSave();
+        snakeView.pause();
+        updateHighScore();
+    }
+
     /**
      * Save the board manager to save_file_tmp.ser, the file used for temporarily holding a
      * boardManager.
