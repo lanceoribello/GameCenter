@@ -2,11 +2,9 @@ package fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
-import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
 
@@ -49,10 +47,26 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
      */
     private SlidingTilesBoardManager boardManager;
 
+    /**
+     * Gets the list of background Ids of the tile images in the drawable folder based on game level
+     *
+     * @param complexity level of the game
+     * @return Arraylist of id numbers of the tile corresponding to the tile in the drawable folder
+     */
+    private ArrayList<Integer> getTileIdList(int complexity) {
+        ArrayList<Integer> tileIdList = new ArrayList<>();
+        for (int tileNum = 0; tileNum != Math.pow(complexity, 2); tileNum++) {
+            String idString = Integer.toString(tileNum + 1);
+            String tileName = "tile_" + idString;
+            tileIdList.add(getResources().getIdentifier(tileName, "drawable", getPackageName()));
+        }
+        return tileIdList;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boardManager = new SlidingTilesBoardManager(3);
+        boardManager = new SlidingTilesBoardManager(3, getTileIdList(3));
         saveToTempFile();
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
@@ -104,15 +118,15 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        boardManager = new SlidingTilesBoardManager(3);
+                        boardManager = new SlidingTilesBoardManager(3, getTileIdList(3));
                         switchToGame();
                         break;
                     case 1:
-                        boardManager = new SlidingTilesBoardManager(4);
+                        boardManager = new SlidingTilesBoardManager(4, getTileIdList(4));
                         switchToGame();
                         break;
                     case 2:
-                        boardManager = new SlidingTilesBoardManager(5);
+                        boardManager = new SlidingTilesBoardManager(5, getTileIdList(5));
                         switchToGame();
                         break;
                 }

@@ -3,7 +3,6 @@ package fall2018.csc2017.GameCenter.GameCenter.slidingtiles;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -49,29 +48,10 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
      *
      * @return this board's 2d array of tiles
      */
-    private Tile[][] getTiles() {
+    Tile[][] getTiles() {
         return tiles;
     }
 
-    /**
-     * A new board of tiles that copies the tiles of another given board.
-     *
-     * @param boardToBeCopied the board whose tiles are copied
-     */
-    Board copiedBoard(Board boardToBeCopied) {
-        List<Integer> tileNums = new ArrayList<>();
-        Tile[][] tilesToBeCopied = boardToBeCopied.getTiles();
-        for (int row = 0; row != Board.numRows; row++) {
-            for (int col = 0; col != Board.numCols; col++) {
-                tileNums.add(tilesToBeCopied[row][col].getId() - 1);
-            }
-        }
-        List<Tile> copiedTileList = new ArrayList<>();
-        for (Integer tileNum : tileNums) {
-            copiedTileList.add(new Tile(tileNum));
-        }
-        return new Board(copiedTileList);
-    }
 
     /**
      * Return the number of tiles on the board.
@@ -150,4 +130,5 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
             return t;
         }
     }
+
 }
