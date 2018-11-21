@@ -10,62 +10,70 @@
         android:id="@+id/LoadSnake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="245dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="364dp"
         android:text="@string/loadsnake"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.674" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/NewSnake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
         android:onClick="newGame"
         android:text="@string/newsnake"
-        app:layout_constraintEnd_toStartOf="@+id/SaveSnake"
-        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toEndOf="@+id/LoadSnake"
-        tools:layout_editor_absoluteY="247dp" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/SaveSnake"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
         android:text="@string/savesnake"
-        tools:layout_editor_absoluteX="274dp"
-        tools:layout_editor_absoluteY="246dp" />
+        app:layout_constraintStart_toEndOf="@+id/NewSnake"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/AutoSnake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="125dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="120dp"
-        android:layout_marginBottom="150dp"
         android:text="@string/load_autosave"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NewSnake"
-        app:layout_constraintVertical_bias="0.174" />
+        app:layout_constraintTop_toBottomOf="@+id/NewSnake" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/snake"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="100dp" />
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="104dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/snake" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="268dp"
         android:layout_height="411dp"
-        app:srcCompat="@drawable/snakesprite"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="312dp" />
+        android:layout_marginStart="82dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/SaveSnake"
+        app:layout_constraintHorizontal_bias="0.021"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/NewSnake"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/snakesprite" />
 
 </android.support.constraint.ConstraintLayout>
