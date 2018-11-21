@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
@@ -41,7 +42,6 @@ public class SlidingTilesBoardManager implements Serializable {
      * Manage a new shuffled board.
      */
     public SlidingTilesBoardManager(int complexity, ArrayList<Integer> tileIdList) {
-
         this.tileIdList = tileIdList;
         Board.numRows = Board.numCols = complexity;
         List<Tile> tiles = new ArrayList<>();
@@ -49,8 +49,18 @@ public class SlidingTilesBoardManager implements Serializable {
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
             tiles.add(new Tile(tileNum, tileIdList.get(tileNum)));
         }
-        Collections.shuffle(tiles);
+        // Currently a solved board
         this.board = new Board(tiles);
+        // Make 1000 random valid moves
+        int i = 0;
+        while (i < 1000) {
+            int randomPosition =
+                    ThreadLocalRandom.current().nextInt(0, complexity*complexity);
+            if (isValidTap(randomPosition)) {
+                touchMove(randomPosition);
+                i++;
+            }
+        }
         savedBoards.add(copiedBoard(board));
         this.complexity = complexity;
     }
