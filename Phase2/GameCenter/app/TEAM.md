@@ -98,3 +98,11 @@ Added Snake Menu, can choose difficulty level.
 Fixed scoreboard - per-game now does not arbitrarily show None.
 Changed UserAccount to store top scores in a Map rather than individual class variables.
 Edited Tile to fix smelly code.
+
+## November 20, 2018
+Completely reworked the Tile class, removing the ugly switch constructor.
+Implemented the save and load functionality for Snake.
+Added README.md and TEAM.md to the repository.
+Changed boards in Sliding Tiles to be always solvable.
+Implemented the autoSave functionality in Snake.
+Beautified the Snake menu.
