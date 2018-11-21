@@ -48,6 +48,7 @@ public class SlidingTilesBoardManager implements Serializable {
     public SlidingTilesBoardManager(int complexity, ArrayList<Integer> tileIdList) {
         this.tileIdList = tileIdList;
         this.complexity = complexity;
+        this.savedBoards = new ArrayList<>();
         Board.numRows = Board.numCols = complexity;
         List<Tile> tiles = new ArrayList<>();
         final int numTiles = Board.numRows * Board.numCols;
@@ -84,7 +85,7 @@ public class SlidingTilesBoardManager implements Serializable {
      * @return this BoardManager's saved boards
      */
     public ArrayList<Board> getSavedBoards() {
-        return savedBoards;
+        return this.savedBoards;
     }
 
     /**
@@ -93,7 +94,7 @@ public class SlidingTilesBoardManager implements Serializable {
      * @return this BoardManager's complexity.
      */
     public int getComplexity() {
-        return complexity;
+        return this.complexity;
     }
 
     /**
@@ -102,7 +103,7 @@ public class SlidingTilesBoardManager implements Serializable {
      * @return the current board
      */
     public Board getBoard() {
-        return board;
+        return this.board;
     }
 
     /**
@@ -120,9 +121,9 @@ public class SlidingTilesBoardManager implements Serializable {
      * @return whether the tiles are in row-major order
      */
     public boolean puzzleSolved() {
-        Iterator<Tile> iter = board.iterator();
+        Iterator<Tile> iter = this.board.iterator();
         int prevId = 0;
-        for (int a = 0; a != board.numTiles(); a++) {
+        for (int a = 0; a != this.board.numTiles(); a++) {
             Tile currentTile = iter.next();
             if (currentTile.getId() != prevId + 1) {
                 return false;
@@ -141,11 +142,11 @@ public class SlidingTilesBoardManager implements Serializable {
     boolean isValidTap(int position) {
         int row = position / Board.numCols;
         int col = position % Board.numCols;
-        int blankId = board.numTiles();
+        int blankId = this.board.numTiles();
         // Are any of the 4 the blank tile?
-        Tile above = row == 0 ? null : board.getTile(row - 1, col);
+        Tile above = row == 0 ? null : this.board.getTile(row - 1, col);
         Tile below = row == Board.numRows - 1 ? null : board.getTile(row + 1, col);
-        Tile left = col == 0 ? null : board.getTile(row, col - 1);
+        Tile left = col == 0 ? null : this.board.getTile(row, col - 1);
         Tile right = col == Board.numCols - 1 ? null : board.getTile(row, col + 1);
         return (below != null && below.getId() == blankId)
                 || (above != null && above.getId() == blankId)
@@ -163,10 +164,10 @@ public class SlidingTilesBoardManager implements Serializable {
     void touchMove(int position) {
         int row = position / Board.numCols;
         int col = position % Board.numCols;
-        int blankId = board.numTiles();
+        int blankId = this.board.numTiles();
         int blankRow = 0;
         int blankCol = 0;
-        Iterator<Tile> iter = board.iterator();
+        Iterator<Tile> iter = this.board.iterator();
         for (int rowIndex = 0; rowIndex != Board.numRows; rowIndex++) {
             for (int colIndex = 0; colIndex != Board.numCols; colIndex++) {
                 if (iter.next().getId() == blankId) {
@@ -176,7 +177,7 @@ public class SlidingTilesBoardManager implements Serializable {
             }
         }
         addToSavedBoards();
-        board.swapTiles(row, col, blankRow, blankCol);
+        this.board.swapTiles(row, col, blankRow, blankCol);
         this.numMoves += 1;
     }
 
@@ -184,7 +185,7 @@ public class SlidingTilesBoardManager implements Serializable {
      * Adds a copy of the current instance of board to the savedBoards list.
      */
     private void addToSavedBoards() {
-        savedBoards.add(copiedBoard(board));
+        this.savedBoards.add(copiedBoard(this.board));
     }
 
     /**
@@ -194,7 +195,7 @@ public class SlidingTilesBoardManager implements Serializable {
      * @return the number of moves made so far in the game
      */
     public int getMoves() {
-        return numMoves;
+        return this.numMoves;
     }
 
     /**
@@ -203,14 +204,14 @@ public class SlidingTilesBoardManager implements Serializable {
      * @param numTurns the number of turns that are undone
      */
     public void undo(int numTurns) {
-        for (int i = 1; i != savedBoards.size(); i++) {
+        for (int i = 1; i != this.savedBoards.size(); i++) {
             if (i == numTurns) {
-                this.setBoard(savedBoards.get(savedBoards.size() - i));
+                this.setBoard(this.savedBoards.get(this.savedBoards.size() - i));
                 break;
             }
         }
         for (int i = 0; i != numTurns; i++) {
-            savedBoards.remove(savedBoards.size() - 1);
+            this.savedBoards.remove(this.savedBoards.size() - 1);
         }
     }
 
@@ -229,7 +230,7 @@ public class SlidingTilesBoardManager implements Serializable {
         }
         List<Tile> copiedTileList = new ArrayList<>();
         for (Integer tileNum : tileNums) {
-            copiedTileList.add(new Tile(tileNum, tileIdList.get(tileNum)));
+            copiedTileList.add(new Tile(tileNum, this.tileIdList.get(tileNum)));
         }
         return new Board(copiedTileList);
     }
