@@ -73,10 +73,10 @@ public class SnakeMenuActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        switchToGame("easy");
+                        switchToGame("Snake Easy Mode");
                         break;
                     case 1:
-                        switchToGame("hard");
+                        switchToGame("Snake Hard Mode");
                         break;
                 }
             }
