@@ -128,7 +128,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Activate the load button listener.
+     * Activate the load button listener. Users will be given a list of previously saved games to
+     * choose from.
      */
     private void addLoadButtonListener() {
         Button loadButton = findViewById(R.id.LoadSnake);
@@ -151,7 +152,6 @@ public class SnakeMenuActivity extends AppCompatActivity {
                         Object selectedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
                         String selectedGame = selectedItem.toString();
                         savedData = currentUserAccount.getSnakeGame(selectedGame);
-//                        Board.numRows = Board.numCols = boardManager.getComplexity();
                         makeToastLoadedText();
                         dialog.dismiss();
                         switchToGame((String)savedData[6], savedData);
@@ -177,7 +177,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
         Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
     }
     /**
-     * Activate the Load autoSave button, which loads the latest autoSave of the currentAccount.
+     * Activate the Load autoSave button, which loads the latest autoSave of Snake of
+     * the currentAccount.
      */
     private void addLoadAutoSaveButtonListener() {
         Button load = findViewById(R.id.AutoSnake);
