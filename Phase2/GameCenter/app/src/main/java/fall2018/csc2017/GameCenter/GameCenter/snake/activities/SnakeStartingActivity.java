@@ -28,7 +28,7 @@ public class SnakeStartingActivity extends AppCompatActivity {
     private UserAccount currentUserAccount;
 
     /**
-     * The selected complexity for the game (easy, hard).
+     * The selected complexity for the game: "Snake Easy Mode" or "Snake Hard Mode".
      */
     private String difficulty;
 

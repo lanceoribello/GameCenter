@@ -102,7 +102,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeXs = new int[200];
         snakeYs = new int[200];
 
-        if (difficulty.equals("easy")) {
+        if (difficulty.equals("Snake Easy Mode")) {
             FPS = 10;
         } else {
             FPS = 14;
