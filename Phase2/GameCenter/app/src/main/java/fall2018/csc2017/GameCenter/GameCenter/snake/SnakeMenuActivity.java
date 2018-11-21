@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
@@ -52,7 +53,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         addLoadButtonListener();
         addSaveButtonListener();
-//        addLoadAutoSaveButtonListener();
+        addLoadAutoSaveButtonListener();
     }
 
     /**
@@ -174,6 +175,48 @@ public class SnakeMenuActivity extends AppCompatActivity {
      */
     private void makeToastLoadedText() {
         Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
+    }
+    /**
+     * Activate the Load autoSave button, which loads the latest autoSave of the currentAccount.
+     */
+    private void addLoadAutoSaveButtonListener() {
+        Button load = findViewById(R.id.AutoSnake);
+        load.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    ArrayList<UserAccount> userAccountList;
+                    InputStream inputStream = openFileInput(LoginActivity.USER_ACCOUNTS_FILENAME);
+                    if (inputStream != null) {
+                        ObjectInputStream input = new ObjectInputStream(inputStream);
+                        userAccountList = (ArrayList<UserAccount>) input.readObject();
+                        inputStream.close();
+                        for (UserAccount ua : userAccountList) {
+                            if (ua.getUsername().equals(currentUserAccount.getUsername())) {
+                                currentUserAccount = ua;
+                            }
+                        }
+                        savedData = currentUserAccount.getSnakeGame("autoSave");
+                        switchToGame((String)savedData[6], savedData);
+                    } else {
+                        makeToastLoadAutoSaveFailText();
+                    }
+                } catch (FileNotFoundException e) {
+                    Log.e("login activity", "File not found: " + e.toString());
+                } catch (IOException e) {
+                    Log.e("login activity", "Can not read file: " + e.toString());
+                } catch (ClassNotFoundException e) {
+                    Log.e("login activity", "File contained unexpected data type: "
+                            + e.toString());
+                }
+            }
+        }));
+    }
+    /**
+     * Display that there is no autoSaved game to load.
+     */
+    private void makeToastLoadAutoSaveFailText() {
+        Toast.makeText(this, "No Autosaved Game to Load", Toast.LENGTH_SHORT).show();
     }
     /**
      * Load the savePointData from snake_save_file_tmp.ser, the file used for temporarily holding a
