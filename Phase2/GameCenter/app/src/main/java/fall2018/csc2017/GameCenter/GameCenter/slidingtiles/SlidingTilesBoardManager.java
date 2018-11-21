@@ -2,7 +2,6 @@ package fall2018.csc2017.GameCenter.GameCenter.slidingtiles;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -13,13 +12,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class SlidingTilesBoardManager implements Serializable {
 
-
-    /**
-     * The list of background Ids of the tile images in the drawable folder based on game level
-     * This was done in order to get rid of the switch statement code smell in the tiles class
-     * as now the tile class can be set up for any arbitrary complexity
-     */
-    private ArrayList<Integer> tileIdList;
     /**
      * The board being managed.
      */
@@ -28,41 +20,62 @@ public class SlidingTilesBoardManager implements Serializable {
     /**
      * The number of moves played so far in the current instance of the game.
      */
-    private int numMoves = 0;
-    /**
-     * The list of each board that is associated with each move
-     */
-    private ArrayList<Board> savedBoards = new ArrayList<>();
+    private int numMoves;
+
     /**
      * The complexity of the current board being managed (the number of tiles on a side).
      */
     private int complexity;
 
     /**
-     * Manage a new shuffled board.
+     * The list of each board that is associated with each move
+     */
+    private ArrayList<Board> savedBoards;
+
+    /**
+     * The list of background Ids of the tile images in the drawable folder based on game level
+     * This was done in order to get rid of the switch statement code smell in the tiles class
+     * as now the tile class can be set up for any arbitrary complexity
+     */
+    private ArrayList<Integer> tileIdList;
+
+    /**
+     * Manage a new shuffled board. Board is always solvable.
+     *
+     * @param complexity complexity of the game
+     * @param tileIdList list of tile IDs
      */
     public SlidingTilesBoardManager(int complexity, ArrayList<Integer> tileIdList) {
         this.tileIdList = tileIdList;
+        this.complexity = complexity;
         Board.numRows = Board.numCols = complexity;
         List<Tile> tiles = new ArrayList<>();
         final int numTiles = Board.numRows * Board.numCols;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
             tiles.add(new Tile(tileNum, tileIdList.get(tileNum)));
         }
-        // Currently a solved board
         this.board = new Board(tiles);
-        // Make 1000 random valid moves
+        makeRandomMoves(complexity);
+        this.savedBoards = new ArrayList<>();
+        this.savedBoards.add(copiedBoard(board));
+        this.numMoves = 0;
+    }
+
+    /**
+     * Shuffles a board 1000 times by making 1000 random valid moves.
+     *
+     * @param complexity complexity of the game
+     */
+    private void makeRandomMoves(int complexity) {
         int i = 0;
         while (i < 1000) {
             int randomPosition =
-                    ThreadLocalRandom.current().nextInt(0, complexity*complexity);
+                    ThreadLocalRandom.current().nextInt(0, complexity * complexity);
             if (isValidTap(randomPosition)) {
                 touchMove(randomPosition);
                 i++;
             }
         }
-        savedBoards.add(copiedBoard(board));
-        this.complexity = complexity;
     }
 
     /**
@@ -85,6 +98,8 @@ public class SlidingTilesBoardManager implements Serializable {
 
     /**
      * Return the current board.
+     *
+     * @return the current board
      */
     public Board getBoard() {
         return board;
@@ -162,7 +177,7 @@ public class SlidingTilesBoardManager implements Serializable {
         }
         addToSavedBoards();
         board.swapTiles(row, col, blankRow, blankCol);
-        numMoves += 1;
+        this.numMoves += 1;
     }
 
     /**
@@ -218,5 +233,4 @@ public class SlidingTilesBoardManager implements Serializable {
         }
         return new Board(copiedTileList);
     }
-
 }
