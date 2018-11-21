@@ -30,6 +30,10 @@ public class SnakeMenuActivity extends AppCompatActivity {
      * The current user account obtained from the game select screen.
      */
     private UserAccount currentUserAccount;
+    /**
+     * The file containing a temp version of the boardManager.
+     */
+    public static final String TEMP_SAVE_FILENAME = "snake_save_file_tmp.ser";
 
     /**
      * The current User snake game saved data.
