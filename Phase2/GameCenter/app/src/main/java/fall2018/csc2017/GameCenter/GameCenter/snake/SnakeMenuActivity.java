@@ -57,6 +57,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
 
     /**
      * Switch to SnakeStartingActivity to play the game.
+     * Passes savedData and difficulty into SnakeStartingActivity.
      */
     private void switchToGame(String difficulty, Object[] savedData) {
         Intent intent = new Intent(this, SnakeStartingActivity.class);
@@ -98,7 +99,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
      * Activate the save button listener.
      */
     private void addSaveButtonListener() {
-        Button saveButton = findViewById(R.id.SaveButton);
+        Button saveButton = findViewById(R.id.SaveSnake);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,15 +120,17 @@ public class SnakeMenuActivity extends AppCompatActivity {
                     Log.e("Exception", "File write failed: " + e.toString());
                 }
                 makeToastSavedText();
+
             }
-        });
+
+    });
     }
 
     /**
      * Activate the load button listener.
      */
     private void addLoadButtonListener() {
-        Button loadButton = findViewById(R.id.LoadButton);
+        Button loadButton = findViewById(R.id.LoadSnake);
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,8 +176,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
         Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
     }
     /**
-     * Load the board manager from save_file_tmp.ser, the file used for temporarily holding a
-     * boardManager.
+     * Load the savePointData from snake_save_file_tmp.ser, the file used for temporarily holding a
+     * savePointData.
      */
     private void loadFromTempFile() {
         try {
