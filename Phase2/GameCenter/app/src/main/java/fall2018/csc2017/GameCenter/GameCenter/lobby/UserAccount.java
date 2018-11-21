@@ -8,194 +8,123 @@ import java.util.Set;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
 
 /**
- * Stores a user's account information.
+ * Stores a user account's account information.
  */
 public class UserAccount implements Serializable {
 
     /**
-     * The account user's username.
+     * The user account's username.
      */
     private String username;
 
     /**
-     * The account user's password.
+     * The user account's password.
      */
     private String password;
 
     /**
-     * The account user's top score for Snake on easy mode.
-     */
-    private int easySnakeScore;
-
-    /**
-     * The account user's top score for Snake on hard mode.
-     */
-    private int hardSnakeScore;
-
-    /**
-     * Returns the user account's top score for Snake on easy mode.
-     *
-     * @return the user's top score for Snake on easy mode.
-     */
-    public int getEasySnakeScore() {
-        return easySnakeScore;
-    }
-
-    /**
-     * Sets the account top score for Snake on easy mode.
-     *
-     * @param easySnakeScore the account's new top score for Snake on easy mode
-     */
-    public void setEasySnakeScore(int easySnakeScore) {
-        this.easySnakeScore = easySnakeScore;
-    }
-
-    /**
-     * Returns the user account's top score for Snake on hard mode.
-     *
-     * @return the user's top score for Snake on hard mode.
-     */
-    public int getHardSnakeScore() {
-        return hardSnakeScore;
-    }
-
-    /**
-     * Sets the account top score for Snake on hard mode.
-     *
-     * @param hardSnakeScore the account's new top score for Snake on hard mode
-     */
-    public void setHardSnakeScore(int hardSnakeScore) {
-        this.hardSnakeScore = hardSnakeScore;
-    }
-
-    /**
-     * The account user's top score for boards of 3x3 complexity in Sliding Tiles.
-     */
-    private int slidingTilesTop3x3;
-
-    /**
-     * The account user's top score for boards of 4x4 complexity in Sliding Tiles.
-     */
-    private int slidingTilesTop4x4;
-
-    /**
-     * The account user's top score for boards of 5x5 complexity in Sliding Tiles.
-     */
-    private int slidingTilesTop5x5;
-
-    /**
-     * The names of the account user's past Sliding Tiles games.
+     * Keys: The names of the user account's past Sliding Tiles games.
+     * Values: The board manager of each game.
      */
     private Map<String, SlidingTilesBoardManager> slidingTilesGameNames;
 
     /**
-     * The names of the account user's past Snake games.
+     * Keys: The names of the user account's past Snake games.
+     * Values: The saved data of each game.
      */
     private Map<String, Object[]> snakeGameNames;
 
     /**
-     * An instance of an account with a username, password, and a blank list of game names.
-     * Default top score is 1000000, which displays as "None" on the scoreboards.
-     *
-     * @param username the username of the account
-     * @param password the password of the account
+     * Keys: The game levels.
+     * Values: The user account's scores for each game level.
      */
-    UserAccount(String username, String password) {
+    private Map<String, Integer> scores;
+
+    /**
+     * String Array of the game level names.
+     */
+    public static final String[] gameLevels = {"Sliding Tiles 3x3", "Sliding Tiles 4x4",
+            "Sliding Tiles 5x5", "Snake Easy Mode", "Snake Hard Mode"};
+
+    /**
+     * An instance of a user account with a username, password, and a blank list of game names.
+     * Default top score for Sliding Tiles is 1000000, which displays as "None" on the scoreboard.
+     * Default top score for Snake and Blocks is 0, which displays as "None" on the scoreboard.
+     *
+     * @param username the username of the user account
+     * @param password the password of the user account
+     */
+    public UserAccount(String username, String password) {
         this.username = username;
         this.password = password;
         this.slidingTilesGameNames = new HashMap<>();
         this.snakeGameNames = new HashMap<>();
-        this.slidingTilesTop3x3 = 1000000;
-        this.slidingTilesTop4x4 = 1000000;
-        this.slidingTilesTop5x5 = 1000000;
-        this.easySnakeScore = 0;
-        this.hardSnakeScore = 0;
+        this.scores = new HashMap<>();
+        for (int i = 0; i < gameLevels.length; i++) {
+            if (i < 3) {
+                this.scores.put(gameLevels[i], 1000000);
+            } else {
+                this.scores.put(gameLevels[i], 0);
+            }
+        }
     }
 
-
     /**
-     * Returns the username of the account.
+     * Returns the username of the user account.
      *
-     * @return the account's username
+     * @return the user account's username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * Returns the password of the account.
+     * Returns the password of the user account.
      *
-     * @return the account's password
+     * @return the user account's password
      */
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
 
     /**
-     * Returns the account's top score for boards of 3x3 complexity in Sliding Tiles.
+     * Returns the top score of the specified game level for the user account.
      *
-     * @return the account's top score for boards of 3x3 complexity in Sliding Tiles.
+     * @param levelName name of the game's level as stored in the score map
+     * @return top score of specified game level
      */
-    public int getSlidingTilesTop3x3() {
-        return slidingTilesTop3x3;
+    public Integer getTopScore(String levelName) {
+        if (this.scores.containsKey(levelName)) {
+            return this.scores.get(levelName);
+        } else {
+            return null;
+        }
     }
 
     /**
-     * Sets the account's top score for boards of 3x3 complexity in Sliding Tiles.
+     * Sets the top score of the specified game level for the user account.
      *
-     * @param top3x3 the account's new top 3x3 score in Sliding Tiles
+     * @param levelName name of the game's level as stored in the score map
+     * @param newScore  new top score of specified game level
      */
-    public void setSlidingTilesTop3x3(int top3x3) {
-        this.slidingTilesTop3x3 = top3x3;
+    public void setTopScore(String levelName, Integer newScore) {
+        this.scores.replace(levelName, newScore);
     }
 
     /**
-     * Returns the account's top score for boards of 4x4 complexity in Sliding Tiles.
+     * Adds a new game name to this user account.
      *
-     * @return the account's top score for boards of 4x4 complexity in Sliding Tiles
-     */
-    public int getSlidingTilesTop4x4() {
-        return slidingTilesTop4x4;
-    }
-
-    /**
-     * Sets the account's top score for boards of 4x4 complexity in Sliding Tiles.
-     *
-     * @param top4x4 the account's new top 4x4 score in Sliding Tiles
-     */
-    public void setSlidingTilesTop4x4(int top4x4) {
-        this.slidingTilesTop4x4 = top4x4;
-    }
-
-    /**
-     * Returns the account's top score for boards of 5x5 complexity in Sliding Tiles.
-     *
-     * @return the account's top score for boards of 5x5 complexity in Sliding Tiles
-     */
-    public int getSlidingTilesTop5x5() {
-        return slidingTilesTop5x5;
-    }
-
-    /**
-     * Sets the account's top score for boards of 5x5 complexity in Sliding Tiles.
-     *
-     * @param top5x5 the account's new top 5x5 score in Sliding Tiles
-     */
-    public void setSlidingTilesTop5x5(int top5x5) {
-        this.slidingTilesTop5x5 = top5x5;
-    }
-
-    /**
-     * Adds a new game name to this account
-     *
-     * @param newName a new name added to the account
+     * @param newName a new game name added to the user account
+     * @param game    the board manager of the new game
      */
     public void addSlidingTilesGame(String newName, SlidingTilesBoardManager game) {
         this.slidingTilesGameNames.put(newName, game);
     }
 
     /**
-     * Get a game saved by the name gameName.
+     * Get a game saved by the game name.
+     *
+     * @param gameName a game name saved to this user account
      */
     public SlidingTilesBoardManager getSlidingTilesGame(String gameName) {
         if (this.slidingTilesGameNames.containsKey(gameName)) {
@@ -206,22 +135,29 @@ public class UserAccount implements Serializable {
     }
 
     /**
-     * Returns this UserAccount's key set of saved game names.
-     * @return key set of this UserAccount's saved game names
+     * Returns this user account's key set of saved game names.
+     *
+     * @return key set of this user account's saved game names
      */
     public Set<String> getSlidingTilesGameNames() {
         return slidingTilesGameNames.keySet();
     }
+
     /**
-     * Adds a new game name to this account
+     * Adds a new game name to this user account
      *
-     * @param newName a new name added to the account
+     * @param newName   a new game name added to the user account
+     * @param savedData saved data of the new game
      */
     public void addSnakeGame(String newName, Object[] savedData) {
         this.snakeGameNames.put(newName, savedData);
     }
+
     /**
-     * Get a game saved by the name gameName.
+     * Get a game saved by the game name.
+     *
+     * @param gameName a game name saved to the user account
+     * @return saved data of the game
      */
     public Object[] getSnakeGame(String gameName) {
         if (this.snakeGameNames.containsKey(gameName)) {
@@ -230,12 +166,13 @@ public class UserAccount implements Serializable {
             return null;
         }
     }
+
     /**
-     * Returns this UserAccount's key set of saved game names.
-     * @return key set of this UserAccount's saved game names
+     * Returns this user account's key set of saved game names.
+     *
+     * @return key set of this user account's saved game names
      */
     public Set<String> getSnakeGameNames() {
         return snakeGameNames.keySet();
     }
-
 }
