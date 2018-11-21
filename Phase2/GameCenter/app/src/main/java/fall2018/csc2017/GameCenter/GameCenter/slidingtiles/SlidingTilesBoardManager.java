@@ -12,6 +12,13 @@ import java.util.List;
  */
 public class SlidingTilesBoardManager implements Serializable {
 
+
+    /**
+     * The list of background Ids of the tile images in the drawable folder based on game level
+     * This was done in order to get rid of the switch statement code smell in the tiles class
+     * as now the tile class can be set up for any arbitrary complexity
+     */
+    private ArrayList<Integer> tileIdList;
     /**
      * The board being managed.
      */
@@ -21,6 +28,32 @@ public class SlidingTilesBoardManager implements Serializable {
      * The number of moves played so far in the current instance of the game.
      */
     private int numMoves = 0;
+    /**
+     * The list of each board that is associated with each move
+     */
+    private ArrayList<Board> savedBoards = new ArrayList<>();
+    /**
+     * The complexity of the current board being managed (the number of tiles on a side).
+     */
+    private int complexity;
+
+    /**
+     * Manage a new shuffled board.
+     */
+    public SlidingTilesBoardManager(int complexity, ArrayList<Integer> tileIdList) {
+
+        this.tileIdList = tileIdList;
+        Board.numRows = Board.numCols = complexity;
+        List<Tile> tiles = new ArrayList<>();
+        final int numTiles = Board.numRows * Board.numCols;
+        for (int tileNum = 0; tileNum != numTiles; tileNum++) {
+            tiles.add(new Tile(tileNum, tileIdList.get(tileNum)));
+        }
+        Collections.shuffle(tiles);
+        this.board = new Board(tiles);
+        savedBoards.add(copiedBoard(board));
+        this.complexity = complexity;
+    }
 
     /**
      * Returns the list of saved boards for this BoardManager.
@@ -32,11 +65,6 @@ public class SlidingTilesBoardManager implements Serializable {
     }
 
     /**
-     * The list of each board that is associated with each move
-     */
-    private ArrayList<Board> savedBoards = new ArrayList<>();
-
-    /**
      * Returns the complexity of this BoardManager.
      *
      * @return this BoardManager's complexity.
@@ -46,11 +74,6 @@ public class SlidingTilesBoardManager implements Serializable {
     }
 
     /**
-     * The complexity of the current board being managed (the number of tiles on a side).
-     */
-    private int complexity;
-
-    /**
      * Return the current board.
      */
     public Board getBoard() {
@@ -58,19 +81,12 @@ public class SlidingTilesBoardManager implements Serializable {
     }
 
     /**
-     * Manage a new shuffled board.
+     * Sets the board of this BoardManager.
+     *
+     * @param board the BoardManager's new Board
      */
-    public SlidingTilesBoardManager(int complexity) {
-        Board.numRows = Board.numCols = complexity;
-        List<Tile> tiles = new ArrayList<>();
-        final int numTiles = Board.numRows * Board.numCols;
-        for (int tileNum = 0; tileNum != numTiles; tileNum++) {
-            tiles.add(new Tile(tileNum));
-        }
-        Collections.shuffle(tiles);
-        this.board = new Board(tiles);
-        savedBoards.add(board.copiedBoard(board));
-        this.complexity = complexity;
+    private void setBoard(Board board) {
+        this.board = board;
     }
 
     /**
@@ -143,7 +159,7 @@ public class SlidingTilesBoardManager implements Serializable {
      * Adds a copy of the current instance of board to the savedBoards list.
      */
     private void addToSavedBoards() {
-        savedBoards.add(board.copiedBoard(board));
+        savedBoards.add(copiedBoard(board));
     }
 
     /**
@@ -154,15 +170,6 @@ public class SlidingTilesBoardManager implements Serializable {
      */
     public int getMoves() {
         return numMoves;
-    }
-
-    /**
-     * Sets the board of this BoardManager.
-     *
-     * @param board the BoardManager's new Board
-     */
-    private void setBoard(Board board) {
-        this.board = board;
     }
 
     /**
@@ -181,4 +188,25 @@ public class SlidingTilesBoardManager implements Serializable {
             savedBoards.remove(savedBoards.size() - 1);
         }
     }
+
+    /**
+     * A new board of tiles that copies the tiles of another given board.
+     *
+     * @param boardToBeCopied the board whose tiles are copied
+     */
+    private Board copiedBoard(Board boardToBeCopied) {
+        List<Integer> tileNums = new ArrayList<>();
+        Tile[][] tilesToBeCopied = boardToBeCopied.getTiles();
+        for (int row = 0; row != Board.numRows; row++) {
+            for (int col = 0; col != Board.numCols; col++) {
+                tileNums.add(tilesToBeCopied[row][col].getId() - 1);
+            }
+        }
+        List<Tile> copiedTileList = new ArrayList<>();
+        for (Integer tileNum : tileNums) {
+            copiedTileList.add(new Tile(tileNum, tileIdList.get(tileNum)));
+        }
+        return new Board(copiedTileList);
+    }
+
 }
