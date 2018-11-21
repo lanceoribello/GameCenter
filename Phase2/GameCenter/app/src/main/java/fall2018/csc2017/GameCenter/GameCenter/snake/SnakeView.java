@@ -161,6 +161,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         spawnMouse((int) oldSaveData[2], (int) oldSaveData[3]);
         snakeLength = (int) oldSaveData[4];
         score = (int) oldSaveData[5];
+        direction = (Direction)oldSaveData[7];
         // Setup nextFrameTime so an update is triggered immediately
         nextFrameTime = System.currentTimeMillis();
     }
@@ -235,7 +236,8 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     public void setAutoSavePoint() {
-        savePointData = new Object[]{snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty};
+        savePointData = new Object[]{snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
+                difficulty, direction};
     }
     public Object[] getSavePointData(){
         return this.savePointData;
