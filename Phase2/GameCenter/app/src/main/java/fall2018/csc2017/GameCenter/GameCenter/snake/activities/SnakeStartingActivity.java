@@ -6,11 +6,15 @@ import android.util.Log;
 import android.view.Display;
 import android.graphics.Point;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
+import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 
 /*
@@ -36,6 +40,9 @@ public class SnakeStartingActivity extends AppCompatActivity {
      * An instance of SnakeView that will initialized in onCreate after getting more details
      * about the device.
      */
+    /**
+     *
+     */
     SnakeView snakeView;
 
     @Override
@@ -49,8 +56,10 @@ public class SnakeStartingActivity extends AppCompatActivity {
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         difficulty = (String) getIntent().getSerializableExtra("difficulty");
+        Object[] oldSavedData = (Object[]) getIntent().getSerializableExtra("savedData");
+
         // Create a new View based on the SnakeView class
-        snakeView = new SnakeView(this, size, difficulty, null);
+        snakeView = new SnakeView(this, size, difficulty, oldSavedData);
         // Make snakeView the default view of the Activity
         setContentView(snakeView);
     }
@@ -117,7 +126,23 @@ public class SnakeStartingActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        saveToTempFile();
         snakeView.pause();
         updateHighScore();
     }
+    /**
+     * Save the board manager to save_file_tmp.ser, the file used for temporarily holding a
+     * boardManager.
+     */
+    public void saveToTempFile() {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(
+                    this.openFileOutput(SnakeMenuActivity.TEMP_SAVE_FILENAME, MODE_PRIVATE));
+            outputStream.writeObject(snakeView.getSavePointData());
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
 }

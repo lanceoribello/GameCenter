@@ -11,7 +11,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -40,24 +43,26 @@ public class SnakeMenuActivity extends AppCompatActivity {
      */
     private Object[] savedData;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_snake_menu);
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
-//        addLoadButtonListener();
-//        addSaveButtonListener();
+        addLoadButtonListener();
+        addSaveButtonListener();
 //        addLoadAutoSaveButtonListener();
     }
 
     /**
      * Switch to SnakeStartingActivity to play the game.
      */
-    private void switchToGame(String difficulty) {
+    private void switchToGame(String difficulty, Object[] savedData) {
         Intent intent = new Intent(this, SnakeStartingActivity.class);
         intent.putExtra("currentUserAccount", currentUserAccount);
         intent.putExtra("difficulty", difficulty);
+        intent.putExtra("savedData", savedData);
         startActivity(intent);
     }
 
@@ -77,10 +82,10 @@ public class SnakeMenuActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        switchToGame("Snake Easy Mode");
+                        switchToGame("Snake Easy Mode", null);
                         break;
                     case 1:
-                        switchToGame("Snake Hard Mode");
+                        switchToGame("Snake Hard Mode", null);
                         break;
                 }
             }
@@ -102,7 +107,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
                         DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
                 String datetime = dateFormat.format(c.getTime());
                 LoginActivity.userAccountList.remove(currentUserAccount);
-                currentUserAccount.addSnakeGame(datetime, null); //Need savedData here.
+                loadFromTempFile();
+                currentUserAccount.addSnakeGame(datetime, savedData);
                 LoginActivity.userAccountList.add(currentUserAccount);
                 try {
                     ObjectOutputStream outputStream = new ObjectOutputStream(
@@ -144,7 +150,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
 //                        Board.numRows = Board.numCols = boardManager.getComplexity();
                         makeToastLoadedText();
                         dialog.dismiss();
-                        switchToGame("add difficulty here");
+                        switchToGame((String)savedData[6], savedData);
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -165,5 +171,26 @@ public class SnakeMenuActivity extends AppCompatActivity {
      */
     private void makeToastLoadedText() {
         Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
+    }
+    /**
+     * Load the board manager from save_file_tmp.ser, the file used for temporarily holding a
+     * boardManager.
+     */
+    private void loadFromTempFile() {
+        try {
+            InputStream inputStream = this.openFileInput(TEMP_SAVE_FILENAME);
+            if (inputStream != null) {
+                ObjectInputStream input = new ObjectInputStream(inputStream);
+                savedData = (Object[]) input.readObject();
+                inputStream.close();
+            }
+        } catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        } catch (ClassNotFoundException e) {
+            Log.e("login activity", "File contained unexpected data type: "
+                    + e.toString());
+        }
     }
 }

@@ -76,6 +76,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     private int numBlocksHigh; // determined dynamically;
 
     Object[] savePointData;
+    private String difficulty;
 
     public SnakeView(Context context) {
         super(context);
@@ -101,7 +102,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         // If you score 200 you are rewarded with a crash achievement!
         snakeXs = new int[200];
         snakeYs = new int[200];
-
+        this.difficulty = difficulty;
         if (difficulty.equals("Snake Easy Mode")) {
             FPS = 10;
         } else {
@@ -160,7 +161,6 @@ public class SnakeView extends SurfaceView implements Runnable {
         spawnMouse((int) oldSaveData[2], (int) oldSaveData[3]);
         snakeLength = (int) oldSaveData[4];
         score = (int) oldSaveData[5];
-
         // Setup nextFrameTime so an update is triggered immediately
         nextFrameTime = System.currentTimeMillis();
     }
@@ -235,7 +235,10 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     public void setAutoSavePoint() {
-        savePointData = new Object[]{snakeXs, snakeYs, mouseX, mouseY, snakeLength, score};
+        savePointData = new Object[]{snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty};
+    }
+    public Object[] getSavePointData(){
+        return this.savePointData;
     }
 
     public void updateGame() {
