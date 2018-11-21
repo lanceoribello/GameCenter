@@ -166,37 +166,25 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
             }
         }
         if (scoreUpdated) {
-            updateUserAccounts(complexity, numMoves);
+            updateUserAccounts();
         }
     }
 
     /**
-     * Writes new high scores to file.
-     * Helper method for updateHighScores.
-     *
-     * @param complexity the complexity of BoardManager
-     * @param numMoves   the number of moves committed in BoardManager
+     * Updates the master userAccountList to account for any changes to the local userAccount.
      */
-    private void updateUserAccounts(int complexity, int numMoves) {
+    private void updateUserAccounts() {
         LoginActivity.userAccountList.remove(currentUserAccount);
-        for (int i = 0; i < this.gameLevels.length; i++) {
-            if (complexity == this.complexities[i] &&
-                    this.currentUserAccount.getTopScore(this.gameLevels[i]) > numMoves) {
-                this.currentUserAccount.setTopScore(this.gameLevels[i], numMoves);
-            }
-        }
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
     }
 
     /**
-     * Writes the current boardManager to file to create an autoSave for currentUserAccount.
+     * Writes the current boardManager to the current userAccount.
      */
     private void createAutoSave() {
-        LoginActivity.userAccountList.remove(currentUserAccount);
         currentUserAccount.addSlidingTilesGame("autoSave", boardManager);
-        LoginActivity.userAccountList.add(currentUserAccount);
-        userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
+        updateUserAccounts();
     }
 
     /**
