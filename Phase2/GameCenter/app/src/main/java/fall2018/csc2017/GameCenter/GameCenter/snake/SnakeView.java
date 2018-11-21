@@ -248,8 +248,9 @@ public class SnakeView extends SurfaceView implements Runnable {
         if (snakeXs[0] == mouseX && snakeYs[0] == mouseY) {
             eatMouse();
         }
-
-        moveSnake();
+        if (!detectDeath()) {
+            moveSnake();
+        }
     }
 
     public void drawGame() {
