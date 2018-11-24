@@ -160,32 +160,34 @@ public class SnakeView extends SurfaceView implements Runnable {
         super(context);
     }
 
+    /**
+     * An instance of SnakeView that manages the Snake game.
+     * Sets up the display the game.
+     * Processes whether a new game is started or a past game is being loaded.
+     *
+     * @param context the context of SnakeView
+     * @param size the size to be displayed
+     * @param difficulty the difficulty of the current Snake game
+     * @param oldSaveData the data used to load a saved game; can be null if a new game is started
+     */
     public SnakeView(Context context, Point size, String difficulty, Object[] oldSaveData) {
         super(context);
-
         this.context = context;
 
         screenWidth = size.x;
         screenHeight = size.y;
 
-        //Determine the size of each block/place on the game board
         blockSize = screenWidth / NUM_BLOCKS_WIDE;
-        // How many blocks of the same size will fit into the height
         numBlocksHigh = screenHeight / blockSize;
 
-        // Initialize the drawing objects
         holder = getHolder();
         paint = new Paint();
 
         // If you score 200 you are rewarded with a crash achievement!
         snakeXs = new int[200];
         snakeYs = new int[200];
-        this.difficulty = difficulty;
-        if (difficulty.equals("Snake Easy Mode")) {
-            FPS = 10;
-        } else {
-            FPS = 14;
-        }
+
+        setDifficulty(difficulty);
 
         try {
             resumeOldGame(oldSaveData);
@@ -194,10 +196,22 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * Sets the difficulty level of the game, which is based on how many frames per second are
+     * shown. A higher number of frames per second results in the snake moving faster.
+     * @param difficulty the game's difficulty
+     */
+    private void setDifficulty(String difficulty){
+        this.difficulty = difficulty;
+        if (difficulty.equals("Snake Easy Mode")) {
+            FPS = 10;
+        } else {
+            FPS = 14;
+        }
+    }
+
     @Override
     public void run() {
-        // The check for playing prevents a crash at the start
-        // You could also extend the code to provide a pause feature
         while (playing) {
             if (checkForUpdate()) {
                 updateGame();
@@ -207,6 +221,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
+    //currently unused
     public void pause() {
         playing = false;
         try {
@@ -216,12 +231,18 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
+    //currently unused
     public void resume() {
         playing = true;
         thread = new Thread(this);
         thread.start();
     }
 
+    /**
+     * Begins a new game of Snake.
+     * Spawns a snake with length 1 in the middle of the grid area as well as a mouse in a random
+     * location.
+     */
     public void startGame() {
         snakeLength = 1;
         snakeXs[0] = NUM_BLOCKS_WIDE / 2;
@@ -233,10 +254,14 @@ public class SnakeView extends SurfaceView implements Runnable {
         nextFrameTime = System.currentTimeMillis();
     }
 
+    /**
+     * Resumes a past game of Snake using an Object array of saved data.
+     * @param oldSaveData saved data of a past Snake game
+     */
     public void resumeOldGame(Object[] oldSaveData) {
         snakeXs = (int[]) oldSaveData[0];
         snakeYs = (int[]) oldSaveData[1];
-        spawnMouse((int) oldSaveData[2], (int) oldSaveData[3]);
+        spawnMouseAt((int) oldSaveData[2], (int) oldSaveData[3]);
         snakeLength = (int) oldSaveData[4];
         score = (int) oldSaveData[5];
         direction = (Direction)oldSaveData[7];
@@ -244,85 +269,103 @@ public class SnakeView extends SurfaceView implements Runnable {
         nextFrameTime = System.currentTimeMillis();
     }
 
-    public void spawnMouse(int x, int y) {
+    /**
+     * Spawns a mouse at a given location.
+     *
+     * @param x the x-value of the mouse to be spawned
+     * @param y the y-value of the mouse to be spawned
+     */
+    public void spawnMouseAt(int x, int y) {
         mouseX = x;
         mouseY = y;
     }
 
+    /**
+     * Spawns a mouse at a random location.
+     */
     public void spawnMouse() {
         Random random = new Random();
         mouseX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
         mouseY = random.nextInt(numBlocksHigh - 1) + 1;
     }
 
+    /**
+     * Processes a snake eating a mouse, increasing its length and the score by 1.
+     * Spawns a new mouse at a random location.
+     */
     private void eatMouse() {
         snakeLength++;
         spawnMouse();
         score = score + 1;
     }
 
+    /**
+     * Moves all segments of the snake by one.
+     */
     private void moveSnake() {
-        // Move the body
         for (int i = snakeLength; i > 0; i--) {
-            // Start at the back and move it
-            // to the position of the segment in front of it
             snakeXs[i] = snakeXs[i - 1];
             snakeYs[i] = snakeYs[i - 1];
-
-            // Exclude the head because
-            // the head has nothing in front of it
         }
-
-        // Move the head in the appropriate direction
         switch (direction) {
             case UP:
                 snakeYs[0]--;
                 break;
-
             case RIGHT:
                 snakeXs[0]++;
                 break;
-
             case DOWN:
                 snakeYs[0]++;
                 break;
-
             case LEFT:
                 snakeXs[0]--;
                 break;
         }
     }
 
+    /**
+     * Returns whether the snake has died, either through hitting the wall of the game area or by
+     * making contact with one of its own body segments.
+     * @return whether the snake has died
+     */
     public boolean detectDeath() {
-        // Has the snake died?
         boolean dead = false;
 
-        // Hit a wall?
         if (snakeXs[0] == -1) dead = true;
         if (snakeXs[0] >= NUM_BLOCKS_WIDE) dead = true;
         if (snakeYs[0] == -1) dead = true;
         if (snakeYs[0] == numBlocksHigh) dead = true;
 
-        // Eaten itself?
         for (int i = snakeLength - 1; i > 0; i--) {
             if ((i > 4) && (snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
                 dead = true;
             }
         }
-
         return dead;
     }
 
+    /**
+     * Sets the savePointData object array to include all the data necessary for loading up the
+     * current game again at a later point.
+     */
     public void setAutoSavePoint() {
         savePointData = new Object[]{snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
                 difficulty, direction};
     }
+
+    /**
+     * Returns the current save point data of this Snake game.
+     *
+     * @return this game's current save point data
+     */
     public Object[] getSavePointData(){
         return this.savePointData;
     }
 
+    /**
+     * Processes when a snake eats a mouse on contact and the movement of the snake.
+     */
     public void updateGame() {
-        // Did the head of the snake touch the mouse?
         if (snakeXs[0] == mouseX && snakeYs[0] == mouseY) {
             eatMouse();
         }
@@ -331,36 +374,38 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * Creates the display of the game.
+     */
     public void drawGame() {
-        // Prepare to draw
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
 
-            // Clear the screen with my favorite color
+            // The background color
             canvas.drawColor(Color.argb(255, 102, 204, 255));
 
-            // Set the color of the paint to draw the snake and mouse with
-            paint.setColor(Color.argb(255, 255, 255, 255));
-
-            // Choose how big the score will be
+            // How the current score text is displayed
             paint.setTextSize(30);
             canvas.drawText("Score:" + score, 10, 30, paint);
 
-            //Draw the snake
+            // The color of the snake and the mouse
+            paint.setColor(Color.argb(255, 255, 255, 255));
+
+            // Draw the snake
             for (int i = 0; i < snakeLength; i++) {
                 canvas.drawRect(snakeXs[i] * blockSize,
                         (snakeYs[i] * blockSize),
                         (snakeXs[i] * blockSize) + blockSize,
-                        (snakeYs[i] * blockSize) + blockSize,
-                        paint);
+                        (snakeYs[i] * blockSize) + blockSize, paint);
             }
 
+            // How the GAME OVER text is displayed.
             if (detectDeath()) {
                 paint.setTextSize(150);
                 canvas.drawText("GAME OVER", 10, 200, paint);
             }
 
-            //draw the mouse
+            // Draw the mouse
             canvas.drawRect(mouseX * blockSize,
                     (mouseY * blockSize),
                     (mouseX * blockSize) + blockSize,
@@ -372,31 +417,34 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * Determines whether the game should be updated for the timing of when updateGame() and
+     * drawGame() should be called, depending on the FPS of the game.
+     * @return whether the game is to be updated
+     */
     public boolean checkForUpdate() {
-
-        // Are we due to update the frame
         if (nextFrameTime <= System.currentTimeMillis()) {
-            // Tenth of a second has passed
-
-            // Setup when the next update will be triggered
             nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND / FPS;
-
-            // Return true so that the update and draw
-            // functions are executed
             return true;
         }
-
         return false;
     }
 
+    /**
+     * Returns the current score of the Snake game.
+     *
+     * @return the current score of the game
+     */
     public int getScore() { return score; }
 
+    //Necessary for onTouchEvent to have no warnings
     @Override
     public boolean performClick() {
         super.performClick();
         return true;
     }
 
+    //Replace with button controls !!!!
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         performClick();

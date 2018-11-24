@@ -9,15 +9,13 @@ public class TileTest {
     /**
      * The Tile for testing, creates a tile with id 4 set to the background image of 4 in drawables
      */
-
     private Tile tile = new Tile(3, 2131099791);
 
     /**
      * Checks if the tile returns the correct background based on its id
      */
-
     @Test
-    public void getBackgroundIsCorrect() {
+    public void testGetBackgroundIsCorrect() {
         int tile4BackgroundId = 2131099791; // The resource id for the tile image representing 4
         assertEquals(tile4BackgroundId, tile.getBackground());
 
@@ -27,7 +25,7 @@ public class TileTest {
      * Checks if the tile returns the correct id
      */
     @Test
-    public void getIdIsCorrect() {
+    public void testGetIdIsCorrect() {
         int tile4Id = 4; // The id which a tile 4 should contain
         assertEquals(tile4Id, tile.getId());
     }
@@ -36,7 +34,7 @@ public class TileTest {
      * Checks if two tiles with different IDs compare as different tiles
      */
     @Test
-    public void compareToDifferentTile() {
+    public void testCompareToDifferentTile() {
         Tile tileCompare = new Tile(5, 2131099792);
         assertNotSame(tileCompare, tile);
     }
@@ -45,7 +43,7 @@ public class TileTest {
      * Checks if two of the same tiles compare as the same
      */
     @Test
-    public void compareToSameTile() {
+    public void testCompareToSameTile() {
         assertSame(tile, tile);
     }
 }

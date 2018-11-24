@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCenter.GameCenter.snake;
+package fall2018.csc2017.GameCenter.GameCenter.snake.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,7 +23,6 @@ import java.util.Calendar;
 import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
-import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeStartingActivity;
 
 /**
  * The menu activity for the Snake game.
@@ -112,6 +111,13 @@ public class SnakeMenuActivity extends AppCompatActivity {
     }
 
     /**
+     * Display that a game was saved successfully.
+     */
+    private void makeToastSavedText() {
+        Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
      * Activate the load button listener. Users will be given a list of previously saved games to
      * choose from.
      */
@@ -143,10 +149,15 @@ public class SnakeMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Display that a game was saved successfully.
+     * Make a list of games names for displaying in load games.
      */
-    private void makeToastSavedText() {
-        Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
+    private String[] savedGamesList(){
+        String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
+        int i = 0;
+        for (String s : currentUserAccount.getSnakeGameNames()) {
+            games[i++] = s;
+        }
+        return games;
     }
 
     /**
@@ -246,16 +257,5 @@ public class SnakeMenuActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
-    }
-    /**
-     * Make a list of games names for displaying in load games.
-     */
-    private String[] savedGamesList(){
-        String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
-        int i = 0;
-        for (String s : currentUserAccount.getSnakeGameNames()) {
-            games[i++] = s;
-        }
-        return games;
     }
 }

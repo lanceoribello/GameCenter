@@ -23,7 +23,7 @@
         android:layout_below="@+id/GameText"
         android:layout_centerHorizontal="true"
         android:onClick="newGame"
-        android:text="New Game" />
+        android:text="@string/new_game" />
 
     <Button
         android:id="@+id/LoadButton"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/GameText"
         android:layout_toStartOf="@+id/StartButton"
-        android:text="Load Saved Game" />
+        android:text="@string/load_game" />
 
     <Button
         android:id="@+id/SaveButton"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/GameText"
         android:layout_toEndOf="@+id/StartButton"
-        android:text="Save Game" />
+        android:text="@string/save_game" />
 
     <Button
         android:id="@+id/Undo"
@@ -50,7 +50,7 @@
         android:layout_marginStart="1dp"
         android:layout_marginBottom="69dp"
         android:onClick="undoMoves"
-        android:text="@string/Undobutton" />
+        android:text="@string/button_undo" />
 
     <EditText
         android:id="@+id/Undoers"
@@ -61,7 +61,7 @@
         android:layout_marginStart="-51dp"
         android:layout_marginBottom="132dp"
         android:ems="10"
-        android:hint="@string/Undoers"
+        android:hint="@string/button_undo_number"
         android:inputType="textPersonName" />
 
     <Button
@@ -76,6 +76,6 @@
         android:layout_marginTop="422dp"
         android:layout_marginEnd="140dp"
         android:layout_marginBottom="186dp"
-        android:text="@string/load_autosave" />
+        android:text="@string/load_auto_save" />
 
 </RelativeLayout>

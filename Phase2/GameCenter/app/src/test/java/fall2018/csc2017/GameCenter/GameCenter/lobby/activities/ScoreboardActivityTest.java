@@ -7,14 +7,24 @@ import static org.junit.Assert.*;
 public class ScoreboardActivityTest {
 
     @Test
-    public void onCreate() {
+    public void testFindTopScorers() {
     }
 
     @Test
-    public void setUserAccountList() {
+    public void testFindTopScores() {
     }
 
+    /**
+     * Check if the user account list in the file matches the set one.
+     */
     @Test
-    public void onResume() {
+    public void testSetUserAccountList() {
+    }
+
+    /**
+     * Check if the current user account in the file matches the set one.
+     */
+    @Test
+    public void testSetCurrentUserAccount() {
     }
 }

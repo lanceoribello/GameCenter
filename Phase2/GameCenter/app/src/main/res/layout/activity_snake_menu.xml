@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity">
+    tools:context="fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeMenuActivity">
 
     <Button
         android:id="@+id/LoadSnake"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginBottom="364dp"
-        android:text="@string/loadsnake"
+        android:text="@string/load_game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -23,7 +23,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
         android:onClick="newGame"
-        android:text="@string/newsnake"
+        android:text="@string/new_game"
         app:layout_constraintStart_toEndOf="@+id/LoadSnake"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -33,7 +33,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
-        android:text="@string/savesnake"
+        android:text="@string/save_game"
         app:layout_constraintStart_toEndOf="@+id/NewSnake"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -44,7 +44,7 @@
         android:layout_marginStart="125dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="120dp"
-        android:text="@string/load_autosave"
+        android:text="@string/load_auto_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"

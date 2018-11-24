@@ -6,15 +6,10 @@ import static org.junit.Assert.*;
 
 public class GameSelectActivityTest {
 
+    /**
+     * Check if the user account list in the file matches the set one.
+     */
     @Test
-    public void onCreate() {
-    }
-
-    @Test
-    public void setUserAccountList() {
-    }
-
-    @Test
-    public void onResume() {
+    public void testSetCurrentUserAccountMatch() {
     }
 }

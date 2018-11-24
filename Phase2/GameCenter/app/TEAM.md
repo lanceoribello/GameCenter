@@ -3,18 +3,22 @@
 ## Nancy Zhao
 n.zhao@mail.utoronto.ca
 416-819-5486
+Username in git log: zhaonancy
 
 ## Neel Patel
 neelu.patel@mail.utoronto.ca
 905-616-9292
+Username in git log: Neel
 
 ## Lance Oribello
 lance.oribello@mail.utoronto.ca
 778-231-6563
+Username in git log: Lance
 
 ## Ishan Sharma
 ish.sharma@mail.utoronto.ca
 647-771-3440
+Username in git log: shar1178
 
 # Communication Tool
 
@@ -81,7 +85,7 @@ Added the ability for the user to select and load previously saved games.
 Added the autoSave functionality.
 Added jorjani mode that changes the background images of the tiles for all complexities.
 Finalized docstring.
-Finished everything else that needs doing. :)
+Finished everything else that needs doing for Phase 1!
 
 ## November 13, 2018
 Set up repository for Phase 2
@@ -106,3 +110,12 @@ Added README.md and TEAM.md to the repository.
 Changed boards in Sliding Tiles to be always solvable.
 Implemented the autoSave functionality in Snake.
 Beautified the Snake menu.
+
+## November 21, 2018
+Fixed snake death and high score updating issue.
+
+## November 23, 2018
+Fixed tile id error.
+Set up unit testing.
+Wrote unit tests for lobby and sliding tiles classes.
+Updated docstring for snakeView.

@@ -6,15 +6,11 @@ import android.util.Log;
 import android.view.Display;
 import android.graphics.Point;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
-import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 
 /*
@@ -159,5 +155,4 @@ public class SnakeStartingActivity extends AppCompatActivity {
             Log.e("Exception", "File write failed: " + e.toString());
         }
     }
-
 }
