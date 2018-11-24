@@ -47,22 +47,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
      */
     private SlidingTilesBoardManager boardManager;
 
-    /**
-     * Gets the list of background Ids of the tile images in the drawable folder based on game level
-     *
-     * @param complexity level of the game
-     * @return Arraylist of id numbers of the tile corresponding to the tile in the drawable folder
-     */
-    private ArrayList<Integer> getTileIdList(int complexity) {
-        ArrayList<Integer> tileIdList = new ArrayList<>();
-        for (int tileNum = 0; tileNum != Math.pow(complexity, 2); tileNum++) {
-            String idString = Integer.toString(tileNum + 1);
-            String tileName = "tile_" + idString;
-            tileIdList.add(getResources().getIdentifier(tileName, "drawable", getPackageName()));
-        }
-        return tileIdList;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,10 +54,47 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         saveToTempFile();
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
-        setContentView(R.layout.activity_starting_);
+        setContentView(R.layout.activity_sliding_tiles_menu);
         addLoadButtonListener();
         addSaveButtonListener();
         addLoadAutoSaveButtonListener();
+    }
+
+    /**
+     * Activate the start button. Once the start button is pressed, a new alert dialog
+     * prompts the user to choose between the 3 complexities.
+     *
+     * @param view the current view.
+     */
+    public void newGame(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                SlidingTilesMenuActivity.this);
+        builder.setTitle("Choose a Complexity");
+        String[] levels = {"3x3", "4x4", "5x5"};
+        builder.setItems(levels, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        boardManager = new
+                                SlidingTilesBoardManager(3, getTileIdList(3));
+                        switchToGame();
+                        break;
+                    case 1:
+                        boardManager = new
+                                SlidingTilesBoardManager(4, getTileIdList(4));
+                        switchToGame();
+                        break;
+                    case 2:
+                        boardManager = new
+                                SlidingTilesBoardManager(5, getTileIdList(5));
+                        switchToGame();
+                        break;
+                }
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     /**
@@ -100,40 +121,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             Log.e("undo moves", "Text entered was not an integer: " + e.toString());
         }
 
-    }
-
-    /**
-     * Activate the start button. Once the start button is pressed, a new alert dialog
-     * prompts the user to choose between the 3 complexities.
-     *
-     * @param view the current view.
-     */
-    public void newGame(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(
-                SlidingTilesMenuActivity.this);
-        builder.setTitle("Choose a Complexity");
-        String[] levels = {"3x3", "4x4", "5x5"};
-        builder.setItems(levels, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        boardManager = new SlidingTilesBoardManager(3, getTileIdList(3));
-                        switchToGame();
-                        break;
-                    case 1:
-                        boardManager = new SlidingTilesBoardManager(4, getTileIdList(4));
-                        switchToGame();
-                        break;
-                    case 2:
-                        boardManager = new SlidingTilesBoardManager(5, getTileIdList(5));
-                        switchToGame();
-                        break;
-                }
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     /**
@@ -236,7 +223,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         }));
     }
 
-
     /**
      * Display that there is no autoSaved game to load.
      */
@@ -245,22 +231,29 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Read the temporary board from disk.
+     * Gets the list of background Ids of the tile images in the drawable folder based on game level
+     *
+     * @param complexity level of the game
+     * @return Arraylist of id numbers of the tile corresponding to the tile in the drawable folder
      */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadFromTempFile();
+    private ArrayList<Integer> getTileIdList(int complexity) {
+        ArrayList<Integer> tileIdList = new ArrayList<>();
+        for (int tileNum = 0; tileNum != Math.pow(complexity, 2); tileNum++) {
+            String idString = Integer.toString(tileNum + 1);
+            String tileName = "tile_" + idString;
+            tileIdList.add(getResources().getIdentifier(tileName, "drawable", getPackageName()));
+        }
+        return tileIdList;
     }
 
     /**
      * Switch to the SlidingTilesGameActivity view to play the game.
      */
     private void switchToGame() {
-        Intent tmp = new Intent(this, SlidingTilesGameActivity.class);
-        tmp.putExtra("currentUserAccount", currentUserAccount);
+        Intent intent = new Intent(this, SlidingTilesGameActivity.class);
+        intent.putExtra("currentUserAccount", currentUserAccount);
         saveToTempFile();
-        startActivity(tmp);
+        startActivity(intent);
     }
 
     /**
@@ -336,6 +329,15 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             games[i++] = s;
         }
         return games;
+    }
+
+    /**
+     * Read the temporary board from disk.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadFromTempFile();
     }
 }
 

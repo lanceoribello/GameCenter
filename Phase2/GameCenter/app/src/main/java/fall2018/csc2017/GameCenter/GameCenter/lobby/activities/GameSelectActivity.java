@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity;
-import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuActivity;
+import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeMenuActivity;
 
 /**
  * The game select screen shown after login screen. User can select a game to play or view the

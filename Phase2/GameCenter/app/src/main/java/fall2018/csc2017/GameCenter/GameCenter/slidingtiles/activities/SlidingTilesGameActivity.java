@@ -54,18 +54,11 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
      */
     private Integer[] complexities = {3, 4, 5};
 
-    // Grid View and calculated column height and width based on device size
+    /**
+     * Grid View and calculated column height and width based on device size.
+     */
     private GestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
-
-    /**
-     * Set up the background image for each button based on the master list
-     * of positions, and then call the adapter to set the view.
-     */
-    public void display() {
-        updateTileButtons();
-        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +87,15 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
                         display();
                     }
                 });
+    }
+
+    /**
+     * Set up the background image for each button based on the master list
+     * of positions, and then call the adapter to set the view.
+     */
+    public void display() {
+        updateTileButtons();
+        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
     }
 
     /**
@@ -128,32 +130,9 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
     }
 
     /**
-     * Dispatch onPause() to fragments.
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveToTempFile();
-        updateHighScores();
-        createAutoSave();
-    }
-
-    /**
-     * Dispatch onStop() to fragments.
-     */
-    @Override
-    protected void onStop() {
-        super.onStop();
-        saveToTempFile();
-        updateHighScores();
-        createAutoSave();
-    }
-
-    /**
      * Updates the high scores of the currentUserAccount if a new high score was achieved.
      */
     private void updateHighScores() {
-        boolean scoreUpdated = false;
         int complexity = boardManager.getComplexity();
         int numMoves = boardManager.getMoves();
         if (boardManager.puzzleSolved()) {
@@ -161,12 +140,9 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
                 if (complexity == this.complexities[i] &&
                         this.currentUserAccount.getTopScore(this.gameLevels[i]) > numMoves) {
                     this.currentUserAccount.setTopScore(this.gameLevels[i], numMoves);
-                    scoreUpdated = true;
+                    updateUserAccounts();
                 }
             }
-        }
-        if (scoreUpdated) {
-            updateUserAccounts();
         }
     }
 
@@ -244,5 +220,27 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
     @Override
     public void update(Observable o, Object arg) {
         display();
+    }
+
+    /**
+     * Dispatch onPause() to fragments.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveToTempFile();
+        updateHighScores();
+        createAutoSave();
+    }
+
+    /**
+     * Dispatch onStop() to fragments.
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveToTempFile();
+        updateHighScores();
+        createAutoSave();
     }
 }
