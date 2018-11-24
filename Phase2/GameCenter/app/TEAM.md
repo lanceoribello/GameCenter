@@ -106,3 +106,10 @@ Added README.md and TEAM.md to the repository.
 Changed boards in Sliding Tiles to be always solvable.
 Implemented the autoSave functionality in Snake.
 Beautified the Snake menu.
+
+## November 21, 2018
+Fixed snake death and high score updating issue.
+
+## November 23, 2018
+Fixed tile id error.
+Wrote unit tests for lobby and sliding tiles classes.
