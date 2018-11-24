@@ -149,13 +149,8 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         SlidingTilesMenuActivity.this);
                 builder.setTitle("Choose a game");
-                String[] games = new String[(currentUserAccount.getSlidingTilesGameNames().size())];
-                int i = 0;
-                for (String s : currentUserAccount.getSlidingTilesGameNames()) {
-                    games[i++] = s;
-                }
                 int checkedItem = 1;
-                builder.setSingleChoiceItems(games, checkedItem, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(savedGamesList(), checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListView lw = ((AlertDialog) dialog).getListView();
@@ -189,21 +184,8 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar c = Calendar.getInstance();
-                DateFormat dateFormat =
-                        DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-                String datetime = dateFormat.format(c.getTime());
-                LoginActivity.userAccountList.remove(currentUserAccount);
-                currentUserAccount.addSlidingTilesGame(datetime, boardManager);
-                LoginActivity.userAccountList.add(currentUserAccount);
-                try {
-                    ObjectOutputStream outputStream = new ObjectOutputStream(
-                            openFileOutput(LoginActivity.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
-                    outputStream.writeObject(LoginActivity.userAccountList);
-                    outputStream.close();
-                } catch (IOException e) {
-                    Log.e("Exception", "File write failed: " + e.toString());
-                }
+                updateUserAccounts();
+                userAccountsToFile();
                 makeToastSavedText();
             }
         });
@@ -317,4 +299,43 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             Log.e("Exception", "File write failed: " + e.toString());
         }
     }
+    /**
+     * Saves a new game to the currentUserAccount.
+     */
+    private void updateUserAccounts() {
+        Calendar c = Calendar.getInstance();
+        DateFormat dateFormat =
+                DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+        String datetime = dateFormat.format(c.getTime());
+        LoginActivity.userAccountList.remove(currentUserAccount);
+        currentUserAccount.addSlidingTilesGame(datetime, boardManager);
+        LoginActivity.userAccountList.add(currentUserAccount);
+        userAccountsToFile();
+    }
+    /**
+     * Saves the userAccountList to a file.
+     */
+
+    private void userAccountsToFile() {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(
+                    this.openFileOutput(LoginActivity.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
+            outputStream.writeObject(LoginActivity.userAccountList);
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+    /**
+     * Make a list of games names for displaying in load games.
+     */
+    private String[] savedGamesList(){
+        String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
+        int i = 0;
+        for (String s : currentUserAccount.getSnakeGameNames()) {
+            games[i++] = s;
+        }
+        return games;
+    }
 }
+
