@@ -104,26 +104,10 @@ public class SnakeMenuActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar c = Calendar.getInstance();
-                DateFormat dateFormat =
-                        DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-                String datetime = dateFormat.format(c.getTime());
-                LoginActivity.userAccountList.remove(currentUserAccount);
-                loadFromTempFile();
-                currentUserAccount.addSnakeGame(datetime, savedData);
-                LoginActivity.userAccountList.add(currentUserAccount);
-                try {
-                    ObjectOutputStream outputStream = new ObjectOutputStream(
-                            openFileOutput(LoginActivity.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
-                    outputStream.writeObject(LoginActivity.userAccountList);
-                    outputStream.close();
-                } catch (IOException e) {
-                    Log.e("Exception", "File write failed: " + e.toString());
-                }
+                updateUserAccounts();
+                userAccountsToFile();
                 makeToastSavedText();
-
             }
-
     });
     }
 
@@ -238,6 +222,34 @@ public class SnakeMenuActivity extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             Log.e("login activity", "File contained unexpected data type: "
                     + e.toString());
+        }
+    }
+    /**
+     * Saves a new game to the currentUserAccount.
+     */
+    private void updateUserAccounts() {
+        Calendar c = Calendar.getInstance();
+        DateFormat dateFormat =
+                DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+        String datetime = dateFormat.format(c.getTime());
+        LoginActivity.userAccountList.remove(currentUserAccount);
+        loadFromTempFile();
+        currentUserAccount.addSnakeGame(datetime, savedData);
+        LoginActivity.userAccountList.add(currentUserAccount);
+        userAccountsToFile();
+    }
+    /**
+     * Saves the userAccountList to a file.
+
+     */
+    public void userAccountsToFile() {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(
+                    this.openFileOutput(LoginActivity.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
+            outputStream.writeObject(LoginActivity.userAccountList);
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
         }
     }
 }
