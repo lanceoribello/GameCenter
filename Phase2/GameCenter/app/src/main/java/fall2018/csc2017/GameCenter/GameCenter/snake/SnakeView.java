@@ -81,11 +81,29 @@ public class SnakeView extends SurfaceView implements Runnable {
     private long nextFrameTime;
 
     /**
-     * The frames per second of the current Snake game.
-     * 10 is the default.
+     * The default FPS for easy mode.
      */
-    long FPS = 10;
+    final long EASY_MODE_FPS = 10;
 
+    /**
+     * The default FPS for hard mode.
+     */
+    final long HARD_MODE_FPS = 14;
+
+    /**
+     * The frames per second of the current Snake game.
+     */
+    private long FPS;
+
+    /**
+     * How much the FPS is increased once the snake reaches its maximum size.
+     */
+    final long FPS_INCREASE = 2;
+
+    /**
+     * The maximum snake length before the snake is reset and the game is sped up.
+     */
+    final int MAX_SNAKE_SIZE = 15;
 
     /**
      * How many milliseconds in a second.
@@ -183,9 +201,8 @@ public class SnakeView extends SurfaceView implements Runnable {
         holder = getHolder();
         paint = new Paint();
 
-        // If you score 200 you are rewarded with a crash achievement!
-        snakeXs = new int[200];
-        snakeYs = new int[200];
+        snakeXs = new int[MAX_SNAKE_SIZE];
+        snakeYs = new int[MAX_SNAKE_SIZE];
 
         setDifficulty(difficulty);
 
@@ -204,9 +221,9 @@ public class SnakeView extends SurfaceView implements Runnable {
     private void setDifficulty(String difficulty){
         this.difficulty = difficulty;
         if (difficulty.equals("Snake Easy Mode")) {
-            FPS = 10;
+            FPS = EASY_MODE_FPS;
         } else {
-            FPS = 14;
+            FPS = HARD_MODE_FPS;
         }
     }
 
@@ -292,11 +309,16 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Processes a snake eating a mouse, increasing its length and the score by 1.
      * Spawns a new mouse at a random location.
+     * Also checks if the snake has reached its maximum length to determine whether the difficulty
+     * should be increased.
      */
     private void eatMouse() {
         snakeLength++;
         spawnMouse();
         score = score + 1;
+        if((snakeLength)%(MAX_SNAKE_SIZE) == 0){
+            increaseDifficulty();
+        }
     }
 
     /**
@@ -372,6 +394,16 @@ public class SnakeView extends SurfaceView implements Runnable {
         if (!detectDeath()) {
             moveSnake();
         }
+    }
+
+    /**
+     * Increases the difficulty of the game, resetting the snake's length to 1 and increasing
+     * the FPS.
+     */
+    public void increaseDifficulty(){
+        FPS+= FPS_INCREASE;
+        snakeLength = 1;
+        System.out.println("difficulty increased");
     }
 
     /**
