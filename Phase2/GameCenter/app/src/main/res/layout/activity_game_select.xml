@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,7 +32,7 @@
         app:layout_constraintVertical_bias="0.96" />
 
     <Button
-        android:id="@+id/snake"
+        android:id="@+id/snakeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
@@ -49,7 +48,7 @@
         app:layout_constraintVertical_bias="0.013" />
 
     <Button
-        android:id="@+id/ScoreboardButton"
+        android:id="@+id/scoreboardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -59,10 +58,10 @@
         android:layout_marginEnd="113dp"
         android:layout_marginBottom="46dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="View Scoreboards"
+        android:text="@string/view_scoreboards"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/snake" />
+        app:layout_constraintTop_toBottomOf="@+id/snakeButton" />
 
 </android.support.constraint.ConstraintLayout>

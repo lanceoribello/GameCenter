@@ -23,7 +23,7 @@ import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 /**
  * The login screen shown upon initial startup of the game.
  * Processes sign ups and log ins of userAccounts.
- * Passes on the current signed-in userAccount to SlidingTilesMenuActivity.
+ * Passes on the current signed-in userAccount to GameSelectActivity.
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     public static ArrayList<UserAccount> userAccountList;
 
     /**
-     * The UserAccount that will be logged in; will be passed onto SlidingTilesMenuActivity.
+     * The UserAccount that will be logged in; will be passed onto GameSelectActivity.
      */
     private UserAccount currentUserAccount;
 
@@ -47,33 +47,52 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         userAccountList = new ArrayList<>();
         setUserAccountList();
-
         setContentView(R.layout.activity_login);
-        addSignupButtonListener();
+        addSignUpButtonListener();
     }
 
     /**
-     * Sets the userAccountList to the list of UserAccounts read from
-     * the file USER_ACCOUNTS_FILENAME.
+     * Called when the user taps the login button.
+     * If the login credentials are valid, sends the currentUserAccount to GameSelectActivity
+     * then sets the view to GameSelectActivity.
      */
-    private void setUserAccountList() {
-        try {
-            InputStream inputStream = this.openFileInput(USER_ACCOUNTS_FILENAME);
-            if (inputStream == null) {
-                userAccountsToFile(USER_ACCOUNTS_FILENAME);
-            } else {
-                ObjectInputStream input = new ObjectInputStream(inputStream);
-                userAccountList = (ArrayList<UserAccount>) input.readObject();
-                inputStream.close();
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: "
-                    + e.toString());
+    public void onClick(View view) {
+        EditText usernameView = findViewById(R.id.Username);
+        EditText passwordView = findViewById(R.id.Password);
+        String username = usernameView.getText().toString();
+        String password = passwordView.getText().toString();
+        Intent intent = new Intent(view.getContext(), GameSelectActivity.class);
+        boolean loginSuccess = successfulLogin(username, password);
+
+        if (loginSuccess) {
+            intent.putExtra("currentUserAccount", currentUserAccount);
+            makeToastAcceptedText();
+            startActivity(intent);
+        } else {
+            makeToastFailedText();
         }
+    }
+
+    /**
+     * Called when the user taps the sign up button.
+     */
+    private void addSignUpButtonListener() {
+        Button signUpButton = findViewById(R.id.Signup);
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText usernameView = findViewById(R.id.Username);
+                EditText passwordView = findViewById(R.id.Password);
+                String username = usernameView.getText().toString();
+                String password = passwordView.getText().toString();
+                boolean signUpSuccess = successfulSignUp(username, password);
+                if (signUpSuccess) {
+                    makeToastSignUpAcceptedText();
+                } else {
+                    makeToastExistsText();
+                }
+            }
+        });
     }
 
     /**
@@ -124,6 +143,35 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Display that the login was successful.
+     */
+    private void makeToastAcceptedText() {
+        Toast.makeText(this, "Credentials accepted", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Display that the login was unsuccessful.
+     */
+    private void makeToastFailedText() {
+        Toast.makeText(this, "Try Again or Sign up", Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Display that a sign up was successful.
+     */
+    private void makeToastSignUpAcceptedText() {
+        Toast.makeText(this, "Sign Up successful. Please Login to continue.",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Display that a sign up failed because user already exists.
+     */
+    private void makeToastExistsText() {
+        Toast.makeText(this, "Account already exists.", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
      * Saves the userAccountList to a file.
      *
      * @param fileName the name of the file
@@ -140,75 +188,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Called when the user taps the login button.
-     * If the login credentials are valid, sends the currentUserAccount to SlidingTilesMenuActivity
-     * then sets the view to SlidingTilesMenuActivity.
+     * Sets the userAccountList to the list of UserAccounts read from
+     * the file USER_ACCOUNTS_FILENAME.
      */
-    public void onClick(View view) {
-        EditText usernameView = findViewById(R.id.Username);
-        EditText passwordView = findViewById(R.id.Password);
-        String username = usernameView.getText().toString();
-        String password = passwordView.getText().toString();
-        Intent intent = new Intent(view.getContext(), GameSelectActivity.class);
-        boolean success = successfulLogin(username, password);
-
-        if (success) {
-            intent.putExtra("currentUserAccount", currentUserAccount);
-            makeToastAcceptedText();
-            startActivity(intent);
-        } else {
-            makeToastFailedText();
-        }
-    }
-
-    /**
-     * Display that the login was successful.
-     */
-    private void makeToastAcceptedText() {
-        Toast.makeText(this, "Credentials accepted", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Display that the login was unsuccessful.
-     */
-    private void makeToastFailedText() {
-        Toast.makeText(this, "Try Again or Sign up", Toast.LENGTH_LONG).show();
-    }
-
-    /**
-     * Called when the user taps the sign up button.
-     */
-    private void addSignupButtonListener() {
-        Button signupButton = findViewById(R.id.Signup);
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText usernameView = findViewById(R.id.Username);
-                EditText passwordView = findViewById(R.id.Password);
-                String username = usernameView.getText().toString();
-                String password = passwordView.getText().toString();
-                boolean success = successfulSignUp(username, password);
-                if (success) {
-                    makeToastSUAcceptedText();
-                } else {
-                    makeToastExistsText();
-                }
+    private void setUserAccountList() {
+        try {
+            InputStream inputStream = this.openFileInput(USER_ACCOUNTS_FILENAME);
+            if (inputStream == null) {
+                userAccountsToFile(USER_ACCOUNTS_FILENAME);
+            } else {
+                ObjectInputStream input = new ObjectInputStream(inputStream);
+                userAccountList = (ArrayList<UserAccount>) input.readObject();
+                inputStream.close();
             }
-        });
-    }
-
-    /**
-     * Display that a signup was successful.
-     */
-    private void makeToastSUAcceptedText() {
-        Toast.makeText(this, "Sign Up successful. Please Login to continue.",
-                Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Display that a signup failed because user already exists.
-     */
-    private void makeToastExistsText() {
-        Toast.makeText(this, "Account already exists.", Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        } catch (ClassNotFoundException e) {
+            Log.e("login activity", "File contained unexpected data type: "
+                    + e.toString());
+        }
     }
 }
