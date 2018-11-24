@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.blocks.activities.BlocksMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeMenuActivity;
@@ -42,7 +43,9 @@ public class GameSelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_select);
         addSlidingTilesButtonListener();
         addSnakeButtonListener();
+        addBlocksButtonListener();
         addScoreboardButtonListener();
+
     }
 
     /**
@@ -68,6 +71,19 @@ public class GameSelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 switchToSnake();
+            }
+        });
+    }
+    /**
+     * Activate the snake button.
+     */
+
+    private void addBlocksButtonListener() {
+        Button blocksButton = findViewById(R.id.BlocksGame);
+        blocksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToBlocks();
             }
         });
     }
@@ -102,6 +118,14 @@ public class GameSelectActivity extends AppCompatActivity {
         intent.putExtra("currentUserAccount", currentUserAccount);
         startActivity(intent);
     }
+    /**
+     * Switch to the Snake Menu.
+     */
+    private void switchToBlocks() {
+        Intent intent = new Intent(this, BlocksMenuActivity.class);
+        intent.putExtra("currentUserAccount", currentUserAccount);
+        startActivity(intent);
+    }
 
     /**
      * Switch to the ScoreboardActivity view to view the per-user and per-game scoreboards.
@@ -111,6 +135,7 @@ public class GameSelectActivity extends AppCompatActivity {
         intent.putExtra("currentUserAccount", currentUserAccount);
         startActivity(intent);
     }
+
 
     /**
      * Update current user account by finding and setting it from the file.
