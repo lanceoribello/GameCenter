@@ -35,6 +35,12 @@ public class UserAccount implements Serializable {
      * Values: The saved data of each game.
      */
     private Map<String, Object[]> snakeGameNames;
+    /**
+     * Map of Blocks games of user account.
+     * Keys: The names of the user account's past Blocks games.
+     * Values: The saved data of each game.
+     */
+    private Map<String, Object > blocksGameNames;
 
     /**
      * Map of scores.
@@ -177,6 +183,36 @@ public class UserAccount implements Serializable {
      * @return key set of this user account's saved game names
      */
     public Set<String> getSnakeGameNames() {
+        return snakeGameNames.keySet();
+    }
+    /**
+     * Adds a new game name to this user account
+     *
+     * @param newName   a new game name added to the user account
+     * @param savedData saved data of the new game
+     */
+    public void addBlocksGame(String newName, Object savedData) {
+        this.blocksGameNames.put(newName, savedData);
+    }
+    /**
+     * Get a game saved by the game name.
+     *
+     * @param gameName a game name saved to the user account
+     * @return saved data of the game
+     */
+    public Object getBlocksGame(String gameName) {
+        if (this.blocksGameNames.containsKey(gameName)) {
+            return this.blocksGameNames.get(gameName);
+        } else {
+            return null;
+        }
+    }
+    /**
+     * Returns this user account's key set of saved game names.
+     *
+     * @return key set of this user account's saved game names
+     */
+    public Set<String> getBlocksGameNames() {
         return snakeGameNames.keySet();
     }
 }
