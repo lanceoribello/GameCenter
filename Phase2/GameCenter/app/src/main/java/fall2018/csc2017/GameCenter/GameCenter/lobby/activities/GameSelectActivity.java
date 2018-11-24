@@ -113,11 +113,11 @@ public class GameSelectActivity extends AppCompatActivity {
     }
 
     /**
-     * Set list of user accounts from fileName and updates current user account.
+     * Update current user account by finding and setting it from the file.
      *
      * @param fileName the name of the file
      */
-    public void setUserAccountList(String fileName) {
+    public void setCurrentUserAccount(String fileName) {
         try {
             InputStream inputStream = this.openFileInput(fileName);
             if (inputStream != null) {
@@ -147,6 +147,6 @@ public class GameSelectActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setUserAccountList(USER_ACCOUNTS_FILENAME);
+        setCurrentUserAccount(USER_ACCOUNTS_FILENAME);
     }
 }

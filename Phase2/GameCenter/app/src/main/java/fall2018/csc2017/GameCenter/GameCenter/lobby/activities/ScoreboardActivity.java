@@ -105,21 +105,12 @@ public class ScoreboardActivity extends AppCompatActivity {
         setUserAccountList(USER_ACCOUNTS_FILENAME);
         for (UserAccount user : this.userAccountList) {
             for (int i = 0; i < this.gameLevels.length; i++) {
-                // Update score if less than base score for Sliding Tiles
-                if (i < 3) {
-                    if (user.getTopScore(this.gameLevels[i]) < baseTopScores[i]) {
-                        topScorers[i] = (user.getUsername() + ": "
-                                + String.valueOf(user.getTopScore(this.gameLevels[i])));
-                        baseTopScores[i] = user.getTopScore(this.gameLevels[i]);
-                    }
-                }
-                // Update score if greater than base score for Snake and Blocks
-                else {
-                    if (user.getTopScore(this.gameLevels[i]) > baseTopScores[i]) {
-                        topScorers[i] = (user.getUsername() + ": "
-                                + String.valueOf(user.getTopScore(this.gameLevels[i])));
-                        baseTopScores[i] = user.getTopScore(this.gameLevels[i]);
-                    }
+                // Update score if less than base (Sliding Tiles)/greater than base (Snake, Blocks)
+                if ((i < 3 && user.getTopScore(this.gameLevels[i]) < baseTopScores[i]) ||
+                        (i >= 3 && user.getTopScore(this.gameLevels[i]) > baseTopScores[i])) {
+                    topScorers[i] = (user.getUsername() + ": "
+                            + String.valueOf(user.getTopScore(this.gameLevels[i])));
+                    baseTopScores[i] = user.getTopScore(this.gameLevels[i]);
                 }
             }
         }
@@ -139,7 +130,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         setUserAccountList(USER_ACCOUNTS_FILENAME);
         for (int i = 0; i < this.gameLevels.length; i++) {
             Integer userTopScore = this.currentUserAccount.getTopScore(this.gameLevels[i]);
-            // Update top score if not set as default score in the user account
+            // Update top score if not set as default score for respective game level
             if ((i < 3 && userTopScore != 1000000) || (i >= 3 && userTopScore != 0)) {
                 topScores[i] = String.valueOf(userTopScore);
             }
@@ -158,12 +149,7 @@ public class ScoreboardActivity extends AppCompatActivity {
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
                 this.userAccountList = (ArrayList<UserAccount>) input.readObject();
-                // Update current user account from file
-                for (UserAccount user : this.userAccountList) {
-                    if (user.getUsername().equals(this.currentUserAccount.getUsername())) {
-                        this.currentUserAccount = user;
-                    }
-                }
+                setCurrentUserAccount();
                 inputStream.close();
             }
         } catch (FileNotFoundException e) {
@@ -173,6 +159,17 @@ public class ScoreboardActivity extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             Log.e("login activity", "File contained unexpected data type: "
                     + e.toString());
+        }
+    }
+
+    /**
+     * Update current user account from user account list.
+     */
+    private void setCurrentUserAccount() {
+        for (UserAccount user : this.userAccountList) {
+            if (user.getUsername().equals(this.currentUserAccount.getUsername())) {
+                this.currentUserAccount = user;
+            }
         }
     }
 
