@@ -23,7 +23,7 @@ public class BoardTest {
 
     /**
      * The arraylist of background IDs representing the tile images in R.drawable in row-major
-     * order for a 3x3 board
+     * order for a 4x4 board
      */
 
     private List<Integer> fourByList = Arrays.asList(2131099773, 2131099784, 2131099790, 2131099791,
@@ -34,7 +34,7 @@ public class BoardTest {
 
     /**
      * The arraylist of background IDs representing the tile images in R.drawable in row-major
-     * order for a 3x3 board
+     * order for a 5x5 board
      */
 
     private List<Integer> fiveByList = Arrays.asList(2131099773, 2131099784, 2131099790, 2131099791,
