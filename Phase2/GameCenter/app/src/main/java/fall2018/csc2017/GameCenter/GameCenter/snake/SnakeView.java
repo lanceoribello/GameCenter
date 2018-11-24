@@ -49,12 +49,12 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * The text size of the displayed score.
      */
-    final int SCORE_TEXT_SIZE = 40;
+    private final static int SCORE_TEXT_SIZE = 40;
 
     /**
      * The size of the GAME OVER text.
      */
-    final int GAME_OVER_SIZE = 150;
+    private final static int GAME_OVER_SIZE = 150;
 
     /**
      * The context of the Snake game.
@@ -93,12 +93,12 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * The default FPS for easy mode.
      */
-    final long EASY_MODE_FPS = 10;
+    private final static long EASY_MODE_FPS = 10;
 
     /**
      * The default FPS for hard mode.
      */
-    final long HARD_MODE_FPS = 14;
+    private final static long HARD_MODE_FPS = 14;
 
     /**
      * The frames per second of the current Snake game.
@@ -108,17 +108,17 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * How much the FPS is increased once the snake reaches its maximum size.
      */
-    final long FPS_INCREASE = 2;
+    private final static long FPS_INCREASE = 2;
 
     /**
      * The maximum snake length before the snake is reset and the game is sped up.
      */
-    final int MAX_SNAKE_SIZE = 15;
+    private final static int MAX_SNAKE_SIZE = 15;
 
     /**
      * How many milliseconds in a second.
      */
-    final long MILLIS_IN_A_SECOND = 1000;
+    private final static long MILLIS_IN_A_SECOND = 1000;
 
     /**
      * The current score of the game.
@@ -160,7 +160,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      * The width of the playable area in terms of the number of blocks.
      * 40 by default.
      */
-    private final int NUM_BLOCKS_WIDE = 40;
+    private final static int NUM_BLOCKS_WIDE = 40;
 
     /**
      * The height of the playable area in terms of the number of blocks.
@@ -267,7 +267,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      * Spawns a snake with length 1 in the middle of the grid area as well as a mouse in a random
      * location.
      */
-    public void startGame() {
+    private void startGame() {
         snakeLength = 1;
         snakeXs[0] = NUM_BLOCKS_WIDE / 2;
         snakeYs[0] = numBlocksHigh / 2;
@@ -282,7 +282,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      *
      * @param oldSaveData saved data of a past Snake game
      */
-    public void resumeOldGame(Object[] oldSaveData) {
+    private void resumeOldGame(Object[] oldSaveData) {
         snakeXs = (int[]) oldSaveData[0];
         snakeYs = (int[]) oldSaveData[1];
         spawnMouseAt((int) oldSaveData[2], (int) oldSaveData[3]);
@@ -301,7 +301,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      * @param x the x-value of the mouse to be spawned
      * @param y the y-value of the mouse to be spawned
      */
-    public void spawnMouseAt(int x, int y) {
+    private void spawnMouseAt(int x, int y) {
         mouseX = x;
         mouseY = y;
     }
@@ -309,7 +309,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Spawns a mouse at a random location.
      */
-    public void spawnMouse() {
+    private void spawnMouse() {
         Random random = new Random();
         mouseX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
         mouseY = random.nextInt(numBlocksHigh - 1) + 1;
@@ -396,7 +396,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Processes when a snake eats a mouse on contact and the movement of the snake.
      */
-    public void updateGame() {
+    private void updateGame() {
         if (snakeXs[0] == mouseX && snakeYs[0] == mouseY) {
             eatMouse();
         }
@@ -409,7 +409,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      * Increases the difficulty of the game, resetting the snake's length to 1 and increasing
      * the FPS.
      */
-    public void increaseDifficulty() {
+    private void increaseDifficulty() {
         FPS += FPS_INCREASE;
         snakeLength = 1;
     }
@@ -417,7 +417,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Creates the display of the game.
      */
-    public void drawGame() {
+    private void drawGame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
             canvas.drawColor(Color.argb(255, 102, 204, 255));
@@ -432,7 +432,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Draws the score text and the GAME OVER text.
      */
-    public void drawText() {
+    private void drawText() {
         paint.setTextSize(SCORE_TEXT_SIZE);
         canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
         if (detectDeath()) {
@@ -444,7 +444,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Draws the snake.
      */
-    public void drawSnake() {
+    private void drawSnake() {
         paint.setColor(Color.argb(255, 255, 255, 255));
         for (int i = 0; i < snakeLength; i++) {
             canvas.drawRect(snakeXs[i] * blockSize,
@@ -457,7 +457,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Draws the mouse.
      */
-    public void drawMouse() {
+    private void drawMouse() {
         paint.setColor(Color.argb(255, 255, 0, 0));
         canvas.drawRect(mouseX * blockSize,
                 (mouseY * blockSize),
@@ -469,7 +469,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Draws the controls for movement at the bottom of the screen.
      */
-    public void drawControls() {
+    private void drawControls() {
         paint.setColor(Color.argb(255, 255, 255, 255));
         canvas.drawRect(0, 2 * screenHeight / 3, screenWidth, screenHeight, paint);
     }
@@ -480,7 +480,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      *
      * @return whether the game is to be updated
      */
-    public boolean checkForUpdate() {
+    private boolean checkForUpdate() {
         if (nextFrameTime <= System.currentTimeMillis()) {
             nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND / FPS;
             return true;
