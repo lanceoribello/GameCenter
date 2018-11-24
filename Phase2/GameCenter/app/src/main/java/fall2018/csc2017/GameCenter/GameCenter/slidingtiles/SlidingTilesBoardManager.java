@@ -184,7 +184,7 @@ public class SlidingTilesBoardManager implements Serializable {
     /**
      * Adds a copy of the current instance of board to the savedBoards list.
      */
-    private void addToSavedBoards() {
+    void addToSavedBoards() {
         this.savedBoards.add(copiedBoard(this.board));
     }
 
@@ -220,7 +220,7 @@ public class SlidingTilesBoardManager implements Serializable {
      *
      * @param boardToBeCopied the board whose tiles are copied
      */
-    private Board copiedBoard(Board boardToBeCopied) {
+    Board copiedBoard(Board boardToBeCopied) {
         List<Integer> tileNums = new ArrayList<>();
         Tile[][] tilesToBeCopied = boardToBeCopied.getTiles();
         for (int row = 0; row != Board.numRows; row++) {
