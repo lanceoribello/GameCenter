@@ -10,7 +10,7 @@ public class TileTest {
      * The Tile for testing, creates a tile with id 4 set to the background image of 4 in drawables
      */
 
-    Tile tile = new Tile(4, 2131099791);
+    Tile tile = new Tile(3, 2131099791);
 
     /**
      * Checks if the tile returns the correct background based on its id
