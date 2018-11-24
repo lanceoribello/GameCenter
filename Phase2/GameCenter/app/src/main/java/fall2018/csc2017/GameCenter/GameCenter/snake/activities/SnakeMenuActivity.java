@@ -40,7 +40,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
 
     /**
      * The current User snake game saved data.
-     * Consists of {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty, direction}.
+     * Consists of:
+     * {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty, direction, FPS}.
      */
     private Object[] savedData;
 
