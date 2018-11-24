@@ -7,7 +7,7 @@
     tools:context="fall2018.csc2017.GameCenter.GameCenter.lobby.activities.ScoreboardActivity">
 
     <TableLayout
-        android:id="@+id/scoreboardsTable"
+        android:id="@+id/scoreboardTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

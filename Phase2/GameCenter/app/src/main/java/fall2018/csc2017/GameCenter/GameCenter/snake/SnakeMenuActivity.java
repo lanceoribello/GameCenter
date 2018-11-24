@@ -104,31 +104,16 @@ public class SnakeMenuActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar c = Calendar.getInstance();
-                DateFormat dateFormat =
-                        DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-                String datetime = dateFormat.format(c.getTime());
-                LoginActivity.userAccountList.remove(currentUserAccount);
-                loadFromTempFile();
-                currentUserAccount.addSnakeGame(datetime, savedData);
-                LoginActivity.userAccountList.add(currentUserAccount);
-                try {
-                    ObjectOutputStream outputStream = new ObjectOutputStream(
-                            openFileOutput(LoginActivity.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
-                    outputStream.writeObject(LoginActivity.userAccountList);
-                    outputStream.close();
-                } catch (IOException e) {
-                    Log.e("Exception", "File write failed: " + e.toString());
-                }
+                updateUserAccounts();
+                userAccountsToFile();
                 makeToastSavedText();
-
             }
-
     });
     }
 
     /**
-     * Activate the load button listener.
+     * Activate the load button listener. Users will be given a list of previously saved games to
+     * choose from.
      */
     private void addLoadButtonListener() {
         Button loadButton = findViewById(R.id.LoadSnake);
@@ -138,20 +123,14 @@ public class SnakeMenuActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         SnakeMenuActivity.this);
                 builder.setTitle("Choose a game");
-                String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
-                int i = 0;
-                for (String s : currentUserAccount.getSnakeGameNames()) {
-                    games[i++] = s;
-                }
-                int checkedItem = 1;
-                builder.setSingleChoiceItems(games, checkedItem, new DialogInterface.OnClickListener() {
+                int checkedItem = 1; //Sets the choice to the first element.
+                builder.setSingleChoiceItems(savedGamesList(), checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListView lw = ((AlertDialog) dialog).getListView();
                         Object selectedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
                         String selectedGame = selectedItem.toString();
                         savedData = currentUserAccount.getSnakeGame(selectedGame);
-//                        Board.numRows = Board.numCols = boardManager.getComplexity();
                         makeToastLoadedText();
                         dialog.dismiss();
                         switchToGame((String)savedData[6], savedData);
@@ -177,7 +156,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
         Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
     }
     /**
-     * Activate the Load autoSave button, which loads the latest autoSave of the currentAccount.
+     * Activate the Load autoSave button, which loads the latest autoSave of Snake of
+     * the currentAccount.
      */
     private void addLoadAutoSaveButtonListener() {
         Button load = findViewById(R.id.AutoSnake);
@@ -238,5 +218,44 @@ public class SnakeMenuActivity extends AppCompatActivity {
             Log.e("login activity", "File contained unexpected data type: "
                     + e.toString());
         }
+    }
+    /**
+     * Saves a new game to the currentUserAccount.
+     */
+    private void updateUserAccounts() {
+        Calendar c = Calendar.getInstance();
+        DateFormat dateFormat =
+                DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+        String datetime = dateFormat.format(c.getTime());
+        LoginActivity.userAccountList.remove(currentUserAccount);
+        loadFromTempFile();
+        currentUserAccount.addSnakeGame(datetime, savedData);
+        LoginActivity.userAccountList.add(currentUserAccount);
+        userAccountsToFile();
+    }
+    /**
+     * Saves the userAccountList to a file.
+     */
+
+    private void userAccountsToFile() {
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(
+                    this.openFileOutput(LoginActivity.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
+            outputStream.writeObject(LoginActivity.userAccountList);
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+    /**
+     * Make a list of games names for displaying in load games.
+     */
+    private String[] savedGamesList(){
+        String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
+        int i = 0;
+        for (String s : currentUserAccount.getSnakeGameNames()) {
+            games[i++] = s;
+        }
+        return games;
     }
 }
