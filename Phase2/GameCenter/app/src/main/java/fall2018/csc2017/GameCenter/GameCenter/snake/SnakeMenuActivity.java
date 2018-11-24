@@ -123,13 +123,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         SnakeMenuActivity.this);
                 builder.setTitle("Choose a game");
-                String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
-                int i = 0;
-                for (String s : currentUserAccount.getSnakeGameNames()) {
-                    games[i++] = s;
-                }
-                int checkedItem = 1;
-                builder.setSingleChoiceItems(games, checkedItem, new DialogInterface.OnClickListener() {
+                int checkedItem = 1; //Sets the choice to the first element.
+                builder.setSingleChoiceItems(savedGamesList(), checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListView lw = ((AlertDialog) dialog).getListView();
@@ -240,9 +235,9 @@ public class SnakeMenuActivity extends AppCompatActivity {
     }
     /**
      * Saves the userAccountList to a file.
-
      */
-    public void userAccountsToFile() {
+
+    private void userAccountsToFile() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(LoginActivity.USER_ACCOUNTS_FILENAME, MODE_PRIVATE));
@@ -251,5 +246,16 @@ public class SnakeMenuActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+    }
+    /**
+     * Make a list of games names for displaying in load games.
+     */
+    private String[] savedGamesList(){
+        String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
+        int i = 0;
+        for (String s : currentUserAccount.getSnakeGameNames()) {
+            games[i++] = s;
+        }
+        return games;
     }
 }
