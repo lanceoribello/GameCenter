@@ -112,4 +112,5 @@ Fixed snake death and high score updating issue.
 
 ## November 23, 2018
 Fixed tile id error.
+Set up unit testing.
 Wrote unit tests for lobby and sliding tiles classes.
