@@ -248,7 +248,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
      * @param complexity level of the game
      * @return Arraylist of id numbers of the tile corresponding to the tile in the drawable folder
      */
-    private ArrayList<Integer> getTileIdList(int complexity) {
+    public ArrayList<Integer> getTileIdList(int complexity) {
         ArrayList<Integer> tileIdList = new ArrayList<>();
         for (int tileNum = 0; tileNum != Math.pow(complexity, 2); tileNum++) {
             String idString = Integer.toString(tileNum + 1);

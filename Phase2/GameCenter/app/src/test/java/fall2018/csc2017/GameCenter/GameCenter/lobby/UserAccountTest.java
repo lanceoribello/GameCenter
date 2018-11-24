@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity;
+import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeMenuActivity;
 
 import static org.junit.Assert.*;
 
@@ -13,6 +14,16 @@ public class UserAccountTest {
      * The user account for testing.
      */
     private UserAccount tester = new UserAccount("nancyishaneelance", "207");
+
+    /**
+     * The Sliding Tiles menu for testing.
+     */
+    private SlidingTilesMenuActivity slidingTilesMenu = new SlidingTilesMenuActivity();
+
+    /**
+     * The Sliding Tiles menu for testing.
+     */
+    private SnakeMenuActivity snakeMenu = new SnakeMenuActivity();
 
     /**
      * Tests if user account returns the correct username.
@@ -36,7 +47,7 @@ public class UserAccountTest {
      * Tests if updated high score is saved correctly.
      */
     @Test
-    public void setTopScore() {
+    public void testSetTopScore() {
         String gameLevel = "Sliding Tiles 3x3";
         Integer topScore = 42;
         tester.setTopScore(gameLevel, topScore);
@@ -47,7 +58,7 @@ public class UserAccountTest {
      * Tests if updated high score is returned correctly.
      */
     @Test
-    public void getTopScore() {
+    public void testGetTopScore() {
         String gameLevel = "Sliding Tiles 3x3";
         Integer topScore = 42;
         assertEquals(topScore, tester.getTopScore(gameLevel));
@@ -57,8 +68,11 @@ public class UserAccountTest {
      * Tests if Sliding Tiles game is added correctly.
      */
     @Test
-    public void addSlidingTilesGame() {
-        //String gameName = "Saved Game";
+    public void testAddSlidingTilesGame() {
+        String gameName = "Saved Game";
+        SlidingTilesBoardManager gameBoardManager = new SlidingTilesBoardManager(3,
+                slidingTilesMenu.getTileIdList(3));
+        tester.addSlidingTilesGame(gameName, gameBoardManager);
     }
 
     /**
