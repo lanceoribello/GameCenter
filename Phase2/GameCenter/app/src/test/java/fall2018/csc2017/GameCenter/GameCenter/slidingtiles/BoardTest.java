@@ -168,6 +168,27 @@ public class BoardTest {
     }
 
     /**
+     * Tests if the last 2 tiles swap on a 3x3 board
+     */
+    @Test
+    public void swapLastTwoTiles() {
+        Board.numRows = Board.numCols = 3;
+
+        numTiles = Board.numRows * Board.numCols;
+        List<Tile> tiles = setTileList();
+        Board board = new Board(tiles);
+
+        Tile tileHold = board.getTile(2, 1);
+        Tile tileHold2 = board.getTile(2, 2);
+
+        board.swapTiles(2, 1, 2, 2);
+
+        assert (board.getTile(2, 1) == tileHold2 &&
+                board.getTile(2, 2) == tileHold);
+
+    }
+
+    /**
      * Tests if the iterator iterated correctly through the tiles in boards of 3x3, 4x4 and 5x5
      */
     @Test
