@@ -157,6 +157,18 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
     }
 
     /**
+     * Make a list of games names for displaying in load games.
+     */
+    private String[] savedGamesList(){
+        String[] games = new String[(currentUserAccount.getSlidingTilesGameNames().size())];
+        int i = 0;
+        for (String s : currentUserAccount.getSlidingTilesGameNames()) {
+            games[i++] = s;
+        }
+        return games;
+    }
+
+    /**
      * Display that a game was loaded successfully.
      */
     private void makeToastLoadedText() {
@@ -236,7 +248,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
      * @param complexity level of the game
      * @return Arraylist of id numbers of the tile corresponding to the tile in the drawable folder
      */
-    private ArrayList<Integer> getTileIdList(int complexity) {
+    public ArrayList<Integer> getTileIdList(int complexity) {
         ArrayList<Integer> tileIdList = new ArrayList<>();
         for (int tileNum = 0; tileNum != Math.pow(complexity, 2); tileNum++) {
             String idString = Integer.toString(tileNum + 1);
@@ -292,8 +304,9 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             Log.e("Exception", "File write failed: " + e.toString());
         }
     }
+
     /**
-     * Saves a new game to the currentUserAccount.
+     * Saves a new game to the currentUserAccount with game name as date and time.
      */
     private void updateUserAccounts() {
         Calendar c = Calendar.getInstance();
@@ -305,10 +318,10 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile();
     }
+
     /**
      * Saves the userAccountList to a file.
      */
-
     private void userAccountsToFile() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
@@ -318,17 +331,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
-    }
-    /**
-     * Make a list of games names for displaying in load games.
-     */
-    private String[] savedGamesList(){
-        String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
-        int i = 0;
-        for (String s : currentUserAccount.getSnakeGameNames()) {
-            games[i++] = s;
-        }
-        return games;
     }
 
     /**
