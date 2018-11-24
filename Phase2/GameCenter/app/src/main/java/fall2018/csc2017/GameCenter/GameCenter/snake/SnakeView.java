@@ -13,71 +13,149 @@ import java.util.Random;
 
 /*
 Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
- */
+Manages a Snake game, running separately from the UI.
+Keeps track of
 
+ */
 public class SnakeView extends SurfaceView implements Runnable {
 
-    // All the code will run separately to the UI
+    /**
+     * The thread of the Snake game.
+     */
     private Thread thread = null;
-    // This variable determines when the game is playing
-    // It is declared as volatile because
-    // it can be accessed from inside and outside the thread
+
+    /**
+     * The volatile that determines whether the game is currently being played.
+     * As a volatile, it can be accessed from inside and outside the thread.
+     */
     private volatile boolean playing;
 
-    // This is what we draw on
+    /**
+     * The canvas of the Snake game.
+     * Used to display the game.
+     */
     Canvas canvas;
-    // This is required by the Canvas class to do the drawing
+
+    /**
+     * The SurfaceHolder used by the Canvas class to display the game.
+     */
     private SurfaceHolder holder;
-    // This lets us control colors etc
+
+    /**
+     * The paint used to select colors for displaying the game.
+     */
     private Paint paint;
 
-    // This will be a reference to the Activity
+    /**
+     * The context of the Snake game.
+     * Used to reference the game's activity.
+     */
     Context context;
 
-    // For tracking movement direction
+    /**
+     * The directions used for controlling movement.
+     */
     public enum Direction {
         UP, RIGHT, DOWN, LEFT
     }
 
-    // Start by heading to the right
+    /**
+     * The current snake's direction.
+     * Set to right for new games by default.
+     */
     private Direction direction = Direction.RIGHT;
 
-    // What is the screen resolution
+    /**
+     * The width of the screen being displayed upon.
+     */
     private int screenWidth;
+
+    /**
+     * The height of the screen being displayed upon.
+     */
     int screenHeight;
 
-    // Control pausing between updates
+    /**
+     * The long that controls when the game will be updated next.
+     */
     private long nextFrameTime;
-    // Update the game 10 times per second
-    long FPS = 10;
-    // There are 1000 milliseconds in a second
-    final long MILLIS_IN_A_SECOND = 1000;
-    // We will draw the frame much more often
 
-    // The current score
+    /**
+     * The frames per second of the current Snake game.
+     * 10 is the default.
+     */
+    long FPS = 10;
+
+
+    /**
+     * How many milliseconds in a second.
+     */
+    final long MILLIS_IN_A_SECOND = 1000;
+
+    /**
+     * The current score of the game.
+     */
     private int score;
 
-    // The location in the grid of all the segments
+    /**
+     * The locations of all x-values of the snake.
+     */
     private int[] snakeXs;
+
+    /**
+     * The locations of all y-values of the snake.
+     */
     private int[] snakeYs;
 
-    // How long is the snake at the moment
+    /**
+     * The current length of the snake.
+     */
     private int snakeLength;
 
-    // Where is the mouse
+    /**
+     * The x value of the current mouse to be eaten.
+     */
     private int mouseX;
+
+    /**
+     * The y value of the current mouse to be eaten.
+     */
     private int mouseY;
 
-    // The size in pixels of a snake segment
+    /**
+     * The size in pixels of a block for the game display.
+     * Corresponds to the size of an individual snake segment and the size of a mouse.
+     */
     private int blockSize;
 
-    // The size in segments of the playable area
+    /**
+     * The width of the playable area in terms of the number of blocks.
+     * 40 by default.
+     */
     private final int NUM_BLOCKS_WIDE = 40;
-    private int numBlocksHigh; // determined dynamically;
 
+    /**
+     * The height of the playable area in terms of the number of blocks.
+     * Determined dynamically.
+     */
+    private int numBlocksHigh;
+
+    /**
+     * An object array that contains any relevant data in the game used for saving and loading
+     * save points.
+     */
     Object[] savePointData;
+
+    /**
+     * The difficulty level of the game.
+     */
     private String difficulty;
 
+    /**
+     * Constructor of SnakeView that only takes in context.
+     * Necessary to have such a constructor for a custom view class like SnakeView.
+     * @param context the context used to create the SnakeView
+     */
     public SnakeView(Context context) {
         super(context);
     }
