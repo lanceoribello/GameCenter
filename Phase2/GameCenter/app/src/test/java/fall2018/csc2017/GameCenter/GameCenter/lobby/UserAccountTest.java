@@ -2,12 +2,12 @@ package fall2018.csc2017.GameCenter.GameCenter.lobby;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.activities.SlidingTilesMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 
 import static org.junit.Assert.*;
@@ -20,9 +20,28 @@ public class UserAccountTest {
     private UserAccount tester = new UserAccount("nancyishaneelance", "207");
 
     /**
-     * The Sliding Tiles menu for testing.
+     * Drawable tile ID's for 3x3 board.
      */
-    private SlidingTilesMenuActivity slidingTilesMenu = new SlidingTilesMenuActivity();
+    private Integer[] tileIds3x3 = {2131099773, 2131099784, 2131099790,
+            2131099791, 2131099792, 2131099793,
+            2131099794, 2131099795, 2131099796};
+
+    /**
+     * Drawable tile ID's for 3x3 board.
+     */
+    private Integer[] tileIds4x4 = {2131099773, 2131099784, 2131099790, 2131099791,
+            2131099792, 2131099793, 2131099794, 2131099795,
+            2131099796, 2131099774, 2131099775, 2131099776,
+            2131099777, 2131099778, 2131099779, 2131099780};
+
+    /**
+     * Drawable tile ID's for 3x3 board.
+     */
+    private Integer[] tileIds5x5 = {2131099773, 2131099784, 2131099790, 2131099791, 2131099792,
+            2131099793, 2131099794, 2131099795, 2131099796, 2131099774,
+            2131099775, 2131099776, 2131099777, 2131099778, 2131099779,
+            2131099780, 2131099781, 2131099782, 2131099783, 2131099785,
+            2131099786, 2131099787, 2131099788, 2131099789, 0};
 
     /**
      * Tests if user account returns the correct username.
@@ -59,8 +78,9 @@ public class UserAccountTest {
     @Test
     public void testAddGetSlidingTilesGame() {
         String gameName = "Saved Game";
-        SlidingTilesBoardManager gameBoardManager = new SlidingTilesBoardManager(3,
-                slidingTilesMenu.getTileIdList(3));
+        ArrayList<Integer> gameTileIds = new ArrayList<>(Arrays.asList(this.tileIds3x3));
+        SlidingTilesBoardManager gameBoardManager = new
+                SlidingTilesBoardManager(3, gameTileIds);
         tester.addSlidingTilesGame(gameName, gameBoardManager);
         assertEquals(gameBoardManager, tester.getSlidingTilesGame(gameName));
     }
@@ -71,14 +91,17 @@ public class UserAccountTest {
     @Test
     public void testGetSlidingTilesGameNames() {
         String gameName1 = "Game 1";
+        ArrayList<Integer> gameTileIds3x3 = new ArrayList<>(Arrays.asList(this.tileIds3x3));
         SlidingTilesBoardManager gameBoardManager1 = new SlidingTilesBoardManager(3,
-                slidingTilesMenu.getTileIdList(3));
+                gameTileIds3x3);
         String gameName2 = "Game 2";
+        ArrayList<Integer> gameTileIds4x4 = new ArrayList<>(Arrays.asList(this.tileIds4x4));
         SlidingTilesBoardManager gameBoardManager2 = new SlidingTilesBoardManager(4,
-                slidingTilesMenu.getTileIdList(4));
+                gameTileIds4x4);
         String gameName3 = "Game 3";
+        ArrayList<Integer> gameTileIds5x5 = new ArrayList<>(Arrays.asList(this.tileIds5x5));
         SlidingTilesBoardManager gameBoardManager3 = new SlidingTilesBoardManager(5,
-                slidingTilesMenu.getTileIdList(5));
+                gameTileIds5x5);
         tester.addSlidingTilesGame(gameName1, gameBoardManager1);
         tester.addSlidingTilesGame(gameName2, gameBoardManager2);
         tester.addSlidingTilesGame(gameName3, gameBoardManager3);
