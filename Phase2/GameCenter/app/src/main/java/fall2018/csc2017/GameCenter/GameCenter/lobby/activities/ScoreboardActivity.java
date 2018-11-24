@@ -40,7 +40,7 @@ public class ScoreboardActivity extends AppCompatActivity {
     private UserAccount currentUserAccount;
 
     /**
-     * String Array of the game level names.
+     * String Array of the game level names, from UserAccount.
      */
     private String[] gameLevels = UserAccount.gameLevels;
 
@@ -51,15 +51,28 @@ public class ScoreboardActivity extends AppCompatActivity {
         this.currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         setUserAccountList(USER_ACCOUNTS_FILENAME);
-        // Set the title of the Scoreboard screen
+        createScoreboardTitle();
+        createScoreboardTable();
+    }
+
+    /**
+     * Set the title of the Scoreboard screen with the current user's username.
+     */
+    private void createScoreboardTitle() {
         TextView scoreboardTitle = findViewById(R.id.scoreboardTitle);
         String userScoreboardTitle = "Scoreboard of User: " + this.currentUserAccount.getUsername();
         scoreboardTitle.setText(userScoreboardTitle);
-        // Set the table of scores by iterating over each game level
-        TableLayout scoreboardTable = findViewById(R.id.scoreboardsTable);
+    }
+
+    /**
+     * Set the table of scores by iterating over each game level
+     */
+    private void createScoreboardTable() {
+        TableLayout scoreboardTable = findViewById(R.id.scoreboardTable);
         String[] topScorers = findTopScorers();
         String[] topScores = findTopScores();
         int i = 0;
+        // Set each row of scores for each game level
         for (String gameLevel : gameLevels) {
             TableRow scoreboardRow = new TableRow(this);
             TextView headingView = new TextView(this);
@@ -126,8 +139,8 @@ public class ScoreboardActivity extends AppCompatActivity {
         setUserAccountList(USER_ACCOUNTS_FILENAME);
         for (int i = 0; i < this.gameLevels.length; i++) {
             Integer userTopScore = this.currentUserAccount.getTopScore(this.gameLevels[i]);
-            // Update top score if not set as default in the user account
-            if (userTopScore != 1000000 && userTopScore != 0) {
+            // Update top score if not set as default score in the user account
+            if ((i < 3 && userTopScore != 1000000) || (i >= 3 && userTopScore != 0)) {
                 topScores[i] = String.valueOf(userTopScore);
             }
         }

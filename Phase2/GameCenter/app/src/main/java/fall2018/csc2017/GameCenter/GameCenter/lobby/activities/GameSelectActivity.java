@@ -53,9 +53,7 @@ public class GameSelectActivity extends AppCompatActivity {
         slidingTilesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SlidingTilesMenuActivity.class);
-                intent.putExtra("currentUserAccount", currentUserAccount);
-                startActivity(intent);
+                switchToSlidingTiles();
             }
         });
     }
@@ -65,13 +63,11 @@ public class GameSelectActivity extends AppCompatActivity {
      */
 
     private void addSnakeButtonListener() {
-        Button slidingTilesButton = findViewById(R.id.snake);
+        Button slidingTilesButton = findViewById(R.id.snakeButton);
         slidingTilesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SnakeMenuActivity.class);
-                intent.putExtra("currentUserAccount", currentUserAccount);
-                startActivity(intent);
+                switchToSnake();
             }
         });
     }
@@ -80,7 +76,7 @@ public class GameSelectActivity extends AppCompatActivity {
      * Activate the View ScoreboardActivity button.
      */
     private void addScoreboardButtonListener() {
-        Button scoreboardButton = findViewById(R.id.ScoreboardButton);
+        Button scoreboardButton = findViewById(R.id.scoreboardButton);
         scoreboardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,12 +86,30 @@ public class GameSelectActivity extends AppCompatActivity {
     }
 
     /**
+     * Switch to the Sliding Tiles Menu.
+     */
+    private void switchToSlidingTiles() {
+        Intent intent = new Intent(this, SlidingTilesMenuActivity.class);
+        intent.putExtra("currentUserAccount", currentUserAccount);
+        startActivity(intent);
+    }
+
+    /**
+     * Switch to the Snake Menu.
+     */
+    private void switchToSnake() {
+        Intent intent = new Intent(this, SnakeMenuActivity.class);
+        intent.putExtra("currentUserAccount", currentUserAccount);
+        startActivity(intent);
+    }
+
+    /**
      * Switch to the ScoreboardActivity view to view the per-user and per-game scoreboards.
      */
     private void switchToScoreboard() {
-        Intent tmp = new Intent(this, ScoreboardActivity.class);
-        tmp.putExtra("currentUserAccount", currentUserAccount);
-        startActivity(tmp);
+        Intent intent = new Intent(this, ScoreboardActivity.class);
+        intent.putExtra("currentUserAccount", currentUserAccount);
+        startActivity(intent);
     }
 
     /**
@@ -128,7 +142,7 @@ public class GameSelectActivity extends AppCompatActivity {
     }
 
     /**
-     * Update current user account from file.
+     * Update current user account from file on resume.
      */
     @Override
     protected void onResume() {

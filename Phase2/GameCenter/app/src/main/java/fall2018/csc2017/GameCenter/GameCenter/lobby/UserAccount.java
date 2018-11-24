@@ -23,18 +23,21 @@ public class UserAccount implements Serializable {
     private String password;
 
     /**
+     * Map of Sliding Tiles games of user account.
      * Keys: The names of the user account's past Sliding Tiles games.
      * Values: The board manager of each game.
      */
     private Map<String, SlidingTilesBoardManager> slidingTilesGameNames;
 
     /**
+     * Map of Snake games of user account.
      * Keys: The names of the user account's past Snake games.
      * Values: The saved data of each game.
      */
     private Map<String, Object[]> snakeGameNames;
 
     /**
+     * Map of scores.
      * Keys: The game levels.
      * Values: The user account's scores for each game level.
      */
@@ -60,6 +63,7 @@ public class UserAccount implements Serializable {
         this.slidingTilesGameNames = new HashMap<>();
         this.snakeGameNames = new HashMap<>();
         this.scores = new HashMap<>();
+        // Set the default starting scores
         for (int i = 0; i < gameLevels.length; i++) {
             if (i < 3) {
                 this.scores.put(gameLevels[i], 1000000);
