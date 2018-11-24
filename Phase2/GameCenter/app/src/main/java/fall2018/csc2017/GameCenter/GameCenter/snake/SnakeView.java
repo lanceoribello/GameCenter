@@ -47,6 +47,16 @@ public class SnakeView extends SurfaceView implements Runnable {
     private Paint paint;
 
     /**
+     * The text size of the displayed score.
+     */
+    final int SCORE_TEXT_SIZE = 40;
+
+    /**
+     * The size of the GAME OVER text.
+     */
+    final int GAME_OVER_SIZE = 150;
+
+    /**
      * The context of the Snake game.
      * Used to reference the game's activity.
      */
@@ -172,6 +182,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Constructor of SnakeView that only takes in context.
      * Necessary to have such a constructor for a custom view class like SnakeView.
+     *
      * @param context the context used to create the SnakeView
      */
     public SnakeView(Context context) {
@@ -183,32 +194,27 @@ public class SnakeView extends SurfaceView implements Runnable {
      * Sets up the display the game.
      * Processes whether a new game is started or a past game is being loaded.
      *
-     * @param context the context of SnakeView
-     * @param size the size to be displayed
-     * @param difficulty the difficulty of the current Snake game
+     * @param context     the context of SnakeView
+     * @param size        the size to be displayed
+     * @param difficulty  the difficulty of the current Snake game
      * @param oldSaveData the data used to load a saved game; can be null if a new game is started
      */
     public SnakeView(Context context, Point size, String difficulty, Object[] oldSaveData) {
         super(context);
         this.context = context;
-
         screenWidth = size.x;
         screenHeight = size.y;
-
         blockSize = screenWidth / NUM_BLOCKS_WIDE;
-        numBlocksHigh = screenHeight / blockSize;
-
+        //bottom third of the screen used for the movement buttons
+        numBlocksHigh = 2 * (screenHeight / blockSize) / 3;
         holder = getHolder();
         paint = new Paint();
-
         snakeXs = new int[MAX_SNAKE_SIZE];
         snakeYs = new int[MAX_SNAKE_SIZE];
-
-        setDifficulty(difficulty);
-
         try {
             resumeOldGame(oldSaveData);
         } catch (NullPointerException e) {
+            setDifficulty(difficulty);
             startGame();
         }
     }
@@ -216,9 +222,10 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Sets the difficulty level of the game, which is based on how many frames per second are
      * shown. A higher number of frames per second results in the snake moving faster.
+     *
      * @param difficulty the game's difficulty
      */
-    private void setDifficulty(String difficulty){
+    private void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
         if (difficulty.equals("Snake Easy Mode")) {
             FPS = EASY_MODE_FPS;
@@ -266,13 +273,13 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeYs[0] = numBlocksHigh / 2;
         spawnMouse();
         score = 0;
-
         // Setup nextFrameTime so an update is triggered immediately
         nextFrameTime = System.currentTimeMillis();
     }
 
     /**
      * Resumes a past game of Snake using an Object array of saved data.
+     *
      * @param oldSaveData saved data of a past Snake game
      */
     public void resumeOldGame(Object[] oldSaveData) {
@@ -281,7 +288,9 @@ public class SnakeView extends SurfaceView implements Runnable {
         spawnMouseAt((int) oldSaveData[2], (int) oldSaveData[3]);
         snakeLength = (int) oldSaveData[4];
         score = (int) oldSaveData[5];
-        direction = (Direction)oldSaveData[7];
+        difficulty = (String) oldSaveData[6];
+        direction = (Direction) oldSaveData[7];
+        FPS = (long) oldSaveData[8];
         // Setup nextFrameTime so an update is triggered immediately
         nextFrameTime = System.currentTimeMillis();
     }
@@ -316,7 +325,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeLength++;
         spawnMouse();
         score = score + 1;
-        if((snakeLength)%(MAX_SNAKE_SIZE) == 0){
+        if ((snakeLength) % (MAX_SNAKE_SIZE) == 0) {
             increaseDifficulty();
         }
     }
@@ -348,11 +357,11 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Returns whether the snake has died, either through hitting the wall of the game area or by
      * making contact with one of its own body segments.
+     *
      * @return whether the snake has died
      */
     public boolean detectDeath() {
         boolean dead = false;
-
         if (snakeXs[0] == -1) dead = true;
         if (snakeXs[0] >= NUM_BLOCKS_WIDE) dead = true;
         if (snakeYs[0] == -1) dead = true;
@@ -372,7 +381,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     public void setAutoSavePoint() {
         savePointData = new Object[]{snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
-                difficulty, direction};
+                difficulty, direction, FPS};
     }
 
     /**
@@ -380,7 +389,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      *
      * @return this game's current save point data
      */
-    public Object[] getSavePointData(){
+    public Object[] getSavePointData() {
         return this.savePointData;
     }
 
@@ -400,10 +409,9 @@ public class SnakeView extends SurfaceView implements Runnable {
      * Increases the difficulty of the game, resetting the snake's length to 1 and increasing
      * the FPS.
      */
-    public void increaseDifficulty(){
-        FPS+= FPS_INCREASE;
+    public void increaseDifficulty() {
+        FPS += FPS_INCREASE;
         snakeLength = 1;
-        System.out.println("difficulty increased");
     }
 
     /**
@@ -412,46 +420,64 @@ public class SnakeView extends SurfaceView implements Runnable {
     public void drawGame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-
-            // The background color
             canvas.drawColor(Color.argb(255, 102, 204, 255));
-
-            // How the current score text is displayed
-            paint.setTextSize(30);
-            canvas.drawText("Score:" + score, 10, 30, paint);
-
-            // The color of the snake and the mouse
-            paint.setColor(Color.argb(255, 255, 255, 255));
-
-            // Draw the snake
-            for (int i = 0; i < snakeLength; i++) {
-                canvas.drawRect(snakeXs[i] * blockSize,
-                        (snakeYs[i] * blockSize),
-                        (snakeXs[i] * blockSize) + blockSize,
-                        (snakeYs[i] * blockSize) + blockSize, paint);
-            }
-
-            // How the GAME OVER text is displayed.
-            if (detectDeath()) {
-                paint.setTextSize(150);
-                canvas.drawText("GAME OVER", 10, 200, paint);
-            }
-
-            // Draw the mouse
-            canvas.drawRect(mouseX * blockSize,
-                    (mouseY * blockSize),
-                    (mouseX * blockSize) + blockSize,
-                    (mouseY * blockSize) + blockSize,
-                    paint);
-
-            // Draw the whole frame
+            drawText();
+            drawSnake();
+            drawMouse();
+            drawControls();
             holder.unlockCanvasAndPost(canvas);
         }
     }
 
     /**
+     * Draws the score text and the GAME OVER text.
+     */
+    public void drawText() {
+        paint.setTextSize(SCORE_TEXT_SIZE);
+        canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
+        if (detectDeath()) {
+            paint.setTextSize(GAME_OVER_SIZE);
+            canvas.drawText("GAME OVER", 10, GAME_OVER_SIZE + 50, paint);
+        }
+    }
+
+    /**
+     * Draws the snake.
+     */
+    public void drawSnake() {
+        paint.setColor(Color.argb(255, 255, 255, 255));
+        for (int i = 0; i < snakeLength; i++) {
+            canvas.drawRect(snakeXs[i] * blockSize,
+                    (snakeYs[i] * blockSize),
+                    (snakeXs[i] * blockSize) + blockSize,
+                    (snakeYs[i] * blockSize) + blockSize, paint);
+        }
+    }
+
+    /**
+     * Draws the mouse.
+     */
+    public void drawMouse() {
+        paint.setColor(Color.argb(255, 255, 0, 0));
+        canvas.drawRect(mouseX * blockSize,
+                (mouseY * blockSize),
+                (mouseX * blockSize) + blockSize,
+                (mouseY * blockSize) + blockSize,
+                paint);
+    }
+
+    /**
+     * Draws the controls for movement at the bottom of the screen.
+     */
+    public void drawControls() {
+        paint.setColor(Color.argb(255, 255, 255, 255));
+        canvas.drawRect(0, 2 * screenHeight / 3, screenWidth, screenHeight, paint);
+    }
+
+    /**
      * Determines whether the game should be updated for the timing of when updateGame() and
      * drawGame() should be called, depending on the FPS of the game.
+     *
      * @return whether the game is to be updated
      */
     public boolean checkForUpdate() {
@@ -467,7 +493,9 @@ public class SnakeView extends SurfaceView implements Runnable {
      *
      * @return the current score of the game
      */
-    public int getScore() { return score; }
+    public int getScore() {
+        return score;
+    }
 
     //Necessary for onTouchEvent to have no warnings
     @Override
