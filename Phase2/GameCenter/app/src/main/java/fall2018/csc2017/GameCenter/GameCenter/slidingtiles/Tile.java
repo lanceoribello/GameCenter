@@ -29,7 +29,7 @@ public class Tile implements Comparable<Tile>, Serializable {
      */
     Tile(int tileNum, Integer backgroundID) {
 
-        id = tileNum;
+        id = tileNum + 1;
         if (tileNum + 1 == Board.numCols * Board.numRows) {
             background = R.drawable.blank;
         } else {
