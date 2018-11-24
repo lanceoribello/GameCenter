@@ -47,7 +47,6 @@ public class BlocksMenuActivity extends AppCompatActivity {
 //        saveToTempFile();                 if need be
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
-        setContentView(R.layout.activity_sliding_tiles_menu);
         addLoadButtonListener();
         addSaveButtonListener();
 //        addLoadAutoSaveButtonListener();
@@ -56,7 +55,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
      * Activate the save button.
      */
     private void addSaveButtonListener() {
-        Button saveButton = findViewById(R.id.SaveButton);
+        Button saveButton = findViewById(R.id.SaveBlocks);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +70,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
      * choose from.
      */
     private void addLoadButtonListener() {
-        Button loadButton = findViewById(R.id.LoadSnake);
+        Button loadButton = findViewById(R.id.LoadBlocks);
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,7 +147,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
     }
     /**
      * Switch to SnakeStartingActivity to play the game.
-     * Passes savedData and difficulty into SnakeStartingActivity.
+     * Passes savedData and difficulty into BlocksStartingActivity.
      */
     private void switchToGame() {
         Intent intent = new Intent(this, BlocksStartingActivity.class);
