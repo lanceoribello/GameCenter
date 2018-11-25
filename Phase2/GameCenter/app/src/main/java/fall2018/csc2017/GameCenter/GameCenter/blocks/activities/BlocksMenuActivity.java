@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -133,6 +134,31 @@ public class BlocksMenuActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+    }
+    /**
+     * Undoes the number of moves specified in the text input, if possible.
+     * Calls the undo method in BoardManager when the undo button is tapped.
+     *
+     * @param view the current view.
+     */
+    public void undoMoves(View view) {
+        EditText movesView = findViewById(R.id.NumUndo);
+//        String moves = movesView.getText().toString();
+//        try {
+//            int numberMoves = Integer.parseInt(moves);
+//            if (numberMoves > boardManager.getSavedBoards().size()) {
+//                Toast.makeText(this,
+//                        "Invalid number of undoes", Toast.LENGTH_SHORT).show();
+//            } else {
+//                boardManager.undo(numberMoves);
+//                switchToGame();
+//            }
+//        } catch (NumberFormatException e) {
+//            Toast.makeText(this,
+//                    "Please enter a valid number of undoes", Toast.LENGTH_SHORT).show();
+//            Log.e("undo moves", "Text entered was not an integer: " + e.toString());
+//        }
+
     }
     /**
      * Make a list of games names for displaying in load games.
