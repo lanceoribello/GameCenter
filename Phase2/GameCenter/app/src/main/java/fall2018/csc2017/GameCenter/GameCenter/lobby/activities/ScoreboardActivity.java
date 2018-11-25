@@ -101,7 +101,7 @@ public class ScoreboardActivity extends AppCompatActivity {
     private String[] findTopScorers() {
         String[] topScorers = new String[this.gameLevels.length];
         Arrays.fill(topScorers, "None");
-        Integer[] baseTopScores = {1000000, 1000000, 1000000, 0, 0};
+        Integer[] baseTopScores = {1000000, 1000000, 1000000, 0, 0, 0};
         setUserAccountList(USER_ACCOUNTS_FILENAME);
         for (UserAccount user : this.userAccountList) {
             for (int i = 0; i < this.gameLevels.length; i++) {
