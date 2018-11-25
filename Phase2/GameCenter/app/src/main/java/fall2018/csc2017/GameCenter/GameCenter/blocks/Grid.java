@@ -214,16 +214,19 @@ public class Grid {
     }
 
     /**
+     * Returns how far the player is able to move vertically (players cannot move past blocks and
+     * stop moving at food).
+     * If makeMove is true:
      * Moves the player the maximum number of grid-squares the player can move in the up or down
-     * direction until it meets a food or a block(if the player is able to move in those directions
-     * at all).
-     * Returns how far the player has moved.
+     * direction until it meets a food or a block (the player stops before a block and stops
+     * when a food is eaten).
      * Precondition: direction must be 1 or -1; 1 accounts for upward movement, -1 for downward.
      *
      * @param direction which direction is used; up or down
+     * @param makeMove whether the method shall move the player or not
      * @return the maximum number of grid-squares the player can move up or down
      */
-    public int verticalMove(int direction) {
+    public int verticalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesY = new ArrayList<Integer>();
         int yVal = playerY + direction;
         boolean foodEaten = false;
@@ -240,7 +243,9 @@ public class Grid {
                 yVal--;
             }
         }
-        moveHelper(emptyValuesY, foodEaten, yVal, true);
+        if (makeMove) {
+            moveHelper(emptyValuesY, foodEaten, yVal, true);
+        }
         return emptyValuesY.size();
     }
 
@@ -272,16 +277,20 @@ public class Grid {
     }
 
     /**
+     * Returns how far the player is able to move horizontally (players cannot move past blocks and
+     * stop moving at food).
+     * If makeMove is true:
      * Moves the player the maximum number of grid-squares the player can move in the left or right
-     * direction until it meets a food or a block (if the player is able to move in those
-     * directions at all).
+     * direction until it meets a food or a block (the player stops before a block and stops
+     * when a food is eaten).
      * Returns how far the player has moved.
      * Precondition: direction must be 1 or -1; 1 accounts for rightward movement, -1 for leftward.
      *
      * @param direction which direction the method checks for
+     * @param makeMove  whether the method shall move the player or not
      * @return the maximum number of grid-squares the player can move left or right
      */
-    public int horizontalMove(int direction) {
+    public int horizontalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesX = new ArrayList<>();
         int xVal = playerX + direction;
         boolean foodEaten = false;
@@ -298,7 +307,9 @@ public class Grid {
                 xVal--;
             }
         }
-        moveHelper(emptyValuesX, foodEaten, xVal, false);
+        if (makeMove) {
+            moveHelper(emptyValuesX, foodEaten, xVal, false);
+        }
         return emptyValuesX.size();
     }
 
@@ -332,4 +343,59 @@ public class Grid {
         return gridState[x][y] == EMPTY;
     }
 
+    /**
+     * Getter for the arrayList of all non-border block x-values on the grid converted into an
+     * int array.
+     *
+     * @return an int array of all non-border block x-values on the grid.
+     */
+    public int[] getBlockXsIntArray() {
+        return intArrayListToArray(blockXs);
+    }
+
+    /**
+     * Getter for the arrayList of all non-border block y-values on the grid converted into an
+     * int array.
+     *
+     * @return an int array of all non-border block y-values on the grid
+     */
+    public int[] getBlockYsIntArray() {
+        return intArrayListToArray(blockYs);
+    }
+
+    /**
+     * Getter for the arrayList of all food x-values on the grid converted into an int array.
+     *
+     * @return an int array of all food x-values on the grid
+     */
+    public int[] getFoodXsIntArray() {
+        return intArrayListToArray(foodXs);
+    }
+
+    /**
+     * Getter for the arrayList of all food y-values on the grid converted into an int array.
+     *
+     * @return an int array of all food y-values on the grid
+     */
+    public int[] getFoodYsIntArray() {
+        return intArrayListToArray(foodYs);
+    }
+
+    /**
+     * Returns the x-value of the player on the grid.
+     *
+     * @return the player's x-value on the grid
+     */
+    public int getPlayerX() {
+        return playerX;
+    }
+
+    /**
+     * Returns the y-value of the player on the grid.
+     *
+     * @return the player's y-value on the grid
+     */
+    public int getPlayerY() {
+        return playerY;
+    }
 }
