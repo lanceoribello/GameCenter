@@ -115,7 +115,10 @@ public class UserAccountTest {
     @Test
     public void testAddGetSnakeGame() {
         String gameName = "Saved Game";
-        Object[] gameSavedData = {1, 1, 2, 2, 1, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT};
+        int[] snakeXs = {0};
+        int[] snakeYs = {0};
+        Object[] gameSavedData = {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode",
+                SnakeView.Direction.RIGHT};
         tester.addSnakeGame(gameName, gameSavedData);
         assertArrayEquals(gameSavedData, tester.getSnakeGame(gameName));
     }
@@ -127,15 +130,17 @@ public class UserAccountTest {
      */
     @Test
     public void testGetSnakeGameNames() {
+        int[] snakeXs = {0};
+        int[] snakeYs = {0};
         String gameName1 = "Game 1";
         Object[] gameSavedData1 =
-                {1, 1, 2, 2, 1, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT, 10};
+                {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT, 10};
         String gameName2 = "Game 2";
         Object[] gameSavedData2 =
-                {2, 2, 3, 3, 2, 0, "Snake Hard Mode", SnakeView.Direction.LEFT, 14};
+                {snakeXs, snakeYs, 3, 3, 1, 0, "Snake Hard Mode", SnakeView.Direction.LEFT, 14};
         String gameName3 = "Game 3";
         Object[] gameSavedData3 =
-                {3, 3, 4, 4, 3, 0, "Snake Easy Mode", SnakeView.Direction.UP, 10};
+                {snakeXs, snakeYs, 4, 4, 1, 0, "Snake Easy Mode", SnakeView.Direction.UP, 10};
         tester.addSnakeGame(gameName1, gameSavedData1);
         tester.addSnakeGame(gameName2, gameSavedData2);
         tester.addSnakeGame(gameName3, gameSavedData3);
@@ -149,7 +154,7 @@ public class UserAccountTest {
      */
     @Test
     public void testAddGetBlocksGame() {
-
+        String gameName = "Saved Game";
     }
 
     /**
@@ -157,6 +162,8 @@ public class UserAccountTest {
      */
     @Test
     public void testGetBlocksGameNames() {
-
+        String gameName1 = "Game 1";
+        String gameName2 = "Game 2";
+        String gameName3 = "Game 3";
     }
 }

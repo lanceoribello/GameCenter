@@ -220,4 +220,17 @@ public class UserAccount implements Serializable {
     public Set<String> getBlocksGameNames() {
         return blocksGameNames.keySet();
     }
+
+    /**
+     * Returns whether Object o equals this UserAccount - only if username and password match.
+     * @param o Object to compare to
+     * @return true if UserAccounts are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        return ((o != null) &&
+                (this.getClass() == o.getClass()) &&
+                (this.getUsername().equals(((UserAccount) o).getUsername())) &&
+                (this.getPassword().equals(((UserAccount) o).getPassword())));
+    }
 }

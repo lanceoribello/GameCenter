@@ -29,12 +29,16 @@ public class ScoreboardControllerTest {
      */
     private String[] gameLevels = UserAccount.gameLevels;
 
+    /**
+     * Sets up user account list to begin with tester user accounts.
+     */
     @Before
     public void setUp() {
         tester1.setTopScore(gameLevels[1], 100);
         tester2.setTopScore(gameLevels[1], 200);
         tester2.setTopScore(gameLevels[2], 200);
         tester3.setTopScore(gameLevels[4], 20);
+        tester3.setTopScore(gameLevels[5], 5);
         tester4.setTopScore(gameLevels[4], 15);
         tester4.setTopScore(gameLevels[5], 10);
         testUserAccountList.add(tester1);
@@ -43,11 +47,19 @@ public class ScoreboardControllerTest {
         testUserAccountList.add(tester4);
     }
 
+    /**
+     * Clears the user account list.
+     */
     @After
     public void tearDown() {
         testUserAccountList = new ArrayList<>();
     }
 
+    /**
+     * Tests if find top scores returns a String[] of the correct top scores.
+     * i.e. uses "None" for default base scores, compares correctly between Sliding Tiles scores
+     * (lower score is inputted) and Snake/Blocks scores (higher score is inputted).
+     */
     @Test
     public void testFindTopScorers() {
         String[] topScorers = {"None", "nancy: 100", "ishan: 200",
@@ -56,6 +68,10 @@ public class ScoreboardControllerTest {
                 ScoreboardController.findTopScorers(gameLevels, testUserAccountList));
     }
 
+    /**
+     * Tests if find top scorers returns the correct top scorers for Sliding Tiles and none
+     * for all other games.
+     */
     @Test
     public void testFindTopScoresSlidingTiles() {
         tester1.setTopScore(gameLevels[0], 100);
@@ -64,14 +80,23 @@ public class ScoreboardControllerTest {
                 ScoreboardController.findTopScores(gameLevels, tester1));
     }
 
+    /**
+     * Tests if find top scorers returns the correct top scorers for Snake and none
+     * for all other games.
+     */
     @Test
     public void testFindTopScoresSnake() {
         tester3.setTopScore(gameLevels[3], 15);
+        tester3.setTopScore(gameLevels[5], 0);
         String[] topScores = {"None", "None", "None", "15", "20", "None"};
         assertArrayEquals(topScores,
                 ScoreboardController.findTopScores(gameLevels, tester3));
     }
 
+    /**
+     * Tests if find top scorers returns the correct top scorers for Blocks and none
+     * for all other games.
+     */
     @Test
     public void testFindTopScoresBlocks() {
         tester4.setTopScore(gameLevels[4], 0);
