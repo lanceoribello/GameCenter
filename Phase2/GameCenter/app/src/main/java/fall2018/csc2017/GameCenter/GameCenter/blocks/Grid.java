@@ -106,11 +106,12 @@ public class Grid {
 
     /**
      * Returns all the necessary data to load this grid at a later point.
+     *
      * @return an object array of the data
      */
-    public Object[] saveData(){
+    public Object[] saveData() {
         return new Object[]{playerX, playerY, intArrayListToArray(blockXs),
-                intArrayListToArray(blockYs),intArrayListToArray(foodXs),
+                intArrayListToArray(blockYs), intArrayListToArray(foodXs),
                 intArrayListToArray(foodYs)};
     }
 
@@ -120,9 +121,9 @@ public class Grid {
      * @param aList the arrayList to be converted
      * @return an int array corresponding to the values of aList
      */
-    private int[] intArrayListToArray(ArrayList<Integer> aList){
+    private int[] intArrayListToArray(ArrayList<Integer> aList) {
         int[] newArray = new int[aList.size()];
-        for(int i = 0; i < aList.size(); i++) {
+        for (int i = 0; i < aList.size(); i++) {
             if (aList.get(i) != null) {
                 newArray[i] = aList.get(i);
             }
@@ -214,7 +215,8 @@ public class Grid {
 
     /**
      * Moves the player the maximum number of grid-squares the player can move in the up or down
-     * direction (if the player is able to move in those directions at all).
+     * direction until it meets a food or a block(if the player is able to move in those directions
+     * at all).
      * Returns how far the player has moved.
      * Precondition: direction must be 1 or -1; 1 accounts for upward movement, -1 for downward.
      *
@@ -224,10 +226,13 @@ public class Grid {
     public int verticalMove(int direction) {
         ArrayList<Integer> emptyValuesY = new ArrayList<Integer>();
         int yVal = playerY + direction;
+        boolean foodEaten = false;
         while (gridState[playerX][yVal + direction] != BLOCK) {
             emptyValuesY.add(yVal);
             if (gridState[playerX][yVal + direction] == FOOD) {
+                foodEaten = true;
                 eatFood(playerX, yVal);
+                break;
             }
             if (direction == 1) {
                 yVal++;
@@ -235,18 +240,41 @@ public class Grid {
                 yVal--;
             }
         }
-        if (emptyValuesY.size() != 0) {
-            gridState[playerX][playerY] = EMPTY;
-            int newY = emptyValuesY.get(emptyValuesY.size() - 1);
-            gridState[playerX][newY] = PLAYER;
-            playerY = newY;
-        }
+        moveHelper(emptyValuesY, foodEaten, yVal, true);
         return emptyValuesY.size();
     }
 
     /**
+     * Helper method for verticalMove and horizontalMove.
+     *
+     * @param emptyValues an arrayList of either x or y values which correspond to either playerX
+     *                    or playerY that are empty on the grid
+     * @param foodEaten   whether a food was eaten during the player's movement
+     * @param xyVal       the x or y location of where the food was eaten (if a food was eaten at all)
+     * @param vertical    whether the helper method is being used for vertical or horizontal movement
+     */
+    private void moveHelper(ArrayList<Integer> emptyValues, boolean foodEaten, int xyVal,
+                            boolean vertical) {
+        if (emptyValues.size() != 0) {
+            gridState[playerX][playerY] = EMPTY;
+            int newXY = emptyValues.get(emptyValues.size() - 1);
+            if (foodEaten) {
+                newXY = xyVal;
+            }
+            if (vertical) {
+                gridState[playerX][newXY] = PLAYER;
+                playerY = newXY;
+            } else {
+                gridState[newXY][playerY] = PLAYER;
+                playerX = newXY;
+            }
+        }
+    }
+
+    /**
      * Moves the player the maximum number of grid-squares the player can move in the left or right
-     * direction (if the player is able to move in those directions at all).
+     * direction until it meets a food or a block (if the player is able to move in those
+     * directions at all).
      * Returns how far the player has moved.
      * Precondition: direction must be 1 or -1; 1 accounts for rightward movement, -1 for leftward.
      *
@@ -256,10 +284,13 @@ public class Grid {
     public int horizontalMove(int direction) {
         ArrayList<Integer> emptyValuesX = new ArrayList<>();
         int xVal = playerX + direction;
+        boolean foodEaten = false;
         while (gridState[xVal + direction][playerY] != BLOCK) {
             emptyValuesX.add(xVal);
             if (gridState[xVal + direction][playerY] == FOOD) {
+                foodEaten = true;
                 eatFood(xVal + direction, playerY);
+                break;
             }
             if (direction == 1) {
                 xVal++;
@@ -267,12 +298,7 @@ public class Grid {
                 xVal--;
             }
         }
-        if (emptyValuesX.size() != 0) {
-            gridState[playerX][playerY] = EMPTY;
-            int newX = emptyValuesX.get(emptyValuesX.size() - 1);
-            gridState[newX][playerY] = PLAYER;
-            playerX = newX;
-        }
+        moveHelper(emptyValuesX, foodEaten, xVal, false);
         return emptyValuesX.size();
     }
 
