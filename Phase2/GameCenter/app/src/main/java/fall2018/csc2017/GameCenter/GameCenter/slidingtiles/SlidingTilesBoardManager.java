@@ -111,7 +111,7 @@ public class SlidingTilesBoardManager implements Serializable {
      *
      * @param board the BoardManager's new Board
      */
-    private void setBoard(Board board) {
+    void setBoard(Board board) {
         this.board = board;
     }
 

@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.validation.TypeInfoProvider;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class SlidingTilesBoardManagerTest {
 
@@ -33,6 +31,18 @@ public class SlidingTilesBoardManagerTest {
     SlidingTilesBoardManager boardManager = new SlidingTilesBoardManager(5, fiveByArray);
 
     /**
+     * List of tiles used for a 5x5 board, in row major order
+     */
+    private List<Tile> setTileList() {
+        List<Tile> tiles = new ArrayList<>();
+        for (int tileNum = 0; tileNum != 25; tileNum++) {
+            tiles.add(new Tile(tileNum, fiveByArray.get(tileNum)));
+        }
+        return tiles;
+    }
+
+
+    /**
      * Tests if the boardmanager is able to save boards in an array list properly
      * and if it's able to return that list back when the getter is called
      */
@@ -47,7 +57,7 @@ public class SlidingTilesBoardManagerTest {
         boardManager.addToSavedBoards();
         savedBoards.add(boardManager.getBoard());
 
-        for (int a = 0; a<=2; a++){
+        for (int a = 0; a <= 2; a++) {
             Iterator<Tile> iter = savedBoards.get(a).iterator();
             Iterator<Tile> iter2 = boardManager.getBoard().iterator();
 
@@ -59,31 +69,96 @@ public class SlidingTilesBoardManagerTest {
         }
     }
 
+    /**
+     * Tests if the complexity getter returns the correct value, which should be 5 for a 5x5 game
+     */
     @Test
     public void getComplexity() {
+        assertEquals(5, boardManager.getComplexity());
     }
 
     @Test
     public void getBoard() {
+        Board board = boardManager.getBoard();
+        assertEquals(board, boardManager.getBoard());
+    }
+
+    /**
+     * Tests the 2 cases if the puzzlesolved method works:
+     * If the board is in row major order of tiles, it should return true
+     * Otherwise, it should return false
+     * This also implicitly tests if the setBoard functionality works
+     */
+    @Test
+    public void puzzleSolvedIsCorrect() {
+        Board solvedBoard = new Board(setTileList());
+        boardManager.setBoard(solvedBoard);
+        assert (boardManager.puzzleSolved());
+        boardManager.touchMove(5);
+        assert (!boardManager.puzzleSolved());
+    }
+
+    /**
+     * Tests 3 cases of isValidTap on a solved board. Case 1 is where you tap a valid tile on a
+     * row major board of 5x5, our test case using tile #24, the one to the left of the blank tile.
+     * Also tests then the user taps the blank tile, being tile#25, or when the user taps
+     * an unplayable tile which isn't blank, our case being tile#1
+     */
+    @Test
+    public void isValidTapIsCorrect() {
+        Board solvedBoard = new Board(setTileList());
+        boardManager.setBoard(solvedBoard);
+
+        assert (boardManager.isValidTap(23));
+        assert (!boardManager.isValidTap(24));
+        assert (!boardManager.isValidTap(0));
+
+    }
+
+    /**
+     * Tests whether touch move works when swapping the blank tile, which in this case
+     * is tile 25, and tile 24, the one directly to its left.
+     */
+    @Test
+    public void touchMoveIsCorrect() {
+        Board solvedBoard = new Board(setTileList());
+        boardManager.setBoard(solvedBoard);
+
+        Tile tileHold = boardManager.getBoard().getTile(4, 3);
+        Tile blankTile = boardManager.getBoard().getTile(4, 4);
+
+        boardManager.touchMove(23);
+        assert (boardManager.getBoard().getTile(4, 4) == tileHold &&
+                boardManager.getBoard().getTile(4, 3) == blankTile);
+
     }
 
     @Test
-    public void puzzleSolved() {
+    public void getMovesIsCorrect() {
+        int totalMoves = boardManager.getMoves();
+        assertEquals(totalMoves, boardManager.getMoves());
     }
 
+    /**
+     * First sets up a solved 5x5 board. 1 move is made where tile 24 is swapped with
+     * tile 25. The move is then undone. This test checks if the move is undone by comparing
+     * the new board post-undo to the solvedBoard, as these should now contain the same tile
+     * configuration
+     */
     @Test
-    public void isValidTap() {
-    }
+    public void undoIsCorrect() {
+        Board solvedBoard = new Board(setTileList());
+        boardManager.setBoard(solvedBoard);
+        boardManager.touchMove(23);
+        boardManager.undo(1);
 
-    @Test
-    public void touchMove() {
-    }
+        Iterator<Tile> iter = solvedBoard.iterator();
+        Iterator<Tile> iter2 = boardManager.getBoard().iterator();
 
-    @Test
-    public void getMoves() {
-    }
-
-    @Test
-    public void undo() {
+        for (int b = 0; b != boardManager.getComplexity(); b++) {
+            Tile currentTile = iter.next();
+            Tile currentManagerTile = iter2.next();
+            assertEquals(currentTile.getId(), currentManagerTile.getId());
+        }
     }
 }

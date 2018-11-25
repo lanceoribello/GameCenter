@@ -7,6 +7,19 @@ import static org.junit.Assert.*;
 public class ScoreboardActivityTest {
 
     @Test
+    public void onCreate() {
+    }
+
+    @Test
+    public void setUserAccountList() {
+    }
+
+    @Test
+    public void onResume() {
+    }
+
+
+    @Test
     public void testFindTopScorers() {
     }
 
