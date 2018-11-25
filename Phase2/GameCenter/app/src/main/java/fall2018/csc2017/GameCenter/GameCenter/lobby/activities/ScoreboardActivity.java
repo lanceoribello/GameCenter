@@ -94,7 +94,7 @@ public class ScoreboardActivity extends AppCompatActivity {
     /**
      * Returns an array of the top scorers for each game level.
      * Default top score for Sliding Tiles is 1000000, which displays as "None" on the scoreboard.
-     * Default top score for Snake is 0, which displays as "None" on the scoreboard.
+     * Default top score for Snake and Blocks is 0, which displays as "None" on the scoreboard.
      *
      * @return topScorers, a list of top scorers and their scores for each game level
      */
@@ -120,7 +120,7 @@ public class ScoreboardActivity extends AppCompatActivity {
     /**
      * Returns an array of the top scores for each game level for the current user account.
      * Default top score for Sliding Tiles is 1000000, which displays as "None" on the scoreboard.
-     * Default top score for Snake is 0, which displays as "None" on the scoreboard.
+     * Default top score for Snake and Blocks is 0, which displays as "None" on the scoreboard.
      *
      * @return topScores, a list of scores of the current user account for each game level
      */
