@@ -20,160 +20,125 @@ Keeps track of
 public class SnakeView extends SurfaceView implements Runnable {
 
     /**
-     * The thread of the Snake game.
-     */
-    private Thread thread = null;
-
-    /**
-     * The volatile that determines whether the game is currently being played.
-     * As a volatile, it can be accessed from inside and outside the thread.
-     */
-    private volatile boolean playing;
-
-    /**
-     * The canvas of the Snake game.
-     * Used to display the game.
-     */
-    Canvas canvas;
-
-    /**
-     * The SurfaceHolder used by the Canvas class to display the game.
-     */
-    private SurfaceHolder holder;
-
-    /**
-     * The paint used to select colors for displaying the game.
-     */
-    private Paint paint;
-
-    /**
      * The text size of the displayed score.
      */
     private final static int SCORE_TEXT_SIZE = 40;
-
     /**
      * The size of the GAME OVER text.
      */
     private final static int GAME_OVER_SIZE = 150;
-
-    /**
-     * The context of the Snake game.
-     * Used to reference the game's activity.
-     */
-    Context context;
-
-    /**
-     * The directions used for controlling movement.
-     */
-    public enum Direction {
-        UP, RIGHT, DOWN, LEFT
-    }
-
-    /**
-     * The current snake's direction.
-     * Set to right for new games by default.
-     */
-    private Direction direction = Direction.RIGHT;
-
-    /**
-     * The width of the screen being displayed upon.
-     */
-    private int screenWidth;
-
-    /**
-     * The height of the screen being displayed upon.
-     */
-    int screenHeight;
-
-    /**
-     * The long that controls when the game will be updated next.
-     */
-    private long nextFrameTime;
-
     /**
      * The default FPS for easy mode.
      */
     private final static long EASY_MODE_FPS = 10;
-
     /**
      * The default FPS for hard mode.
      */
     private final static long HARD_MODE_FPS = 14;
-
-    /**
-     * The frames per second of the current Snake game.
-     */
-    private long FPS;
-
     /**
      * How much the FPS is increased once the snake reaches its maximum size.
      */
     private final static long FPS_INCREASE = 2;
-
     /**
      * The maximum snake length before the snake is reset and the game is sped up.
      */
     private final static int MAX_SNAKE_SIZE = 15;
-
     /**
      * How many milliseconds in a second.
      */
     private final static long MILLIS_IN_A_SECOND = 1000;
-
-    /**
-     * The current score of the game.
-     */
-    private int score;
-
-    /**
-     * The locations of all x-values of the snake.
-     */
-    private int[] snakeXs;
-
-    /**
-     * The locations of all y-values of the snake.
-     */
-    private int[] snakeYs;
-
-    /**
-     * The current length of the snake.
-     */
-    private int snakeLength;
-
-    /**
-     * The x value of the current mouse to be eaten.
-     */
-    private int mouseX;
-
-    /**
-     * The y value of the current mouse to be eaten.
-     */
-    private int mouseY;
-
-    /**
-     * The size in pixels of a block for the game display.
-     * Corresponds to the size of an individual snake segment and the size of a mouse.
-     */
-    private int blockSize;
-
     /**
      * The width of the playable area in terms of the number of blocks.
      * 40 by default.
      */
     private final static int NUM_BLOCKS_WIDE = 40;
-
     /**
-     * The height of the playable area in terms of the number of blocks.
-     * Determined dynamically.
+     * The canvas of the Snake game.
+     * Used to display the game.
      */
-    private int numBlocksHigh;
-
+    Canvas canvas;
+    /**
+     * The context of the Snake game.
+     * Used to reference the game's activity.
+     */
+    Context context;
+    /**
+     * The height of the screen being displayed upon.
+     */
+    int screenHeight;
     /**
      * An object array that contains any relevant data in the game used for saving and loading
      * save points.
      */
     Object[] savePointData;
-
+    /**
+     * The thread of the Snake game.
+     */
+    private Thread thread = null;
+    /**
+     * The volatile that determines whether the game is currently being played.
+     * As a volatile, it can be accessed from inside and outside the thread.
+     */
+    private volatile boolean playing;
+    /**
+     * The SurfaceHolder used by the Canvas class to display the game.
+     */
+    private SurfaceHolder holder;
+    /**
+     * The paint used to select colors for displaying the game.
+     */
+    private Paint paint;
+    /**
+     * The current snake's direction.
+     * Set to right for new games by default.
+     */
+    private Direction direction = Direction.RIGHT;
+    /**
+     * The width of the screen being displayed upon.
+     */
+    private int screenWidth;
+    /**
+     * The long that controls when the game will be updated next.
+     */
+    private long nextFrameTime;
+    /**
+     * The frames per second of the current Snake game.
+     */
+    private long FPS;
+    /**
+     * The current score of the game.
+     */
+    private int score;
+    /**
+     * The locations of all x-values of the snake.
+     */
+    private int[] snakeXs;
+    /**
+     * The locations of all y-values of the snake.
+     */
+    private int[] snakeYs;
+    /**
+     * The current length of the snake.
+     */
+    private int snakeLength;
+    /**
+     * The x value of the current mouse to be eaten.
+     */
+    private int mouseX;
+    /**
+     * The y value of the current mouse to be eaten.
+     */
+    private int mouseY;
+    /**
+     * The size in pixels of a block for the game display.
+     * Corresponds to the size of an individual snake segment and the size of a mouse.
+     */
+    private int blockSize;
+    /**
+     * The height of the playable area in terms of the number of blocks.
+     * Determined dynamically.
+     */
+    private int numBlocksHigh;
     /**
      * The difficulty level of the game.
      */
@@ -472,6 +437,15 @@ public class SnakeView extends SurfaceView implements Runnable {
     private void drawControls() {
         paint.setColor(Color.argb(255, 255, 255, 255));
         canvas.drawRect(0, 2 * screenHeight / 3, screenWidth, screenHeight, paint);
+        paint.setColor(Color.BLACK);
+        canvas.drawRect(screenWidth / 3, 2 * screenHeight / 3, 2 * screenWidth / 3,
+                7 * screenHeight / 9, paint);
+        canvas.drawRect(screenWidth / 3, 8 * screenHeight / 9, 2 * screenWidth / 3,
+                screenHeight, paint);
+        canvas.drawRect(0, 7 * screenHeight / 9, screenWidth / 3,
+                8 * screenHeight / 9, paint);
+        canvas.drawRect(2 * screenWidth / 3, 7 * screenHeight / 9, screenWidth,
+                8 * screenHeight / 9, paint);
     }
 
     /**
@@ -504,44 +478,46 @@ public class SnakeView extends SurfaceView implements Runnable {
         return true;
     }
 
-    //Replace with button controls !!!!
+    /**
+     * Changes the direction of our snake based on if the mouseClick event falls in the bounds
+     * of the 4 black rectangles I set up as buttons to move up, down, left or right
+     */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         performClick();
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
-                if (motionEvent.getX() >= screenWidth / 2) {
-                    switch (direction) {
-                        case UP:
-                            direction = Direction.RIGHT;
-                            break;
-                        case RIGHT:
-                            direction = Direction.DOWN;
-                            break;
-                        case DOWN:
-                            direction = Direction.LEFT;
-                            break;
-                        case LEFT:
-                            direction = Direction.UP;
-                            break;
-                    }
-                } else {
-                    switch (direction) {
-                        case UP:
-                            direction = Direction.LEFT;
-                            break;
-                        case LEFT:
-                            direction = Direction.DOWN;
-                            break;
-                        case DOWN:
-                            direction = Direction.RIGHT;
-                            break;
-                        case RIGHT:
-                            direction = Direction.UP;
-                            break;
-                    }
+                if (motionEvent.getX() >= screenWidth / 3
+                        && motionEvent.getX() <= 2 * screenWidth / 3
+                        && motionEvent.getY() <= 7 * screenHeight / 9
+                        && motionEvent.getY() >= 2 * screenHeight / 3) {
+                    direction = Direction.UP;
+                } else if (motionEvent.getX() >= screenWidth / 3
+                        && motionEvent.getX() <= 2 * screenWidth / 3
+                        && motionEvent.getY() <= screenHeight
+                        && motionEvent.getY() >= 8 * screenHeight / 9) {
+                    direction = Direction.DOWN;
+                } else if (motionEvent.getX() >= 2 * screenWidth / 3
+                        && motionEvent.getX() <= screenWidth
+                        && motionEvent.getY() <= 8 * screenHeight / 9
+                        && motionEvent.getY() >= 7 * screenHeight / 9) {
+                    direction = Direction.RIGHT;
+                } else if (motionEvent.getX() >= 0
+                        && motionEvent.getX() <= screenWidth / 3
+                        && motionEvent.getY() <= 8 * screenHeight / 9
+                        && motionEvent.getY() >= 7 * screenHeight / 9) {
+                    direction = Direction.LEFT;
                 }
+
+
         }
         return true;
+    }
+
+    /**
+     * The directions used for controlling movement.
+     */
+    public enum Direction {
+        UP, RIGHT, DOWN, LEFT
     }
 }
