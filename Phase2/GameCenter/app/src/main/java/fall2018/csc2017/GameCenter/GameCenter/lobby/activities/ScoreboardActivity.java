@@ -15,12 +15,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.ScoreboardController;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 
 /**
  * The scoreboard activity that is displayed when "View Scoreboards" button is clicked in
  * game select activity. Displays the per-user scoreboard (top user of each game level)
- * and the per-game scoreboard(top score of current user for each game level).
+ * and the per-game scoreboard (top score of current user for each game level).
  */
 public class ScoreboardActivity extends AppCompatActivity {
 
@@ -69,8 +70,11 @@ public class ScoreboardActivity extends AppCompatActivity {
      */
     private void createScoreboardTable() {
         TableLayout scoreboardTable = findViewById(R.id.scoreboardTable);
-        String[] topScorers = findTopScorers();
-        String[] topScores = findTopScores();
+        setUserAccountList(USER_ACCOUNTS_FILENAME);
+        String[] topScorers = ScoreboardController.findTopScorers(this.gameLevels,
+                this.userAccountList);
+        String[] topScores = ScoreboardController.findTopScores(this.gameLevels,
+                this.currentUserAccount);
         int i = 0;
         // Set each row of scores for each game level
         for (String gameLevel : gameLevels) {
@@ -89,53 +93,6 @@ public class ScoreboardActivity extends AppCompatActivity {
             scoreboardTable.addView(scoreboardRow);
             i++;
         }
-    }
-
-    /**
-     * Returns an array of the top scorers for each game level.
-     * Default top score for Sliding Tiles is 1000000, which displays as "None" on the scoreboard.
-     * Default top score for Snake and Blocks is 0, which displays as "None" on the scoreboard.
-     *
-     * @return topScorers, a list of top scorers and their scores for each game level
-     */
-    private String[] findTopScorers() {
-        String[] topScorers = new String[this.gameLevels.length];
-        Arrays.fill(topScorers, "None");
-        Integer[] baseTopScores = {1000000, 1000000, 1000000, 0, 0, 0};
-        setUserAccountList(USER_ACCOUNTS_FILENAME);
-        for (UserAccount user : this.userAccountList) {
-            for (int i = 0; i < this.gameLevels.length; i++) {
-                // Update score if less than base (Sliding Tiles)/greater than base (Snake, Blocks)
-                if ((i < 3 && user.getTopScore(this.gameLevels[i]) < baseTopScores[i]) ||
-                        (i >= 3 && user.getTopScore(this.gameLevels[i]) > baseTopScores[i])) {
-                    topScorers[i] = (user.getUsername() + ": "
-                            + String.valueOf(user.getTopScore(this.gameLevels[i])));
-                    baseTopScores[i] = user.getTopScore(this.gameLevels[i]);
-                }
-            }
-        }
-        return topScorers;
-    }
-
-    /**
-     * Returns an array of the top scores for each game level for the current user account.
-     * Default top score for Sliding Tiles is 1000000, which displays as "None" on the scoreboard.
-     * Default top score for Snake and Blocks is 0, which displays as "None" on the scoreboard.
-     *
-     * @return topScores, a list of scores of the current user account for each game level
-     */
-    private String[] findTopScores() {
-        String[] topScores = new String[this.gameLevels.length];
-        Arrays.fill(topScores, "None");
-        setUserAccountList(USER_ACCOUNTS_FILENAME);
-        for (int i = 0; i < this.gameLevels.length; i++) {
-            Integer userTopScore = this.currentUserAccount.getTopScore(this.gameLevels[i]);
-            // Update top score if not set as default score for respective game level
-            if ((i < 3 && userTopScore != 1000000) || (i >= 3 && userTopScore != 0)) {
-                topScores[i] = String.valueOf(userTopScore);
-            }
-        }
-        return topScores;
     }
 
     /**
