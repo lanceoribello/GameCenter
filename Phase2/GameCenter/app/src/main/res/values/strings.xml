@@ -22,4 +22,9 @@
     <string name="per_game">Per-Game</string>
     <string name="complexity">Complexity</string>
     <string name="SnakeGameText">Welcome to snake. Get your Pyth ON.</string>
+    <string name="BlocksGame">Blocks</string>
+    <string name="LoadBlocks">Load Game</string>
+    <string name="NewBlocks">New Game</string>
+    <string name="SaveBlocks">Save Game</string>
+    <string name="LoadAutoSaveBlocks">Load Auto Save</string>
 </resources>
