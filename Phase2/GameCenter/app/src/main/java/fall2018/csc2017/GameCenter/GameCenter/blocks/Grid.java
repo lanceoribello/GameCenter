@@ -55,14 +55,14 @@ public class Grid {
     private ArrayList<Integer> blockYs = new ArrayList<Integer>();
 
     /**
-     * The array of all food x-values currently on the grid.
+     * The arrayList of all food x-values currently on the grid.
      */
-    private int[] foodXs;
+    private ArrayList<Integer> foodXs = new ArrayList<Integer>();
 
     /**
-     * The array of all food y-values currently on the grid.
+     * The arrayList of all food y-values currently on the grid.
      */
-    private int[] foodYs;
+    private ArrayList<Integer> foodYs = new ArrayList<Integer>();
 
     /**
      * The x-value of the player on the grid.
@@ -86,22 +86,81 @@ public class Grid {
      */
     Grid() {
         gridState = new int[GRID_LENGTH][GRID_LENGTH];
+        generateEmptyGrid();
+        playerX = GRID_LENGTH / 2;
+        playerY = GRID_LENGTH / 2;
+        gridState[playerX][playerY] = PLAYER;
+        spawnMultipleFoods(FOOD_NUM);
+    }
+
+    Grid(int pX, int pY, int[] blockXs, int[] blockYs, int[] foodXs, int[] foodYs) {
+        gridState = new int[GRID_LENGTH][GRID_LENGTH];
+        generateEmptyGrid();
+        this.playerX = pX;
+        this.playerY = pY;
+        gridState[playerX][playerY] = PLAYER;
+        placeObjectsFromData(blockXs, blockYs, "block");
+        placeObjectsFromData(foodXs, foodYs, "food");
+
+    }
+
+    /**
+     * Returns all the necessary data to load this grid at a later point.
+     * @return an object array of the data
+     */
+    public Object[] saveData(){
+        return new Object[]{playerX, playerY, intArrayListToArray(blockXs),
+                intArrayListToArray(blockYs),intArrayListToArray(foodXs),
+                intArrayListToArray(foodYs)};
+    }
+
+    /**
+     * Converts an arrayList of integers into an int array, returning the new int array.
+     *
+     * @param aList the arrayList to be converted
+     * @return an int array corresponding to the values of aList
+     */
+    private int[] intArrayListToArray(ArrayList<Integer> aList){
+        int[] newArray = new int[aList.size()];
+        for(int i = 0; i < aList.size(); i++) {
+            if (aList.get(i) != null) {
+                newArray[i] = aList.get(i);
+            }
+        }
+        return newArray;
+    }
+
+    /**
+     * Places either blocks or food onto the grid from a set of x-values and y-values.
+     *
+     * @param objXs       the x-values of the objects to be placed
+     * @param objYs       the y-values of the objects to be placed
+     * @param foodOrBlock determines whether food or blocks are being placed
+     */
+    public void placeObjectsFromData(int[] objXs, int[] objYs, String foodOrBlock) {
+        for (int i = 0; i != objXs.length; i++) {
+            if (foodOrBlock.equals("food")) {
+                spawnFoodAt(objXs[i], objYs[i]);
+            } else {
+                placeBlockAt(objXs[i], objYs[i]);
+            }
+        }
+    }
+
+    /**
+     * Sets the gridState to be completely empty, other than the blocks at the grid's borders.
+     */
+    private void generateEmptyGrid() {
+        gridState = new int[GRID_LENGTH][GRID_LENGTH];
         for (int row = 0; row != GRID_LENGTH; row++) {
             for (int col = 0; col != GRID_LENGTH; col++) {
                 if (row == 0 || col == 0 || row == GRID_LENGTH - 1 || col == GRID_LENGTH - 1) {
                     gridState[row][col] = BLOCK;
-                } else if (row == GRID_LENGTH / 2 && col == GRID_LENGTH / 2) {
-                    gridState[row][col] = PLAYER;
                 } else {
                     gridState[row][col] = EMPTY;
                 }
             }
         }
-        spawnMultipleFoods(FOOD_NUM);
-    }
-
-    Grid(int[] playerLocation, int[] blockXs, int[] blockYs, int[] foodXs, int[] foodYs) {
-
     }
 
     /**
@@ -116,6 +175,8 @@ public class Grid {
             foodY = random.nextInt(GRID_LENGTH - 1) + 1;
         }
         gridState[foodX][foodY] = FOOD;
+        foodXs.add(foodX);
+        foodYs.add(foodY);
     }
 
     /**
@@ -135,6 +196,8 @@ public class Grid {
      */
     private void spawnFoodAt(int x, int y) {
         gridState[x][y] = FOOD;
+        foodXs.add(x);
+        foodYs.add(y);
     }
 
     /**
@@ -145,6 +208,8 @@ public class Grid {
      */
     public void placeBlockAt(int x, int y) {
         gridState[x][y] = BLOCK;
+        blockXs.add(x);
+        blockYs.add(y);
     }
 
     /**
@@ -189,7 +254,7 @@ public class Grid {
      * @return the maximum number of grid-squares the player can move left or right
      */
     public int horizontalMove(int direction) {
-        ArrayList<Integer> emptyValuesX = new ArrayList<Integer>();
+        ArrayList<Integer> emptyValuesX = new ArrayList<>();
         int xVal = playerX + direction;
         while (gridState[xVal + direction][playerY] != BLOCK) {
             emptyValuesX.add(xVal);
@@ -213,30 +278,32 @@ public class Grid {
 
     /**
      * Processes the eating of food at a specific location, incrementing the score by 1.
+     *
      * @param x the x-value where the food is eaten
      * @param y the y-value where the food is eaten
      */
-    private void eatFood(int x, int y){
+    private void eatFood(int x, int y) {
         gridState[x][y] = EMPTY;
+        for (int i = 0; i < foodXs.size(); i++) {
+            if (foodXs.get(i) == x && foodYs.get(i) == y) {
+                foodXs.remove(i);
+                foodYs.remove(i);
+                break;
+            }
+        }
         score++;
+        spawnFood();
     }
 
     /**
      * Returns whether a specific location on the grid is a valid location to place a block.
+     *
      * @param x the x-value of the location
      * @param y the y-value of the location
      * @return whether the location is empty
      */
-    public boolean validBlockPlacement(int x, int y){
+    public boolean validBlockPlacement(int x, int y) {
         return gridState[x][y] == EMPTY;
     }
 
-    /**
-     * Places a block at a specific location.
-     * @param x the x-value of the location
-     * @param y the y-value of the location
-     */
-    public void placeBlock(int x, int y){
-        gridState[x][y] = BLOCK;
-    }
 }
