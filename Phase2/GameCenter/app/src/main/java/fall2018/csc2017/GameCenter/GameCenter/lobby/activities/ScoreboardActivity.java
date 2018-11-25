@@ -40,11 +40,6 @@ public class ScoreboardActivity extends AppCompatActivity {
      */
     private UserAccount currentUserAccount;
 
-    /**
-     * String Array of the game level names, from UserAccount.
-     */
-    private String[] gameLevels = UserAccount.gameLevels;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +66,10 @@ public class ScoreboardActivity extends AppCompatActivity {
     private void createScoreboardTable() {
         TableLayout scoreboardTable = findViewById(R.id.scoreboardTable);
         setUserAccountList(USER_ACCOUNTS_FILENAME);
-        String[] topScorers = ScoreboardController.findTopScorers(this.gameLevels,
+        String[] gameLevels = UserAccount.gameLevels;
+        String[] topScorers = ScoreboardController.findTopScorers(gameLevels,
                 this.userAccountList);
-        String[] topScores = ScoreboardController.findTopScores(this.gameLevels,
+        String[] topScores = ScoreboardController.findTopScores(gameLevels,
                 this.currentUserAccount);
         int i = 0;
         // Set each row of scores for each game level
