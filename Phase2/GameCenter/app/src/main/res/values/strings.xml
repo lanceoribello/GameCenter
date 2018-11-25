@@ -27,4 +27,5 @@
     <string name="NewBlocks">New Game</string>
     <string name="SaveBlocks">Save Game</string>
     <string name="LoadAutoSaveBlocks">Load Auto Save</string>
+    <string name="Undo">#of moves to undo</string>
 </resources>
