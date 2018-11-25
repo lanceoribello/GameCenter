@@ -18,6 +18,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.LoginController;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 
 /**
@@ -62,14 +63,14 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameView.getText().toString();
         String password = passwordView.getText().toString();
         Intent intent = new Intent(view.getContext(), GameSelectActivity.class);
-        boolean loginSuccess = successfulLogin(username, password);
-
-        if (loginSuccess) {
-            intent.putExtra("currentUserAccount", currentUserAccount);
-            makeToastAcceptedText();
-            startActivity(intent);
-        } else {
+        setUserAccountList();
+        currentUserAccount = LoginController.loginUserAccount(username, password, userAccountList);
+        if (currentUserAccount == null) {
             makeToastFailedText();
+        } else {
+            makeToastAcceptedText();
+            intent.putExtra("currentUserAccount", currentUserAccount);
+            startActivity(intent);
         }
     }
 
@@ -85,61 +86,18 @@ public class LoginActivity extends AppCompatActivity {
                 EditText passwordView = findViewById(R.id.Password);
                 String username = usernameView.getText().toString();
                 String password = passwordView.getText().toString();
-                boolean signUpSuccess = successfulSignUp(username, password);
-                if (signUpSuccess) {
-                    makeToastSignUpAcceptedText();
-                } else {
+                setUserAccountList();
+                currentUserAccount = LoginController.signUpUserAccount(username, password,
+                        userAccountList);
+                if (currentUserAccount == null) {
                     makeToastExistsText();
+                } else {
+                    userAccountList.add(currentUserAccount);
+                    userAccountsToFile(USER_ACCOUNTS_FILENAME);
+                    makeToastSignUpAcceptedText();
                 }
             }
         });
-    }
-
-    /**
-     * Logs in the UserAccount if it exists and the username and password are correct.
-     * Sets the currentUserAccount to the newly logged in UserAccount.
-     * Returns true if the login is successful, false otherwise.
-     *
-     * @param username the username of the userAccount to be logged in
-     * @param password the password of the userAccount to be logged in
-     * @return whether the login is successful
-     */
-    private boolean successfulLogin(String username, String password) {
-        boolean loginSuccess = false;
-        setUserAccountList();
-        for (UserAccount userAccount : userAccountList) {
-            if (userAccount.getUsername().equals(username)
-                    && userAccount.getPassword().equals(password)) {
-                loginSuccess = true;
-                currentUserAccount = userAccount;
-            }
-        }
-        return loginSuccess;
-    }
-
-    /**
-     * Signs up a new UserAccount if it does not already exist, adds it to userAccountList,
-     * and sets the currentUserAccount to it.
-     * Returns true if the sign up is successful, false otherwise.
-     *
-     * @param username the username of the new UserAccount
-     * @param password the password of the new UserAccount
-     * @return whether the sign up of the new UserAccount is successful
-     */
-    public boolean successfulSignUp(String username, String password) {
-        UserAccount newUserAccount = new UserAccount(username, password);
-        boolean exists = false;
-        for (UserAccount userAccount : userAccountList) {
-            if (userAccount.getUsername().equals(username)) {
-                exists = true;
-            }
-        }
-        if (!exists) {
-            currentUserAccount = newUserAccount;
-            userAccountList.add(newUserAccount);
-            userAccountsToFile(USER_ACCOUNTS_FILENAME);
-        }
-        return !exists;
     }
 
     /**
@@ -161,14 +119,14 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void makeToastSignUpAcceptedText() {
         Toast.makeText(this, "Sign Up successful. Please Login to continue.",
-                Toast.LENGTH_SHORT).show();
+                Toast.LENGTH_LONG).show();
     }
 
     /**
      * Display that a sign up failed because user already exists.
      */
     private void makeToastExistsText() {
-        Toast.makeText(this, "Account already exists.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Account already exists.", Toast.LENGTH_LONG).show();
     }
 
     /**

@@ -142,4 +142,21 @@ public class UserAccountTest {
         Set<String> gameNames = new HashSet<>(Arrays.asList("Game 1", "Game 2", "Game 3"));
         assertEquals(gameNames, tester.getSnakeGameNames());
     }
+
+    // TODO: Blocks tests
+    /**
+     * Tests if Blocks game is added and returned correctly.
+     */
+    @Test
+    public void testAddGetBlocksGame() {
+
+    }
+
+    /**
+     * Tests if Blocks game names are returned correctly.
+     */
+    @Test
+    public void testGetBlocksGameNames() {
+
+    }
 }
