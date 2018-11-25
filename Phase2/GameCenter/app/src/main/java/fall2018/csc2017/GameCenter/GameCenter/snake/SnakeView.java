@@ -210,7 +210,9 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
-    //currently unused
+    /**
+     * Pauses the game.
+     */
     public void pause() {
         playing = false;
         try {
@@ -220,7 +222,9 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
-    //currently unused
+    /**
+     * Resumes the game.
+     */
     public void resume() {
         playing = true;
         thread = new Thread(this);
