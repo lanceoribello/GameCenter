@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import fall2018.csc2017.GameCenter.GameCenter.blocks.GridManager;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
 
 /**
@@ -41,7 +42,7 @@ public class UserAccount implements Serializable {
      * Keys: The names of the user account's past Blocks games.
      * Values: The grid state of each game.
      */
-    private Map<String, int[][]> blocksGameNames;
+    private Map<String, GridManager> blocksGameNames;
 
     /**
      * Map of scores.
@@ -192,19 +193,19 @@ public class UserAccount implements Serializable {
      * Adds a new game name to this user account
      *
      * @param newName   a new game name added to the user account
-     * @param gridState grid state of the new game
+     * @param gridManager grid manager of the new game
      */
-    public void addBlocksGame(String newName, int[][] gridState) {
-        this.blocksGameNames.put(newName, gridState);
+    public void addBlocksGame(String newName, GridManager gridManager) {
+        this.blocksGameNames.put(newName, gridManager);
     }
 
     /**
      * Get a game saved by the game name.
      *
      * @param gameName a game name saved to the user account
-     * @return grid state of the game
+     * @return grid manager of the game
      */
-    public int[][] getBlocksGame(String gameName) {
+    public GridManager getBlocksGame(String gameName) {
         if (this.blocksGameNames.containsKey(gameName)) {
             return this.blocksGameNames.get(gameName);
         } else {

@@ -101,7 +101,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
      * Undoes the number of moves specified in the text input, if possible.
      * Calls the undo method in BoardManager when the undo button is tapped.
      *
-     * @param view the current view.
+     * @param view the current view
      */
     public void undoMoves(View view) {
         EditText movesView = findViewById(R.id.Undoers);
@@ -120,7 +120,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                     "Please enter a valid number of undoes", Toast.LENGTH_SHORT).show();
             Log.e("undo moves", "Text entered was not an integer: " + e.toString());
         }
-
     }
 
     /**
@@ -212,9 +211,9 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                         ObjectInputStream input = new ObjectInputStream(inputStream);
                         userAccountList = (ArrayList<UserAccount>) input.readObject();
                         inputStream.close();
-                        for (UserAccount ua : userAccountList) {
-                            if (ua.getUsername().equals(currentUserAccount.getUsername())) {
-                                currentUserAccount = ua;
+                        for (UserAccount user : userAccountList) {
+                            if (user.getUsername().equals(currentUserAccount.getUsername())) {
+                                currentUserAccount = user;
                             }
                         }
                         boardManager = currentUserAccount.getSlidingTilesGame("autoSave");
@@ -243,7 +242,8 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Gets the list of background Ids of the tile images in the drawable folder based on game level
+     * Gets the list of background Ids of the tile images in the drawable folder based on
+     * game level.
      *
      * @param complexity level of the game
      * @return Arraylist of id numbers of the tile corresponding to the tile in the drawable folder

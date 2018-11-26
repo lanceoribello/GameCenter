@@ -33,6 +33,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
      * The current user account obtained from the game select screen.
      */
     private UserAccount currentUserAccount;
+
     /**
      * The file containing a temp version of the boardManager.
      */
@@ -44,7 +45,6 @@ public class SnakeMenuActivity extends AppCompatActivity {
      * {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty, direction, FPS}.
      */
     private Object[] savedData;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +168,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
     private void makeToastLoadedText() {
         Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
     }
+
     /**
      * Activate the Load autoSave button, which loads the latest autoSave of Snake of
      * the currentAccount.
@@ -205,12 +206,14 @@ public class SnakeMenuActivity extends AppCompatActivity {
             }
         }));
     }
+
     /**
      * Display that there is no autoSaved game to load.
      */
     private void makeToastLoadAutoSaveFailText() {
         Toast.makeText(this, "No Autosaved Game to Load", Toast.LENGTH_SHORT).show();
     }
+
     /**
      * Load the savePointData from snake_save_file_tmp.ser, the file used for temporarily holding a
      * savePointData.
@@ -232,6 +235,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                     + e.toString());
         }
     }
+
     /**
      * Saves a new game to the currentUserAccount.
      */
@@ -246,10 +250,10 @@ public class SnakeMenuActivity extends AppCompatActivity {
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile();
     }
+
     /**
      * Saves the userAccountList to a file.
      */
-
     private void userAccountsToFile() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
@@ -259,5 +263,14 @@ public class SnakeMenuActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+    }
+
+    /**
+     * Read the temporary game save data from disk.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadFromTempFile();
     }
 }
