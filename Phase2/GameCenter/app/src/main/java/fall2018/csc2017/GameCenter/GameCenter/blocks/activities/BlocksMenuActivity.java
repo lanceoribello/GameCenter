@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,6 +63,8 @@ public class BlocksMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blocks_menu);
         Point size = new Point();
+        Display display = getWindowManager().getDefaultDisplay();
+        display.getSize(size);
         blocksView = new BlocksView(this, size);
         saveToTempFile();
         currentUserAccount =
