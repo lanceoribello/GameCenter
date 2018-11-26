@@ -282,12 +282,12 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Spawns a bomb at a given location
      *
-     * @param oldSaveDatum
-     * @param oldSaveDatum1
+     * @param x x coordinate of bomb
+     * @param y y coordinate of bomb
      */
-    private void spawnBombAt(int oldSaveDatum, int oldSaveDatum1) {
-        bombX = oldSaveDatum;
-        bombY = oldSaveDatum1;
+    private void spawnBombAt(int x, int y) {
+        bombX = x;
+        bombY = y;
     }
 
     /**
