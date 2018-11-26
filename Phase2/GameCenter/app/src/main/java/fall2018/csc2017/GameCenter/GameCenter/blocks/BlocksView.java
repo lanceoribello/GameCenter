@@ -28,64 +28,60 @@ public class BlocksView extends SurfaceView implements Runnable {
      * How many milliseconds in a second.
      */
     private final static long MILLIS_IN_A_SECOND = 1000;
-
+    /**
+     * The gridManager of the Blocks game.
+     */
+    public GridManager gridManager;
     /**
      * The canvas of the Blocks game.
      * Used to display the game.
      */
     Canvas canvas;
-
     /**
      * The context of the Blocks game.
      * Used to reference the game's activity.
      */
     Context context;
-
     /**
      * The height of the screen being displayed upon.
      */
     int screenHeight;
-
     /**
      * An object array that contains any relevant data in the game used for saving and loading
      * save points.
      */
     Object[] savePointData;
-
     /**
      * The thread of the Snake game.
      */
     private Thread thread = null;
-
     /**
      * The volatile that determines whether the game is currently being played.
      * As a volatile, it can be accessed from inside and outside the thread.
      */
     private volatile boolean playing;
-
     /**
      * The SurfaceHolder used by the Canvas class to display the game.
      */
     private SurfaceHolder holder;
-
     /**
      * The paint used to select colors for displaying the game.
      */
     private Paint paint;
+    /**
+     * The width of the screen being displayed upon.
+     */
 
     private int screenWidth;
-
     /**
      * The long that controls when the game will be updated next.
      */
     private long nextFrameTime;
-
-    private int blockSize;
-
     /**
-     * The gridManager of the Blocks game.
+     * The size in pixels of a block for the game display.
+     * Corresponds to the size of a grid square.
      */
-    public GridManager gridManager;
+    private int blockSize;
 
     /**
      * Constructor of BlocksView that only takes in context.
@@ -256,34 +252,25 @@ public class BlocksView extends SurfaceView implements Runnable {
                 if (motionEvent.getX() >= screenWidth / 3
                         && motionEvent.getX() <= 2 * screenWidth / 3
                         && motionEvent.getY() >= screenWidth
-                        && motionEvent.getY() <=screenWidth+ (screenHeight-screenWidth)/3) {
+                        && motionEvent.getY() <= screenWidth + (screenHeight - screenWidth) / 3) {
                     gridManager.moveSuccess("down");
                 } else if (motionEvent.getX() >= screenWidth / 3
                         && motionEvent.getX() <= 2 * screenWidth / 3
                         && motionEvent.getY() <= screenHeight
-                        && motionEvent.getY() >= screenHeight - (screenHeight-screenWidth)/3) {
+                        && motionEvent.getY() >= screenHeight - (screenHeight - screenWidth) / 3) {
                     gridManager.moveSuccess("up");
                 } else if (motionEvent.getX() >= 2 * screenWidth / 3
                         && motionEvent.getX() <= screenWidth
-                        && motionEvent.getY() <= screenHeight - (screenHeight-screenWidth)/3
-                        && motionEvent.getY() >=  screenWidth+ (screenHeight-screenWidth)/3) {
+                        && motionEvent.getY() <= screenHeight - (screenHeight - screenWidth) / 3
+                        && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
                     gridManager.moveSuccess("right");
                 } else if (motionEvent.getX() >= 0
                         && motionEvent.getX() <= screenWidth / 3
-                        && motionEvent.getY() <= screenHeight - (screenHeight-screenWidth)/3
-                        && motionEvent.getY() >= screenWidth+ (screenHeight-screenWidth)/3) {
+                        && motionEvent.getY() <= screenHeight - (screenHeight - screenWidth) / 3
+                        && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
                     gridManager.moveSuccess("left");
                 }
         }
         return true;
-    }
-
-    /**
-     * Returns the current save point data of this Blocks game.
-     *
-     * @return this game's current save point data
-     */
-    public Object[] getSavePointData() {
-        return this.savePointData;
     }
 }
