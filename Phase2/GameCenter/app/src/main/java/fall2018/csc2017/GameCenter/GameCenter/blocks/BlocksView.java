@@ -244,6 +244,17 @@ public class BlocksView extends SurfaceView implements Runnable {
         return false;
     }
 
+    /**
+     * Necessary for onTouchEvent to have no warnings.
+     *
+     * @return true
+     */
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         performClick();
