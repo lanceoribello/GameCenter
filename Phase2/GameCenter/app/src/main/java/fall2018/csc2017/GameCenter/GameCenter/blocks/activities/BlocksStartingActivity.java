@@ -44,13 +44,10 @@ public class BlocksStartingActivity extends AppCompatActivity {
         // Make snakeView the default view of the Activity
         setContentView(blocksView);
     }
-
-
-
-/**
+    
+    /**
      * Updates the high scores of the currentUserAccount if a new high score was achieved.
      */
-
     private void updateHighScore() {
         int finalScore = blocksView.gridManager.getGrid().getScore();
         if (blocksView.gridManager.gameOver() &&
@@ -60,25 +57,21 @@ public class BlocksStartingActivity extends AppCompatActivity {
         }
     }
 
-
-/**
+    /**
      * Writes new high scores to file.
      * Helper method for updateHighScore.
      */
-
     private void updateUserAccounts() {
         LoginActivity.userAccountList.remove(currentUserAccount);
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile(LoginActivity.USER_ACCOUNTS_FILENAME);
     }
 
-
-/**
+    /**
      * Saves the LoginActivity.userAccountList to a file.
      *
      * @param fileName the name of the file
      */
-
     public void userAccountsToFile(String fileName) {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
@@ -90,21 +83,17 @@ public class BlocksStartingActivity extends AppCompatActivity {
         }
     }
 
-
-/**
+    /**
      * Writes the current boardManager to the current userAccount.
      */
-
     private void createAutoSave() {
         currentUserAccount.addSnakeGame("autoSave", blocksView.getSavePointData());
         updateUserAccounts();
     }
 
-
-/**
+    /**
      * Start the thread in snakeView when this Activity is shown to the player.
      */
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -112,11 +101,9 @@ public class BlocksStartingActivity extends AppCompatActivity {
         updateHighScore();
     }
 
-    */
-/**
+    /**
      * Dispatch onPause() to fragments.
      */
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -126,11 +113,9 @@ public class BlocksStartingActivity extends AppCompatActivity {
         updateHighScore();
     }
 
-
-/**
+    /**
      * Dispatch onStop() to fragments.
      */
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -140,12 +125,10 @@ public class BlocksStartingActivity extends AppCompatActivity {
         updateHighScore();
     }
 
-
-/**
+    /**
      * Save the board manager to blocks_save_file_tmp.ser, the file used for temporarily holding
      * the save point data.
      */
-
     public void saveToTempFile() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
