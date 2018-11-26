@@ -2,6 +2,7 @@ package fall2018.csc2017.GameCenter.GameCenter.blocks.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,6 +61,9 @@ public class BlocksMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blocks_menu);
+        Point size = new Point();
+        blocksView = new BlocksView(this, size);
+        saveToTempFile();
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         addNewGameButtonListener();
