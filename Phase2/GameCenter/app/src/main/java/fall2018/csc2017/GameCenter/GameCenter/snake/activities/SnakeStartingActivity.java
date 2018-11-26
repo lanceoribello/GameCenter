@@ -138,8 +138,8 @@ public class SnakeStartingActivity extends AppCompatActivity {
     }
 
     /**
-     * Save the board manager to save_file_tmp.ser, the file used for temporarily holding a
-     * boardManager.
+     * Save the board manager to snake_save_file_tmp.ser, the file used for temporarily holding the
+     * save point data.
      */
     public void saveToTempFile() {
         try {
