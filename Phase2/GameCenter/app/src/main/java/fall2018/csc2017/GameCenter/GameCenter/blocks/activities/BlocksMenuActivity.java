@@ -24,9 +24,13 @@ import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardMana
 import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeMenuActivity;
 import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeStartingActivity;
 
+/**
+ * The menu activity for the Blocks game.
+ */
 public class BlocksMenuActivity extends AppCompatActivity {
+
     /**
-     * The file containing a temp version of the boardManager.
+     * The file containing a temp version of the game data.
      */
     public static final String TEMP_SAVE_FILENAME = "blocks_save_file_tmp.ser";
 
@@ -36,10 +40,9 @@ public class BlocksMenuActivity extends AppCompatActivity {
     private UserAccount currentUserAccount;
 
     /**
-     * The board manager.
+     * The game data.
      */
     private Object savedData;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +51,25 @@ public class BlocksMenuActivity extends AppCompatActivity {
 //        saveToTempFile();                 if need be
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
+        addNewGameButtonListener();
         addLoadButtonListener();
         addSaveButtonListener();
 //        addLoadAutoSaveButtonListener();
     }
+
+    /**
+     * Activate the new game button.
+     */
+    private void addNewGameButtonListener() {
+        Button newGameButton = findViewById(R.id.NewGameBlocks);
+        newGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToGame();
+            }
+        });
+    }
+
     /**
      * Activate the save button.
      */
@@ -66,6 +84,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
             }
         });
     }
+
     /**
      * Activate the load button listener. Users will be given a list of previously saved games to
      * choose from.
@@ -103,12 +122,14 @@ public class BlocksMenuActivity extends AppCompatActivity {
     private void makeToastSavedText() {
         Toast.makeText(this, "Game Saved", Toast.LENGTH_SHORT).show();
     }
+
     /**
      * Display that a game was loaded successfully.
      */
     private void makeToastLoadedText() {
         Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
     }
+
     /**
      * Saves a new game to the currentUserAccount with game name as date and time.
      */
@@ -122,6 +143,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile();
     }
+
     /**
      * Saves the userAccountList to a file.
      */
@@ -135,6 +157,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
             Log.e("Exception", "File write failed: " + e.toString());
         }
     }
+    
     /**
      * Undoes the number of moves specified in the text input, if possible.
      * Calls the undo method in BoardManager when the undo button is tapped.
@@ -160,6 +183,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
 //        }
 
     }
+
     /**
      * Make a list of games names for displaying in load games.
      */
@@ -171,6 +195,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
         }
         return games;
     }
+
     /**
      * Switch to SnakeStartingActivity to play the game.
      * Passes savedData and difficulty into BlocksStartingActivity.
