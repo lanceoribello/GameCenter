@@ -47,6 +47,12 @@ public class BlocksView extends SurfaceView implements Runnable {
     int screenHeight;
 
     /**
+     * An object array that contains any relevant data in the game used for saving and loading
+     * save points.
+     */
+    Object[] savePointData;
+
+    /**
      * The thread of the Snake game.
      */
     private Thread thread = null;
@@ -67,9 +73,6 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private Paint paint;
 
-    /**
-     * The width of the screen being displayed upon.
-     */
     private int screenWidth;
 
     /**
@@ -77,10 +80,6 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private long nextFrameTime;
 
-    /**
-     * The size in pixels of a block for the game display.
-     * Corresponds to the size of a grid square.
-     */
     private int blockSize;
 
     /**
@@ -184,16 +183,21 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private void drawControls() {
         paint.setColor(Color.argb(255, 255, 255, 255));
-        canvas.drawRect(0, 2 * screenHeight / 3, screenWidth, screenHeight, paint);
+        canvas.drawRect(0, screenWidth, screenWidth, screenHeight, paint);
         paint.setColor(Color.BLACK);
-        canvas.drawRect(screenWidth / 3, 2 * screenHeight / 3, 2 * screenWidth / 3,
-                7 * screenHeight / 9, paint);
-        canvas.drawRect(screenWidth / 3, 8 * screenHeight / 9, 2 * screenWidth / 3,
+        canvas.drawRect(screenWidth / 3, screenWidth, 2 * screenWidth / 3,
+                screenWidth + (screenHeight - screenWidth) / 3, paint);
+        canvas.drawRect(screenWidth / 3, screenWidth + 2 *
+                        (screenHeight - screenWidth) / 3,
+                2 * screenWidth / 3,
                 screenHeight, paint);
-        canvas.drawRect(0, 7 * screenHeight / 9, screenWidth / 3,
-                8 * screenHeight / 9, paint);
-        canvas.drawRect(2 * screenWidth / 3, 7 * screenHeight / 9, screenWidth,
-                8 * screenHeight / 9, paint);
+        canvas.drawRect(0, screenWidth + (screenHeight - screenWidth) / 3,
+                screenWidth / 3,
+                screenWidth + 2 * (screenHeight - screenWidth) / 3, paint);
+        canvas.drawRect(2 * screenWidth / 3, screenWidth + (screenHeight -
+                        screenWidth) / 3,
+                screenWidth,
+                screenWidth + 2 * (screenHeight - screenWidth) / 3, paint);
     }
 
     /**
@@ -203,16 +207,16 @@ public class BlocksView extends SurfaceView implements Runnable {
         for (int row = 0; row != Grid.GRID_LENGTH; row++) {
             for (int col = 0; col != Grid.GRID_LENGTH; col++) {
                 int gridLocation = gridManager.getGrid().gridState[row][col];
-                if (gridLocation != Grid.EMPTY){
-                    if (gridLocation == Grid.PLAYER) {
-                        paint.setColor(Color.argb(255, 231, 126, 235));
-                    } else if (gridLocation == Grid.BLOCK) {
-                        paint.setColor(Color.argb(255, 0, 0, 0));
-                    } else {
-                        paint.setColor(Color.argb(255, 65, 36, 255));
-                    }
-                    drawGridSquare(row, col);
+                if (gridLocation == Grid.EMPTY) {
+                    paint.setColor(Color.argb(255, 250, 195, 65));
+                } else if (gridLocation == Grid.PLAYER) {
+                    paint.setColor(Color.argb(255, 231, 126, 235));
+                } else if (gridLocation == Grid.BLOCK) {
+                    paint.setColor(Color.argb(255, 0, 0, 0));
+                } else {
+                    paint.setColor(Color.argb(255, 65, 36, 255));
                 }
+                drawGridSquare(row, col);
             }
         }
     }
@@ -252,25 +256,34 @@ public class BlocksView extends SurfaceView implements Runnable {
                 if (motionEvent.getX() >= screenWidth / 3
                         && motionEvent.getX() <= 2 * screenWidth / 3
                         && motionEvent.getY() >= screenWidth
-                        && motionEvent.getY() <= screenWidth + (screenHeight - screenWidth) / 3) {
+                        && motionEvent.getY() <=screenWidth+ (screenHeight-screenWidth)/3) {
                     gridManager.moveSuccess("down");
                 } else if (motionEvent.getX() >= screenWidth / 3
                         && motionEvent.getX() <= 2 * screenWidth / 3
                         && motionEvent.getY() <= screenHeight
-                        && motionEvent.getY() >= screenHeight - (screenHeight - screenWidth) / 3) {
+                        && motionEvent.getY() >= screenHeight - (screenHeight-screenWidth)/3) {
                     gridManager.moveSuccess("up");
                 } else if (motionEvent.getX() >= 2 * screenWidth / 3
                         && motionEvent.getX() <= screenWidth
-                        && motionEvent.getY() <= screenHeight - (screenHeight - screenWidth) / 3
-                        && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
+                        && motionEvent.getY() <= screenHeight - (screenHeight-screenWidth)/3
+                        && motionEvent.getY() >=  screenWidth+ (screenHeight-screenWidth)/3) {
                     gridManager.moveSuccess("right");
                 } else if (motionEvent.getX() >= 0
                         && motionEvent.getX() <= screenWidth / 3
-                        && motionEvent.getY() <= screenHeight - (screenHeight - screenWidth) / 3
-                        && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
+                        && motionEvent.getY() <= screenHeight - (screenHeight-screenWidth)/3
+                        && motionEvent.getY() >= screenWidth+ (screenHeight-screenWidth)/3) {
                     gridManager.moveSuccess("left");
                 }
         }
         return true;
+    }
+
+    /**
+     * Returns the current save point data of this Blocks game.
+     *
+     * @return this game's current save point data
+     */
+    public Object[] getSavePointData() {
+        return this.savePointData;
     }
 }
