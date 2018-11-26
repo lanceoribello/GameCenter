@@ -75,7 +75,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
      * @param view the current view
      */
     public void undoMoves(View view) {
-        EditText movesView = findViewById(R.id.NumUndo);
+        EditText movesView = findViewById(R.id.NumUndoBlocks);
         String moves = movesView.getText().toString();
         try {
             int numberMoves = Integer.parseInt(moves);
