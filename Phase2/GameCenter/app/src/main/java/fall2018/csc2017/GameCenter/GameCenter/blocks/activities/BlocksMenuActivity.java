@@ -1,5 +1,6 @@
 package fall2018.csc2017.GameCenter.GameCenter.blocks.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
@@ -49,6 +50,8 @@ public class BlocksMenuActivity extends AppCompatActivity {
      */
     private BlocksView blocksView;
 
+    private Context self;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
         // Load the resolution into a Point object
         Point size = new Point();
         display.getSize(size);
+        self = this;
         blocksView = new BlocksView(this, size);
         saveToTempFile();
         addNewGameButtonListener();
@@ -101,6 +105,12 @@ public class BlocksMenuActivity extends AppCompatActivity {
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Find out the width and height of the screen
+                Display display = getWindowManager().getDefaultDisplay();
+                // Load the resolution into a Point object
+                Point size = new Point();
+                display.getSize(size);
+                blocksView = new BlocksView(self, size);
                 switchToGame();
             }
         });
