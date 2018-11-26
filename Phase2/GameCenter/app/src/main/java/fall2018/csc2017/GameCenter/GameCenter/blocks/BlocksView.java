@@ -75,6 +75,9 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private Paint paint;
 
+    /**
+     * The width of the screen being displayed upon.
+     */
     private int screenWidth;
 
     /**
@@ -83,22 +86,10 @@ public class BlocksView extends SurfaceView implements Runnable {
     private long nextFrameTime;
 
     /**
-     * The frames per second of the current Snake game.
+     * The size in pixels of a block for the game display.
+     * Corresponds to the size of a grid square.
      */
-    private long FPS = 10;
-
-    /**
-     * The current score of the game.
-     */
-    private int score;
-
     private int blockSize;
-
-    /**
-     * The height of the playable area in terms of the number of blocks.
-     * Determined dynamically.
-     */
-    private int numBlocksHigh;
 
     /**
      * The gridManager of the Blocks game.
@@ -130,7 +121,6 @@ public class BlocksView extends SurfaceView implements Runnable {
         screenHeight = size.y;
         blockSize = screenWidth / Grid.GRID_LENGTH;
         //bottom third of the screen used for the movement buttons
-        numBlocksHigh = 2 * (screenHeight / blockSize) / 3;
         holder = getHolder();
         paint = new Paint();
         gridManager = new GridManager();
@@ -186,7 +176,8 @@ public class BlocksView extends SurfaceView implements Runnable {
     private void drawText() {
         paint.setColor(Color.argb(255, 255, 255, 255));
         paint.setTextSize(SCORE_TEXT_SIZE);
-        canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
+        canvas.drawText("Score:" + gridManager.getGrid().getScore(), 10,
+                SCORE_TEXT_SIZE, paint);
         if (gridManager.gameOver()) {
             paint.setTextSize(GAME_OVER_SIZE);
             canvas.drawText("GAME OVER", 10, GAME_OVER_SIZE + 50, paint);
@@ -252,7 +243,7 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private boolean checkForUpdate() {
         if (nextFrameTime <= System.currentTimeMillis()) {
-            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND / FPS;
+            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND;
             return true;
         }
         return false;
