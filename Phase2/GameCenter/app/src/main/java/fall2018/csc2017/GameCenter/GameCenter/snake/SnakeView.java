@@ -366,9 +366,8 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeLength++;
         spawnApple();
         score = score + 1;
-        if (score % 2 == 0) {
-            spawnBomb();
-        }
+        spawnBomb();
+
         if ((snakeLength) % (MAX_SNAKE_SIZE) == 0) {
             increaseDifficulty();
         }
