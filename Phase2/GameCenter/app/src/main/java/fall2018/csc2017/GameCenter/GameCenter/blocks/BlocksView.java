@@ -47,12 +47,6 @@ public class BlocksView extends SurfaceView implements Runnable {
     int screenHeight;
 
     /**
-     * An object array that contains any relevant data in the game used for saving and loading
-     * save points.
-     */
-    Object[] savePointData;
-
-    /**
      * The thread of the Snake game.
      */
     private Thread thread = null;
@@ -73,6 +67,9 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private Paint paint;
 
+    /**
+     * The width of the screen being displayed upon.
+     */
     private int screenWidth;
 
     /**
@@ -80,6 +77,10 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private long nextFrameTime;
 
+    /**
+     * The size in pixels of a block for the game display.
+     * Corresponds to the size of a grid square.
+     */
     private int blockSize;
 
     /**
@@ -156,7 +157,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     private void drawGame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.argb(255, 155, 255, 165));
+            canvas.drawColor(Color.argb(255, 250, 195, 65));
             drawGrid();
             drawControls();
             drawText();
@@ -202,16 +203,16 @@ public class BlocksView extends SurfaceView implements Runnable {
         for (int row = 0; row != Grid.GRID_LENGTH; row++) {
             for (int col = 0; col != Grid.GRID_LENGTH; col++) {
                 int gridLocation = gridManager.getGrid().gridState[row][col];
-                if (gridLocation == Grid.EMPTY) {
-                    paint.setColor(Color.argb(255, 250, 195, 65));
-                } else if (gridLocation == Grid.PLAYER) {
-                    paint.setColor(Color.argb(255, 231, 126, 235));
-                } else if (gridLocation == Grid.BLOCK) {
-                    paint.setColor(Color.argb(255, 0, 0, 0));
-                } else {
-                    paint.setColor(Color.argb(255, 65, 36, 255));
+                if (gridLocation != Grid.EMPTY){
+                    if (gridLocation == Grid.PLAYER) {
+                        paint.setColor(Color.argb(255, 231, 126, 235));
+                    } else if (gridLocation == Grid.BLOCK) {
+                        paint.setColor(Color.argb(255, 0, 0, 0));
+                    } else {
+                        paint.setColor(Color.argb(255, 65, 36, 255));
+                    }
+                    drawGridSquare(row, col);
                 }
-                drawGridSquare(row, col);
             }
         }
     }
@@ -271,14 +272,5 @@ public class BlocksView extends SurfaceView implements Runnable {
                 }
         }
         return true;
-    }
-
-    /**
-     * Returns the current save point data of this Blocks game.
-     *
-     * @return this game's current save point data
-     */
-    public Object[] getSavePointData() {
-        return this.savePointData;
     }
 }
