@@ -1,15 +1,21 @@
 package fall2018.csc2017.GameCenter.GameCenter.snake;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.support.constraint.solver.widgets.Rectangle;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.Random;
+
+import fall2018.csc2017.GameCenter.GameCenter.R;
 
 /*
 Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
@@ -240,7 +246,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeLength = 1;
         snakeXs[0] = NUM_BLOCKS_WIDE / 2;
         snakeYs[0] = numBlocksHigh / 2;
-        spawnMouse();
+        spawnApple();
         score = 0;
         // Setup nextFrameTime so an update is triggered immediately
         nextFrameTime = System.currentTimeMillis();
@@ -278,7 +284,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Spawns a mouse at a random location.
      */
-    private void spawnMouse() {
+    private void spawnApple() {
         Random random = new Random();
         mouseX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
         mouseY = random.nextInt(numBlocksHigh - 1) + 1;
@@ -292,7 +298,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     private void eatMouse() {
         snakeLength++;
-        spawnMouse();
+        spawnApple();
         score = score + 1;
         if ((snakeLength) % (MAX_SNAKE_SIZE) == 0) {
             increaseDifficulty();
@@ -392,12 +398,19 @@ public class SnakeView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.argb(255, 102, 204, 255));
             drawText();
             drawSnake();
-            drawMouse();
+            drawApple();
             drawControls();
             holder.unlockCanvasAndPost(canvas);
         }
     }
-
+    private void drawApple(){
+        Paint p = new Paint();
+        Bitmap apple = BitmapFactory.decodeResource(context.getResources(), R.drawable.apple);
+        canvas.drawBitmap(apple, null , new Rect(mouseX * blockSize,
+                (mouseY * blockSize),
+                (mouseX * blockSize) + blockSize,
+                (mouseY * blockSize) + blockSize), p);
+    }
     /**
      * Draws the score text and the GAME OVER text.
      */
