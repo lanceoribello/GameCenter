@@ -146,42 +146,27 @@ public class GridManager implements Serializable {
     }
 
     /**
-     * Returns whether the player makes a successful move on the grid.
      * Potentially moves the player the maximum number of grid-squares the player can move in a
      * direction until it meets a food or a block (the player stops before a block
      * and stops when a food is eaten).
+     * Adds the grid to saveGrids if a move was successfully made.
      *
      * @param direction the direction the player wishes to move; can be up, down, left, or right
-     * @return whether the player actually moves
      */
-    public boolean moveSuccess(String direction) {
-        boolean success;
-        switch (direction) {
-            case "up":
-                success = grid.verticalMove(1, true) > 0;
-                if (success) {
-                    addToSavedGrids();
-                }
-                return success;
-            case "down":
-                success = grid.verticalMove(-1, true) > 0;
-                if (success) {
-                    addToSavedGrids();
-                }
-                return success;
-            case "right":
-                success = grid.horizontalMove(1, true) > 0;
-                if (success) {
-                    addToSavedGrids();
-                }
-                return success;
-            case "left":
-                success = grid.horizontalMove(-1, true) > 0;
-                if (success) {
-                    addToSavedGrids();
-                }
-                return success;
+    public void movePlayer(String direction) {
+        boolean success = false;
+        addToSavedGrids();
+        if (direction.equals("up")) {
+            success = grid.verticalMove(1, true) > 0;
+        } else if (direction.equals("down"))
+            success = grid.verticalMove(-1, true) > 0;
+        else if (direction.equals("right")) {
+            success = grid.horizontalMove(1, true) > 0;
+        } else if (direction.equals("left")) {
+            success = grid.horizontalMove(-1, true) > 0;
         }
-        return false;
+        if(!success){
+            savedGrids.remove(savedGrids.size()-1);
+        }
     }
 }
