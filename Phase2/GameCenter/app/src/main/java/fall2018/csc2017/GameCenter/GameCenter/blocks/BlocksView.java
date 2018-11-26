@@ -11,12 +11,16 @@ import android.view.SurfaceView;
 
 import java.util.Random;
 
+/**
+ * The view for Blocks.
+ */
 public class BlocksView extends SurfaceView implements Runnable {
 
     /**
      * The text size of the displayed score.
      */
     private final static int SCORE_TEXT_SIZE = 40;
+
     /**
      * The size of the GAME OVER text.
      */
@@ -26,6 +30,7 @@ public class BlocksView extends SurfaceView implements Runnable {
      * How many milliseconds in a second.
      */
     private final static long MILLIS_IN_A_SECOND = 1000;
+
     /**
      * The width of the playable area in terms of the number of blocks.
      * 40 by default.
@@ -37,53 +42,64 @@ public class BlocksView extends SurfaceView implements Runnable {
      * Used to display the game.
      */
     Canvas canvas;
+
     /**
      * The context of the Snake game.
      * Used to reference the game's activity.
      */
     Context context;
+
     /**
      * The height of the screen being displayed upon.
      */
     int screenHeight;
+
     /**
      * An object array that contains any relevant data in the game used for saving and loading
      * save points.
      */
     Object[] savePointData;
+
     /**
      * The thread of the Snake game.
      */
     private Thread thread = null;
+
     /**
      * The volatile that determines whether the game is currently being played.
      * As a volatile, it can be accessed from inside and outside the thread.
      */
     private volatile boolean playing;
+
     /**
      * The SurfaceHolder used by the Canvas class to display the game.
      */
     private SurfaceHolder holder;
+
     /**
      * The paint used to select colors for displaying the game.
      */
     private Paint paint;
 
     private int screenWidth;
+
     /**
      * The long that controls when the game will be updated next.
      */
     private long nextFrameTime;
+
     /**
      * The frames per second of the current Snake game.
      */
-    private long FPS;
+    private long FPS = 10;
+
     /**
      * The current score of the game.
      */
     private int score;
 
     private int blockSize;
+
     /**
      * The height of the playable area in terms of the number of blocks.
      * Determined dynamically.
@@ -110,8 +126,8 @@ public class BlocksView extends SurfaceView implements Runnable {
      * Sets up the display the game.
      * Processes whether a new game is started or a past game is being loaded.
      *
-     * @param context     the context of BlocksView
-     * @param size        the size to be displayed
+     * @param context the context of BlocksView
+     * @param size    the size to be displayed
      */
     public BlocksView(Context context, Point size) {
         super(context);
@@ -202,7 +218,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     /**
      * Draws the entire grid of the game.
      */
-    private void drawGrid(){
+    private void drawGrid() {
 
     }
 
@@ -220,4 +236,12 @@ public class BlocksView extends SurfaceView implements Runnable {
         return false;
     }
 
+    /**
+     * Returns the current save point data of this Blocks game.
+     *
+     * @return this game's current save point data
+     */
+    public Object[] getSavePointData() {
+        return this.savePointData;
+    }
 }
