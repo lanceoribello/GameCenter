@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.support.constraint.solver.widgets.Rectangle;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -128,16 +127,24 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     private int snakeLength;
     /**
-     * The x value of the current mouse to be eaten.
+     * The x value of the current apple to be eaten.
      */
-    private int mouseX;
+    private int appleX;
     /**
-     * The y value of the current mouse to be eaten.
+     * The y value of the current apple to be eaten.
      */
-    private int mouseY;
+    private int appleY;
+    /**
+     * The x value of the current bomb to be avoided
+     */
+    private int bombX;
+    /**
+     * The y value of the current bomb to be avoided
+     */
+    private int bombY;
     /**
      * The size in pixels of a block for the game display.
-     * Corresponds to the size of an individual snake segment and the size of a mouse.
+     * Corresponds to the size of an individual snake segment and the size of a apple.
      */
     private int blockSize;
     /**
@@ -239,7 +246,7 @@ public class SnakeView extends SurfaceView implements Runnable {
 
     /**
      * Begins a new game of Snake.
-     * Spawns a snake with length 1 in the middle of the grid area as well as a mouse in a random
+     * Spawns a snake with length 1 in the middle of the grid area as well as a apple in a random
      * location.
      */
     private void startGame() {
@@ -247,6 +254,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeXs[0] = NUM_BLOCKS_WIDE / 2;
         snakeYs[0] = numBlocksHigh / 2;
         spawnApple();
+        spawnBomb();
         score = 0;
         // Setup nextFrameTime so an update is triggered immediately
         nextFrameTime = System.currentTimeMillis();
@@ -260,7 +268,8 @@ public class SnakeView extends SurfaceView implements Runnable {
     private void resumeOldGame(Object[] oldSaveData) {
         snakeXs = (int[]) oldSaveData[0];
         snakeYs = (int[]) oldSaveData[1];
-        spawnMouseAt((int) oldSaveData[2], (int) oldSaveData[3]);
+        spawnAppleAt((int) oldSaveData[2], (int) oldSaveData[3]);
+        spawnBombAt((int) oldSaveData[9], (int) oldSaveData[10]);
         snakeLength = (int) oldSaveData[4];
         score = (int) oldSaveData[5];
         difficulty = (String) oldSaveData[6];
@@ -271,39 +280,66 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Spawns a mouse at a given location.
-     *
-     * @param x the x-value of the mouse to be spawned
-     * @param y the y-value of the mouse to be spawned
+     * Spawns a bomb at a given location
+     * @param oldSaveDatum
+     * @param oldSaveDatum1
      */
-    private void spawnMouseAt(int x, int y) {
-        mouseX = x;
-        mouseY = y;
+    private void spawnBombAt(int oldSaveDatum, int oldSaveDatum1) {
+        bombX = oldSaveDatum;
+        bombY = oldSaveDatum1;
     }
 
     /**
-     * Spawns a mouse at a random location.
+     * Spawns a apple at a given location.
+     *
+     * @param x the x-value of the apple to be spawned
+     * @param y the y-value of the apple to be spawned
+     */
+    private void spawnAppleAt(int x, int y) {
+        appleX = x;
+        appleY = y;
+    }
+
+
+
+    /**
+     * Spawns a apple at a random location.
      */
     private void spawnApple() {
         Random random = new Random();
-        mouseX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
-        mouseY = random.nextInt(numBlocksHigh - 1) + 1;
+        appleX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
+        appleY = random.nextInt(numBlocksHigh - 1) + 1;
     }
 
     /**
-     * Processes a snake eating a mouse, increasing its length and the score by 1.
-     * Spawns a new mouse at a random location.
+     * Spawn a bomb at a random location
+     */
+
+    private void spawnBomb(){
+        Random random = new Random();
+        bombX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
+        bombY = random.nextInt(numBlocksHigh - 1) + 1;
+
+    }
+
+    /**
+     * Processes a snake eating a apple, increasing its length and the score by 1.
+     * Spawns a new apple at a random location.
      * Also checks if the snake has reached its maximum length to determine whether the difficulty
      * should be increased.
      */
-    private void eatMouse() {
+    private void eatApple() {
         snakeLength++;
         spawnApple();
         score = score + 1;
+        if(score % 2==0){
+            spawnBomb();
+        }
         if ((snakeLength) % (MAX_SNAKE_SIZE) == 0) {
             increaseDifficulty();
         }
     }
+
 
     /**
      * Moves all segments of the snake by one.
@@ -331,7 +367,8 @@ public class SnakeView extends SurfaceView implements Runnable {
 
     /**
      * Returns whether the snake has died, either through hitting the wall of the game area or by
-     * making contact with one of its own body segments.
+     * making contact with one of its own body segments. If the snake[0] touches a bomb the game
+     * ends as well and the snake is now dead.
      *
      * @return whether the snake has died
      */
@@ -341,6 +378,10 @@ public class SnakeView extends SurfaceView implements Runnable {
         if (snakeXs[0] >= NUM_BLOCKS_WIDE) dead = true;
         if (snakeYs[0] == -1) dead = true;
         if (snakeYs[0] == numBlocksHigh) dead = true;
+
+        if(snakeXs[0]==bombX && snakeYs[0] == bombY){
+            dead = true;
+        }
 
         for (int i = snakeLength - 1; i > 0; i--) {
             if ((i > 4) && (snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
@@ -355,8 +396,8 @@ public class SnakeView extends SurfaceView implements Runnable {
      * current game again at a later point.
      */
     public void setAutoSavePoint() {
-        savePointData = new Object[]{snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
-                difficulty, direction, FPS};
+        savePointData = new Object[]{snakeXs, snakeYs, appleX, appleY, snakeLength, score,
+                difficulty, direction, FPS, bombX, bombY};
     }
 
     /**
@@ -369,11 +410,11 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Processes when a snake eats a mouse on contact and the movement of the snake.
+     * Processes when a snake eats a apple on contact and the movement of the snake.
      */
     private void updateGame() {
-        if (snakeXs[0] == mouseX && snakeYs[0] == mouseY) {
-            eatMouse();
+        if (snakeXs[0] == appleX && snakeYs[0] == appleY) {
+            eatApple();
         }
         if (!detectDeath()) {
             moveSnake();
@@ -399,17 +440,34 @@ public class SnakeView extends SurfaceView implements Runnable {
             drawText();
             drawSnake();
             drawApple();
+            drawBomb();
             drawControls();
             holder.unlockCanvasAndPost(canvas);
         }
     }
+
+    /**
+     * Draws the bomb
+     */
+    private void drawBomb(){
+        Paint p = new Paint();
+        Bitmap bomb = BitmapFactory.decodeResource(context.getResources(), R.drawable.bomb);
+        canvas.drawBitmap(bomb, null , new Rect(bombX * blockSize,
+                (bombY * blockSize),
+                (bombX * blockSize) + blockSize,
+                (bombY * blockSize) + blockSize), p);
+    }
+
+    /**
+     * Draws the apple
+     */
     private void drawApple(){
         Paint p = new Paint();
         Bitmap apple = BitmapFactory.decodeResource(context.getResources(), R.drawable.apple);
-        canvas.drawBitmap(apple, null , new Rect(mouseX * blockSize,
-                (mouseY * blockSize),
-                (mouseX * blockSize) + blockSize,
-                (mouseY * blockSize) + blockSize), p);
+        canvas.drawBitmap(apple, null , new Rect(appleX * blockSize,
+                (appleY * blockSize),
+                (appleX * blockSize) + blockSize,
+                (appleY * blockSize) + blockSize), p);
     }
     /**
      * Draws the score text and the GAME OVER text.
@@ -434,18 +492,6 @@ public class SnakeView extends SurfaceView implements Runnable {
                     (snakeXs[i] * blockSize) + blockSize,
                     (snakeYs[i] * blockSize) + blockSize, paint);
         }
-    }
-
-    /**
-     * Draws the mouse.
-     */
-    private void drawMouse() {
-        paint.setColor(Color.argb(255, 255, 0, 0));
-        canvas.drawRect(mouseX * blockSize,
-                (mouseY * blockSize),
-                (mouseX * blockSize) + blockSize,
-                (mouseY * blockSize) + blockSize,
-                paint);
     }
 
     /**
