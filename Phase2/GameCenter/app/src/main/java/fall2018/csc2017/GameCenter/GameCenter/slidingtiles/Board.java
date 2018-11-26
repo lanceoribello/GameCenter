@@ -13,6 +13,7 @@ import java.util.Observable;
  * The sliding tiles board.
  */
 public class Board extends Observable implements Serializable, Iterable<Tile> {
+
     /**
      * The number of rows.
      */
@@ -130,5 +131,4 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
             return t;
         }
     }
-
 }

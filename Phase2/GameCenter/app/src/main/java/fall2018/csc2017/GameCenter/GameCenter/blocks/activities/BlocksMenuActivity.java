@@ -49,22 +49,19 @@ public class BlocksMenuActivity extends AppCompatActivity {
      */
     private BlocksView blocksView;
 
-    /**
-     * The game save data.
-     */
-    private Object[] savedData;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blocks_menu);
-        Point size = new Point();
+        currentUserAccount =
+                (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
+        // Find out the width and height of the screen
         Display display = getWindowManager().getDefaultDisplay();
+        // Load the resolution into a Point object
+        Point size = new Point();
         display.getSize(size);
         blocksView = new BlocksView(this, size);
         saveToTempFile();
-        currentUserAccount =
-                (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         addNewGameButtonListener();
         addLoadButtonListener();
         addSaveButtonListener();
@@ -267,8 +264,8 @@ public class BlocksMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Save the board manager to save_file_tmp.ser, the file used for temporarily holding a
-     * boardManager.
+     * Save the board manager to blocks_save_file_tmp.ser, the file used for temporarily holding a
+     * gridManager.
      */
     private void saveToTempFile() {
         try {
@@ -282,8 +279,8 @@ public class BlocksMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Load the savePointData from snake_save_file_tmp.ser, the file used for temporarily holding a
-     * savePointData.
+     * Load the gridManager from blocks_save_file_tmp.ser, the file used for temporarily holding a
+     * gridManager.
      */
     private void loadFromTempFile() {
         try {

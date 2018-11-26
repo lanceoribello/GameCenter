@@ -36,12 +36,12 @@ public class SnakeGameActivity extends AppCompatActivity {
      * An instance of SnakeView that will initialized in onCreate after getting more details
      * about the device.
      */
-    SnakeView snakeView;
+    private SnakeView snakeView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //find out the width and height of the screen
+        // Find out the width and height of the screen
         Display display = getWindowManager().getDefaultDisplay();
         // Load the resolution into a Point object
         Point size = new Point();
@@ -50,7 +50,6 @@ public class SnakeGameActivity extends AppCompatActivity {
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         difficulty = (String) getIntent().getSerializableExtra("difficulty");
         Object[] oldSavedData = (Object[]) getIntent().getSerializableExtra("savedData");
-
         // Create a new View based on the SnakeView class
         snakeView = new SnakeView(this, size, difficulty, oldSavedData);
         // Make snakeView the default view of the Activity

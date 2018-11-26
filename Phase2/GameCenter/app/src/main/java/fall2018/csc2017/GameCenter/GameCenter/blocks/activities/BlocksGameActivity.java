@@ -36,21 +36,21 @@ public class BlocksGameActivity extends AppCompatActivity {
      * An instance of BlocksViews that will initialized in onCreate after getting more details
      * about the device.
      */
-    BlocksView blocksView;
+    private BlocksView blocksView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadFromTempFile();
-        //find out the width and height of the screen
+        currentUserAccount =
+                (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
+        // Find out the width and height of the screen
         Display display = getWindowManager().getDefaultDisplay();
         // Load the resolution into a Point object
         Point size = new Point();
         display.getSize(size);
-        currentUserAccount =
-                (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         // Create a new View based on the BlocksView class
         blocksView = new BlocksView(this, size);
+        loadFromTempFile();
         // Make blocksView the default view of the Activity
         setContentView(blocksView);
     }
@@ -68,8 +68,7 @@ public class BlocksGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Writes new high scores to file.
-     * Helper method for updateHighScore.
+     * Writes new high scores to file. Helper method for updateHighScore.
      */
     private void updateUserAccounts() {
         LoginActivity.userAccountList.remove(currentUserAccount);
@@ -94,7 +93,7 @@ public class BlocksGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Writes the current boardManager to the current userAccount.
+     * Writes the current gridManager to the current userAccount.
      */
     private void createAutoSave() {
         currentUserAccount.addBlocksGame("autoSave", blocksView.gridManager);
@@ -102,7 +101,7 @@ public class BlocksGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Save the board manager to blocks_save_file_tmp.ser, the file used for temporarily holding
+     * Save the gridManager to blocks_save_file_tmp.ser, the file used for temporarily holding
      * the save point data.
      */
     public void saveToTempFile() {
@@ -117,8 +116,8 @@ public class BlocksGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Load the savePointData from snake_save_file_tmp.ser, the file used for temporarily holding a
-     * savePointData.
+     * Load the gridManager from blocks_save_file_tmp.ser, the file used for temporarily holding a
+     * gridManager.
      */
     private void loadFromTempFile() {
         try {
@@ -139,7 +138,7 @@ public class BlocksGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Start the thread in snakeView when this Activity is shown to the player.
+     * Start the thread in blocksView when this Activity is shown to the player.
      */
     @Override
     protected void onResume() {

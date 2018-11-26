@@ -19,8 +19,10 @@ import fall2018.csc2017.GameCenter.GameCenter.R;
 /*
 Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
 Manages a Snake game, running separately from the UI.
-Keeps track of
+ */
 
+/**
+ * The view for Snake.
  */
 public class SnakeView extends SurfaceView implements Runnable {
 
@@ -28,130 +30,161 @@ public class SnakeView extends SurfaceView implements Runnable {
      * The text size of the displayed score.
      */
     private final static int SCORE_TEXT_SIZE = 40;
+
     /**
      * The size of the GAME OVER text.
      */
     private final static int GAME_OVER_SIZE = 150;
+
     /**
      * The default FPS for easy mode.
      */
     private final static long EASY_MODE_FPS = 10;
+
     /**
      * The default FPS for hard mode.
      */
     private final static long HARD_MODE_FPS = 14;
+
     /**
      * How much the FPS is increased once the snake reaches its maximum size.
      */
     private final static long FPS_INCREASE = 2;
+
     /**
      * The maximum snake length before the snake is reset and the game is sped up.
      */
     private final static int MAX_SNAKE_SIZE = 15;
+
     /**
      * How many milliseconds in a second.
      */
     private final static long MILLIS_IN_A_SECOND = 1000;
+
     /**
      * The width of the playable area in terms of the number of blocks.
      * 40 by default.
      */
     private final static int NUM_BLOCKS_WIDE = 40;
+
     /**
      * The canvas of the Snake game.
      * Used to display the game.
      */
     Canvas canvas;
+
     /**
      * The context of the Snake game.
      * Used to reference the game's activity.
      */
     Context context;
+
     /**
      * The height of the screen being displayed upon.
      */
     int screenHeight;
+
     /**
      * An object array that contains any relevant data in the game used for saving and loading
-     * save points.
+     * save points. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
+     * difficulty, direction, FPS, bombX, bombY}.
      */
-    Object[] savePointData;
+    public Object[] savePointData;
+
     /**
      * The thread of the Snake game.
      */
     private Thread thread = null;
+
     /**
      * The volatile that determines whether the game is currently being played.
      * As a volatile, it can be accessed from inside and outside the thread.
      */
     private volatile boolean playing;
+
     /**
      * The SurfaceHolder used by the Canvas class to display the game.
      */
     private SurfaceHolder holder;
+
     /**
      * The paint used to select colors for displaying the game.
      */
     private Paint paint;
+
     /**
      * The current snake's direction.
      * Set to right for new games by default.
      */
     private Direction direction = Direction.RIGHT;
+
     /**
      * The width of the screen being displayed upon.
      */
     private int screenWidth;
+
     /**
      * The long that controls when the game will be updated next.
      */
     private long nextFrameTime;
+
     /**
      * The frames per second of the current Snake game.
      */
     private long FPS;
+
     /**
      * The current score of the game.
      */
     private int score;
+
     /**
      * The locations of all x-values of the snake.
      */
     private int[] snakeXs;
+
     /**
      * The locations of all y-values of the snake.
      */
     private int[] snakeYs;
+
     /**
      * The current length of the snake.
      */
     private int snakeLength;
+
     /**
      * The x value of the current apple to be eaten.
      */
     private int appleX;
+
     /**
      * The y value of the current apple to be eaten.
      */
     private int appleY;
+
     /**
-     * The x value of the current bomb to be avoided
+     * The x value of the current bomb to be avoided.
      */
     private int bombX;
+
     /**
-     * The y value of the current bomb to be avoided
+     * The y value of the current bomb to be avoided.
      */
     private int bombY;
+
     /**
      * The size in pixels of a block for the game display.
      * Corresponds to the size of an individual snake segment and the size of a apple.
      */
     private int blockSize;
+
     /**
      * The height of the playable area in terms of the number of blocks.
      * Determined dynamically.
      */
     private int numBlocksHigh;
+
     /**
      * The difficulty level of the game.
      */
@@ -183,7 +216,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         screenWidth = size.x;
         screenHeight = size.y;
         blockSize = screenWidth / NUM_BLOCKS_WIDE;
-        //bottom third of the screen used for the movement buttons
+        // Bottom third of the screen used for the movement buttons
         numBlocksHigh = 2 * (screenHeight / blockSize) / 3;
         holder = getHolder();
         paint = new Paint();
@@ -212,6 +245,9 @@ public class SnakeView extends SurfaceView implements Runnable {
         }
     }
 
+    /**
+     * Runs the game.
+     */
     @Override
     public void run() {
         while (playing) {
@@ -264,7 +300,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      * Resumes a past game of Snake using an Object array of saved data.
      *
      * @param oldSaveData saved data of a past Snake game Consists of: {snakeXs, snakeYs, mouseX,
-     * mouseY, snakeLength, score, difficulty, direction, FPS, bombX, bombY}.
+     *                    mouseY, snakeLength, score, difficulty, direction, FPS, bombX, bombY}.
      */
     private void resumeOldGame(Object[] oldSaveData) {
         snakeXs = (int[]) oldSaveData[0];
@@ -302,7 +338,6 @@ public class SnakeView extends SurfaceView implements Runnable {
         appleY = y;
     }
 
-
     /**
      * Spawns a apple at a random location.
      */
@@ -315,12 +350,10 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Spawn a bomb at a random location
      */
-
     private void spawnBomb() {
         Random random = new Random();
         bombX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
         bombY = random.nextInt(numBlocksHigh - 1) + 1;
-
     }
 
     /**
@@ -340,7 +373,6 @@ public class SnakeView extends SurfaceView implements Runnable {
             increaseDifficulty();
         }
     }
-
 
     /**
      * Moves all segments of the snake by one.
@@ -379,11 +411,9 @@ public class SnakeView extends SurfaceView implements Runnable {
         if (snakeXs[0] >= NUM_BLOCKS_WIDE) dead = true;
         if (snakeYs[0] == -1) dead = true;
         if (snakeYs[0] == numBlocksHigh) dead = true;
-
         if (snakeXs[0] == bombX && snakeYs[0] == bombY) {
             dead = true;
         }
-
         for (int i = snakeLength - 1; i > 0; i--) {
             if ((i > 4) && (snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
                 dead = true;
@@ -448,7 +478,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Draws the bomb
+     * Draws the bomb.
      */
     private void drawBomb() {
         Paint p = new Paint();
@@ -460,7 +490,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Draws the apple
+     * Draws the apple.
      */
     private void drawApple() {
         Paint p = new Paint();
@@ -536,7 +566,11 @@ public class SnakeView extends SurfaceView implements Runnable {
         return score;
     }
 
-    //Necessary for onTouchEvent to have no warnings
+    /**
+     * Necessary for onTouchEvent to have no warnings.
+     *
+     * @return true
+     */
     @Override
     public boolean performClick() {
         super.performClick();
@@ -545,7 +579,9 @@ public class SnakeView extends SurfaceView implements Runnable {
 
     /**
      * Changes the direction of our snake based on if the mouseClick event falls in the bounds
-     * of the 4 black rectangles I set up as buttons to move up, down, left or right
+     * of the 4 black rectangles I set up as buttons to move up, down, left or right.
+     *
+     * @return true
      */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
@@ -573,8 +609,6 @@ public class SnakeView extends SurfaceView implements Runnable {
                         && motionEvent.getY() >= 7 * screenHeight / 9) {
                     direction = Direction.LEFT;
                 }
-
-
         }
         return true;
     }

@@ -30,14 +30,14 @@ import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 public class SnakeMenuActivity extends AppCompatActivity {
 
     /**
-     * The current user account obtained from the game select screen.
-     */
-    private UserAccount currentUserAccount;
-
-    /**
      * The file containing a temp version of the boardManager.
      */
     public static final String TEMP_SAVE_FILENAME = "snake_save_file_tmp.ser";
+
+    /**
+     * The current user account obtained from the game select screen.
+     */
+    private UserAccount currentUserAccount;
 
     /**
      * The current User snake game saved data.
@@ -55,18 +55,6 @@ public class SnakeMenuActivity extends AppCompatActivity {
         addLoadButtonListener();
         addSaveButtonListener();
         addLoadAutoSaveButtonListener();
-    }
-
-    /**
-     * Switch to SnakeGameActivity to play the game.
-     * Passes savedData and difficulty into SnakeGameActivity.
-     */
-    private void switchToGame(String difficulty, Object[] savedData) {
-        Intent intent = new Intent(this, SnakeGameActivity.class);
-        intent.putExtra("currentUserAccount", currentUserAccount);
-        intent.putExtra("difficulty", difficulty);
-        intent.putExtra("savedData", savedData);
-        startActivity(intent);
     }
 
     /**
@@ -109,7 +97,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                 userAccountsToFile();
                 makeToastSavedText();
             }
-    });
+        });
     }
 
     /**
@@ -141,7 +129,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                         savedData = currentUserAccount.getSnakeGame(selectedGame);
                         makeToastLoadedText();
                         dialog.dismiss();
-                        switchToGame((String)savedData[6], savedData);
+                        switchToGame((String) savedData[6], savedData);
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -153,7 +141,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
     /**
      * Make a list of games names for displaying in load games.
      */
-    private String[] savedGamesList(){
+    private String[] savedGamesList() {
         String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
         int i = 0;
         for (String s : currentUserAccount.getSnakeGameNames()) {
@@ -191,7 +179,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                             }
                         }
                         savedData = currentUserAccount.getSnakeGame("autoSave");
-                        switchToGame((String)savedData[6], savedData);
+                        switchToGame((String) savedData[6], savedData);
                     } else {
                         makeToastLoadAutoSaveFailText();
                     }
@@ -212,6 +200,18 @@ public class SnakeMenuActivity extends AppCompatActivity {
      */
     private void makeToastLoadAutoSaveFailText() {
         Toast.makeText(this, "No Autosaved Game to Load", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Switch to SnakeGameActivity to play the game.
+     * Passes savedData and difficulty into SnakeGameActivity.
+     */
+    private void switchToGame(String difficulty, Object[] savedData) {
+        Intent intent = new Intent(this, SnakeGameActivity.class);
+        intent.putExtra("currentUserAccount", currentUserAccount);
+        intent.putExtra("difficulty", difficulty);
+        intent.putExtra("savedData", savedData);
+        startActivity(intent);
     }
 
     /**

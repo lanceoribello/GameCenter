@@ -1,5 +1,6 @@
 package fall2018.csc2017.GameCenter.GameCenter.blocks;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -9,7 +10,8 @@ import java.util.ArrayList;
  * Contains methods for changing the grid's values: ex) moving the player, spawning food,
  * placing blocks.
  */
-public class Grid {
+public class Grid implements Serializable {
+
     /**
      * The int representing an empty location on the grid.
      */
@@ -19,6 +21,7 @@ public class Grid {
      * The int representing the player's location on the grid.
      */
     final static int PLAYER = 1;
+
     /**
      * The int representing a block's location on the grid.
      */
@@ -223,7 +226,7 @@ public class Grid {
      * Precondition: direction must be 1 or -1; 1 accounts for upward movement, -1 for downward.
      *
      * @param direction which direction is used; up or down
-     * @param makeMove whether the method shall move the player or not
+     * @param makeMove  whether the method shall move the player or not
      * @return the maximum number of grid-squares the player can move up or down
      */
     public int verticalMove(int direction, boolean makeMove) {
@@ -404,5 +407,7 @@ public class Grid {
      *
      * @return the player's score
      */
-    public int getScore() { return score; }
+    public int getScore() {
+        return score;
+    }
 }
