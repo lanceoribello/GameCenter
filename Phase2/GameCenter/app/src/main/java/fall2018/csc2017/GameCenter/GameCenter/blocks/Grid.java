@@ -32,7 +32,7 @@ public class Grid {
     /**
      * The length of the grid.
      */
-    final static int GRID_LENGTH = 9;
+    final static int GRID_LENGTH = 13;
 
     /**
      * The number of food that must be on the grid at any point in the game.

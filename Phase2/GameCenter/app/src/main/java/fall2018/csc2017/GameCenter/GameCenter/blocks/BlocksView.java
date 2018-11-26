@@ -32,12 +32,6 @@ public class BlocksView extends SurfaceView implements Runnable {
     private final static long MILLIS_IN_A_SECOND = 1000;
 
     /**
-     * The width of the playable area in terms of the number of blocks.
-     * 40 by default.
-     */
-    private final static int NUM_BLOCKS_WIDE = 9;
-
-    /**
      * The canvas of the Blocks game.
      * Used to display the game.
      */
@@ -134,7 +128,7 @@ public class BlocksView extends SurfaceView implements Runnable {
         this.context = context;
         screenWidth = size.x;
         screenHeight = size.y;
-        blockSize = screenWidth / NUM_BLOCKS_WIDE;
+        blockSize = screenWidth / Grid.GRID_LENGTH;
         //bottom third of the screen used for the movement buttons
         numBlocksHigh = 2 * (screenHeight / blockSize) / 3;
         holder = getHolder();
@@ -190,9 +184,9 @@ public class BlocksView extends SurfaceView implements Runnable {
      * Draws the score text and the GAME OVER text.
      */
     private void drawText() {
+        paint.setColor(Color.argb(255, 255, 255, 255));
         paint.setTextSize(SCORE_TEXT_SIZE);
-        canvas.drawText("Score:" + score, 10,
-                (2 * (screenHeight / blockSize) / 3) + SCORE_TEXT_SIZE, paint);
+        canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
         if (gridManager.gameOver()) {
             paint.setTextSize(GAME_OVER_SIZE);
             canvas.drawText("GAME OVER", 10, GAME_OVER_SIZE + 50, paint);
@@ -242,7 +236,7 @@ public class BlocksView extends SurfaceView implements Runnable {
      * Draws individual squares of the grid for the game.
      *
      * @param row the grid row associated with the grid square
-     * @param col the grid col associated with the grid squre
+     * @param col the grid col associated with the grid square
      */
     public void drawGridSquare(int row, int col) {
         canvas.drawRect(row * blockSize, col * blockSize,
