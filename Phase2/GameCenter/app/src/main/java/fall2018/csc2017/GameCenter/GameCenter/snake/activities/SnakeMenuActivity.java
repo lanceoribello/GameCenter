@@ -41,8 +41,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
 
     /**
      * The current User snake game saved data.
-     * Consists of:
-     * {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty, direction, FPS}.
+     * Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty, direction,
+     * FPS, bombX, bombY}.
      */
     private Object[] savedData;
 
@@ -185,9 +185,9 @@ public class SnakeMenuActivity extends AppCompatActivity {
                         ObjectInputStream input = new ObjectInputStream(inputStream);
                         userAccountList = (ArrayList<UserAccount>) input.readObject();
                         inputStream.close();
-                        for (UserAccount ua : userAccountList) {
-                            if (ua.getUsername().equals(currentUserAccount.getUsername())) {
-                                currentUserAccount = ua;
+                        for (UserAccount user : userAccountList) {
+                            if (user.getUsername().equals(currentUserAccount.getUsername())) {
+                                currentUserAccount = user;
                             }
                         }
                         savedData = currentUserAccount.getSnakeGame("autoSave");

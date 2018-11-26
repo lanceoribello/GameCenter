@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import fall2018.csc2017.GameCenter.GameCenter.blocks.GridManager;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.BoardManager;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 
@@ -92,16 +93,13 @@ public class UserAccountTest {
     public void testGetSlidingTilesGameNames() {
         String gameName1 = "Game 1";
         ArrayList<Integer> gameTileIds3x3 = new ArrayList<>(Arrays.asList(this.tileIds3x3));
-        BoardManager gameBoardManager1 = new BoardManager(3,
-                gameTileIds3x3);
+        BoardManager gameBoardManager1 = new BoardManager(3, gameTileIds3x3);
         String gameName2 = "Game 2";
         ArrayList<Integer> gameTileIds4x4 = new ArrayList<>(Arrays.asList(this.tileIds4x4));
-        BoardManager gameBoardManager2 = new BoardManager(4,
-                gameTileIds4x4);
+        BoardManager gameBoardManager2 = new BoardManager(4, gameTileIds4x4);
         String gameName3 = "Game 3";
         ArrayList<Integer> gameTileIds5x5 = new ArrayList<>(Arrays.asList(this.tileIds5x5));
-        BoardManager gameBoardManager3 = new BoardManager(5,
-                gameTileIds5x5);
+        BoardManager gameBoardManager3 = new BoardManager(5, gameTileIds5x5);
         tester.addSlidingTilesGame(gameName1, gameBoardManager1);
         tester.addSlidingTilesGame(gameName2, gameBoardManager2);
         tester.addSlidingTilesGame(gameName3, gameBoardManager3);
@@ -125,22 +123,22 @@ public class UserAccountTest {
 
     /**
      * Tests if Snake game names are returned correctly.
-     * Snake saved data consists of:
-     * {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty, direction, FPS}
+     * Snake saved data consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
+     * difficulty, direction, FPS, bombX, bombY}
      */
     @Test
     public void testGetSnakeGameNames() {
         int[] snakeXs = {0};
         int[] snakeYs = {0};
         String gameName1 = "Game 1";
-        Object[] gameSavedData1 =
-                {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT, 10};
+        Object[] gameSavedData1 = {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode",
+                SnakeView.Direction.RIGHT, 10, 5, 5};
         String gameName2 = "Game 2";
-        Object[] gameSavedData2 =
-                {snakeXs, snakeYs, 3, 3, 1, 0, "Snake Hard Mode", SnakeView.Direction.LEFT, 14};
+        Object[] gameSavedData2 = {snakeXs, snakeYs, 3, 3, 1, 0, "Snake Hard Mode",
+                SnakeView.Direction.LEFT, 14, 5, 5};
         String gameName3 = "Game 3";
-        Object[] gameSavedData3 =
-                {snakeXs, snakeYs, 4, 4, 1, 0, "Snake Easy Mode", SnakeView.Direction.UP, 10};
+        Object[] gameSavedData3 = {snakeXs, snakeYs, 4, 4, 1, 0, "Snake Easy Mode",
+                SnakeView.Direction.UP, 10, 5, 5};
         tester.addSnakeGame(gameName1, gameSavedData1);
         tester.addSnakeGame(gameName2, gameSavedData2);
         tester.addSnakeGame(gameName3, gameSavedData3);
@@ -148,13 +146,15 @@ public class UserAccountTest {
         assertEquals(gameNames, tester.getSnakeGameNames());
     }
 
-    // TODO: Blocks tests
     /**
      * Tests if Blocks game is added and returned correctly.
      */
     @Test
     public void testAddGetBlocksGame() {
         String gameName = "Saved Game";
+        GridManager gameGridManager = new GridManager();
+        tester.addBlocksGame(gameName, gameGridManager);
+        assertEquals(gameGridManager, tester.getBlocksGame(gameName));
     }
 
     /**
@@ -163,7 +163,60 @@ public class UserAccountTest {
     @Test
     public void testGetBlocksGameNames() {
         String gameName1 = "Game 1";
+        GridManager gameGridManager1 = new GridManager();
         String gameName2 = "Game 2";
+        GridManager gameGridManager2 = new GridManager();
         String gameName3 = "Game 3";
+        GridManager gameGridManager3 = new GridManager();
+        tester.addBlocksGame(gameName1, gameGridManager1);
+        tester.addBlocksGame(gameName2, gameGridManager2);
+        tester.addBlocksGame(gameName3, gameGridManager3);
+        Set<String> gameNames = new HashSet<>(Arrays.asList("Game 1", "Game 2", "Game 3"));
+        assertEquals(gameNames, tester.getBlocksGameNames());
+    }
+
+    /**
+     * Tests if auto saved Snake game is overwritten correctly.
+     */
+    @Test
+    public void testReplaceAutoSavedSlidingTilesGame() {
+        String autoSavedGameName = "autoSave";
+        ArrayList<Integer> gameTileIds3x3 = new ArrayList<>(Arrays.asList(this.tileIds3x3));
+        BoardManager autoSave1 = new BoardManager(3, gameTileIds3x3);
+        tester.addSlidingTilesGame(autoSavedGameName, autoSave1);
+        ArrayList<Integer> gameTileIds4x4 = new ArrayList<>(Arrays.asList(this.tileIds4x4));
+        BoardManager autoSave2 = new BoardManager(4, gameTileIds4x4);
+        tester.addSlidingTilesGame(autoSavedGameName, autoSave2);
+        assertEquals(autoSave2, tester.getSlidingTilesGame(autoSavedGameName));
+    }
+
+    /**
+     * Tests if auto saved Sliding Tiles game is overwritten correctly.
+     */
+    @Test
+    public void testReplaceAutoSavedSnakeGame() {
+        int[] snakeXs = {0};
+        int[] snakeYs = {0};
+        String autoSavedGameName = "autoSave";
+        Object[] autoSave1 = {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode",
+                SnakeView.Direction.RIGHT, 10, 5, 5};
+        tester.addSnakeGame(autoSavedGameName, autoSave1);
+        Object[] autoSave2 = {snakeXs, snakeYs, 3, 3, 1, 0, "Snake Hard Mode",
+                SnakeView.Direction.LEFT, 14, 5, 5};
+        tester.addSnakeGame(autoSavedGameName, autoSave2);
+        assertArrayEquals(autoSave2, tester.getSnakeGame(autoSavedGameName));
+    }
+
+    /**
+     * Tests if auto saved Blocks game is overwritten correctly.
+     */
+    @Test
+    public void testReplaceAutoSavedBlocksGame() {
+        String autoSavedGameName = "autoSave";
+        GridManager autoSave1 = new GridManager();
+        tester.addBlocksGame(autoSavedGameName, autoSave1);
+        GridManager autoSave2 = new GridManager();
+        tester.addBlocksGame(autoSavedGameName, autoSave2);
+        assertEquals(autoSave2, tester.getBlocksGame(autoSavedGameName));
     }
 }

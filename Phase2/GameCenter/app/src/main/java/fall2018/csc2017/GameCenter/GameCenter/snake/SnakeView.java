@@ -263,7 +263,8 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Resumes a past game of Snake using an Object array of saved data.
      *
-     * @param oldSaveData saved data of a past Snake game
+     * @param oldSaveData saved data of a past Snake game Consists of: {snakeXs, snakeYs, mouseX,
+     * mouseY, snakeLength, score, difficulty, direction, FPS, bombX, bombY}.
      */
     private void resumeOldGame(Object[] oldSaveData) {
         snakeXs = (int[]) oldSaveData[0];
