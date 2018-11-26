@@ -13,31 +13,31 @@ public class Grid {
     /**
      * The int representing an empty location on the grid.
      */
-    private final static int EMPTY = 0;
+    final static int EMPTY = 0;
 
     /**
      * The int representing the player's location on the grid.
      */
-    private final static int PLAYER = 1;
+    final static int PLAYER = 1;
     /**
      * The int representing a block's location on the grid.
      */
-    private final static int BLOCK = 2;
+    final static int BLOCK = 2;
 
     /**
      * The int representing a food's location on the grid.
      */
-    private final static int FOOD = 3;
+    final static int FOOD = 3;
 
     /**
      * The length of the grid.
      */
-    private final static int GRID_LENGTH = 9;
+    final static int GRID_LENGTH = 9;
 
     /**
      * The number of food that must be on the grid at any point in the game.
      */
-    private final static int FOOD_NUM = 4;
+    final static int FOOD_NUM = 4;
 
     /**
      * The 2d int array representing the state of each coordinate-pair on the grid.
