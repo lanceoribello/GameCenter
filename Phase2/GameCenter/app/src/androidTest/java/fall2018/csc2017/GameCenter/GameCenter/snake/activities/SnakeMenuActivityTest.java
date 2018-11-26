@@ -15,7 +15,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
@@ -98,7 +101,9 @@ public class SnakeMenuActivityTest {
     /**
      * Test for update User Accounts list
      */
+    @Test
     private void testUpdateUserAccounts(){
+        boolean updated = false;
         fillFilewithData();
         Calendar c = Calendar.getInstance();
         DateFormat dateFormat =
@@ -108,7 +113,21 @@ public class SnakeMenuActivityTest {
         loadFromTempFile();
         account.addSnakeGame(datetime, savedData);
         userAccounts.add(account);
-        //check if the game was added.
-
+        //check if the game was added with the proper data
+        if (userAccounts.contains(account) && account.getSnakeGame(datetime).equals(savedData)){
+            updated = true;
+        }
+        assertTrue(updated);
     }
+    @Test
+    private void testListOfSavedGames(){
+        Object[] savedData1 = {2, 2, 3, 3, 2, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT};
+        Object[] savedData2 = {3, 3, 4, 4, 3, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT};
+        account.addSnakeGame("game1", savedData);
+        account.addSnakeGame("game2", savedData1);
+        account.addSnakeGame("game3", savedData2);
+        Set<String> expected = new HashSet<>(Arrays.asList("game1", "game2", "game3"));
+        assertEquals(account.getSnakeGameNames(),expected );
+    }
+
 }
