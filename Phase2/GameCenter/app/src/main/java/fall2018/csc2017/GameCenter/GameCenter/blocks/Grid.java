@@ -106,11 +106,12 @@ public class Grid {
 
     /**
      * Returns all the necessary data to load this grid at a later point.
+     *
      * @return an object array of the data
      */
-    public Object[] saveData(){
+    public Object[] saveData() {
         return new Object[]{playerX, playerY, intArrayListToArray(blockXs),
-                intArrayListToArray(blockYs),intArrayListToArray(foodXs),
+                intArrayListToArray(blockYs), intArrayListToArray(foodXs),
                 intArrayListToArray(foodYs)};
     }
 
@@ -120,9 +121,9 @@ public class Grid {
      * @param aList the arrayList to be converted
      * @return an int array corresponding to the values of aList
      */
-    private int[] intArrayListToArray(ArrayList<Integer> aList){
+    private int[] intArrayListToArray(ArrayList<Integer> aList) {
         int[] newArray = new int[aList.size()];
-        for(int i = 0; i < aList.size(); i++) {
+        for (int i = 0; i < aList.size(); i++) {
             if (aList.get(i) != null) {
                 newArray[i] = aList.get(i);
             }
@@ -213,21 +214,28 @@ public class Grid {
     }
 
     /**
+     * Returns how far the player is able to move vertically (players cannot move past blocks and
+     * stop moving at food).
+     * If makeMove is true:
      * Moves the player the maximum number of grid-squares the player can move in the up or down
-     * direction (if the player is able to move in those directions at all).
-     * Returns how far the player has moved.
+     * direction until it meets a food or a block (the player stops before a block and stops
+     * when a food is eaten).
      * Precondition: direction must be 1 or -1; 1 accounts for upward movement, -1 for downward.
      *
      * @param direction which direction is used; up or down
+     * @param makeMove whether the method shall move the player or not
      * @return the maximum number of grid-squares the player can move up or down
      */
-    public int verticalMove(int direction) {
+    public int verticalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesY = new ArrayList<Integer>();
         int yVal = playerY + direction;
+        boolean foodEaten = false;
         while (gridState[playerX][yVal + direction] != BLOCK) {
             emptyValuesY.add(yVal);
             if (gridState[playerX][yVal + direction] == FOOD) {
+                foodEaten = true;
                 eatFood(playerX, yVal);
+                break;
             }
             if (direction == 1) {
                 yVal++;
@@ -235,31 +243,63 @@ public class Grid {
                 yVal--;
             }
         }
-        if (emptyValuesY.size() != 0) {
-            gridState[playerX][playerY] = EMPTY;
-            int newY = emptyValuesY.get(emptyValuesY.size() - 1);
-            gridState[playerX][newY] = PLAYER;
-            playerY = newY;
+        if (makeMove) {
+            moveHelper(emptyValuesY, foodEaten, yVal, true);
         }
         return emptyValuesY.size();
     }
 
     /**
+     * Helper method for verticalMove and horizontalMove.
+     *
+     * @param emptyValues an arrayList of either x or y values which correspond to either playerX
+     *                    or playerY that are empty on the grid
+     * @param foodEaten   whether a food was eaten during the player's movement
+     * @param xyVal       the x or y location of where the food was eaten (if a food was eaten at all)
+     * @param vertical    whether the helper method is being used for vertical or horizontal movement
+     */
+    private void moveHelper(ArrayList<Integer> emptyValues, boolean foodEaten, int xyVal,
+                            boolean vertical) {
+        if (emptyValues.size() != 0) {
+            gridState[playerX][playerY] = EMPTY;
+            int newXY = emptyValues.get(emptyValues.size() - 1);
+            if (foodEaten) {
+                newXY = xyVal;
+            }
+            if (vertical) {
+                gridState[playerX][newXY] = PLAYER;
+                playerY = newXY;
+            } else {
+                gridState[newXY][playerY] = PLAYER;
+                playerX = newXY;
+            }
+        }
+    }
+
+    /**
+     * Returns how far the player is able to move horizontally (players cannot move past blocks and
+     * stop moving at food).
+     * If makeMove is true:
      * Moves the player the maximum number of grid-squares the player can move in the left or right
-     * direction (if the player is able to move in those directions at all).
+     * direction until it meets a food or a block (the player stops before a block and stops
+     * when a food is eaten).
      * Returns how far the player has moved.
      * Precondition: direction must be 1 or -1; 1 accounts for rightward movement, -1 for leftward.
      *
      * @param direction which direction the method checks for
+     * @param makeMove  whether the method shall move the player or not
      * @return the maximum number of grid-squares the player can move left or right
      */
-    public int horizontalMove(int direction) {
+    public int horizontalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesX = new ArrayList<>();
         int xVal = playerX + direction;
+        boolean foodEaten = false;
         while (gridState[xVal + direction][playerY] != BLOCK) {
             emptyValuesX.add(xVal);
             if (gridState[xVal + direction][playerY] == FOOD) {
+                foodEaten = true;
                 eatFood(xVal + direction, playerY);
+                break;
             }
             if (direction == 1) {
                 xVal++;
@@ -267,11 +307,8 @@ public class Grid {
                 xVal--;
             }
         }
-        if (emptyValuesX.size() != 0) {
-            gridState[playerX][playerY] = EMPTY;
-            int newX = emptyValuesX.get(emptyValuesX.size() - 1);
-            gridState[newX][playerY] = PLAYER;
-            playerX = newX;
+        if (makeMove) {
+            moveHelper(emptyValuesX, foodEaten, xVal, false);
         }
         return emptyValuesX.size();
     }
@@ -306,4 +343,66 @@ public class Grid {
         return gridState[x][y] == EMPTY;
     }
 
+    /**
+     * Getter for the arrayList of all non-border block x-values on the grid converted into an
+     * int array.
+     *
+     * @return an int array of all non-border block x-values on the grid.
+     */
+    public int[] getBlockXsIntArray() {
+        return intArrayListToArray(blockXs);
+    }
+
+    /**
+     * Getter for the arrayList of all non-border block y-values on the grid converted into an
+     * int array.
+     *
+     * @return an int array of all non-border block y-values on the grid
+     */
+    public int[] getBlockYsIntArray() {
+        return intArrayListToArray(blockYs);
+    }
+
+    /**
+     * Getter for the arrayList of all food x-values on the grid converted into an int array.
+     *
+     * @return an int array of all food x-values on the grid
+     */
+    public int[] getFoodXsIntArray() {
+        return intArrayListToArray(foodXs);
+    }
+
+    /**
+     * Getter for the arrayList of all food y-values on the grid converted into an int array.
+     *
+     * @return an int array of all food y-values on the grid
+     */
+    public int[] getFoodYsIntArray() {
+        return intArrayListToArray(foodYs);
+    }
+
+    /**
+     * Returns the x-value of the player on the grid.
+     *
+     * @return the player's x-value on the grid
+     */
+    public int getPlayerX() {
+        return playerX;
+    }
+
+    /**
+     * Returns the y-value of the player on the grid.
+     *
+     * @return the player's y-value on the grid
+     */
+    public int getPlayerY() {
+        return playerY;
+    }
+
+    /**
+     * Returns the score of the player for the current grid.
+     *
+     * @return the player's score
+     */
+    public int getScore() { return score; }
 }

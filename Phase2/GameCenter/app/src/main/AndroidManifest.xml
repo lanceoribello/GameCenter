@@ -12,7 +12,6 @@
         <activity android:name=".lobby.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,7 +25,8 @@
         <activity android:name=".slidingtiles.activities.SlidingTilesGameActivity" />
         <activity android:name=".snake.activities.SnakeStartingActivity" />
         <activity android:name=".snake.activities.SnakeMenuActivity" />
-        <activity android:name=".blocks.activities.BlocksMenuActivity"></activity>
+        <activity android:name=".blocks.activities.BlocksMenuActivity" />
+        <activity android:name=".blocks.activities.BlocksStartingActivity" />
     </application>
 
 </manifest>

@@ -57,7 +57,6 @@ public class SlidingTilesBoardManager implements Serializable {
         }
         this.board = new Board(tiles);
         makeRandomMoves(complexity);
-        this.savedBoards = new ArrayList<>();
         this.savedBoards.add(copiedBoard(board));
         this.numMoves = 0;
     }

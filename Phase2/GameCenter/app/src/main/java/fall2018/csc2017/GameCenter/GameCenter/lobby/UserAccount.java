@@ -35,12 +35,13 @@ public class UserAccount implements Serializable {
      * Values: The saved data of each game.
      */
     private Map<String, Object[]> snakeGameNames;
+
     /**
      * Map of Blocks games of user account.
      * Keys: The names of the user account's past Blocks games.
-     * Values: The saved data of each game.
+     * Values: The grid state of each game.
      */
-    private Map<String, Object > blocksGameNames;
+    private Map<String, int[][]> blocksGameNames;
 
     /**
      * Map of scores.
@@ -53,7 +54,7 @@ public class UserAccount implements Serializable {
      * String Array of the game level names.
      */
     public static final String[] gameLevels = {"Sliding Tiles 3x3", "Sliding Tiles 4x4",
-            "Sliding Tiles 5x5", "Snake Easy Mode", "Snake Hard Mode"};
+            "Sliding Tiles 5x5", "Snake Easy Mode", "Snake Hard Mode", "Blocks"};
 
     /**
      * An instance of a user account with a username, password, and a blank list of game names.
@@ -68,6 +69,7 @@ public class UserAccount implements Serializable {
         this.password = password;
         this.slidingTilesGameNames = new HashMap<>();
         this.snakeGameNames = new HashMap<>();
+        this.blocksGameNames = new HashMap<>();
         this.scores = new HashMap<>();
         // Set the default starting scores
         for (int i = 0; i < gameLevels.length; i++) {
@@ -145,9 +147,9 @@ public class UserAccount implements Serializable {
     }
 
     /**
-     * Returns this user account's key set of saved game names.
+     * Returns this user account's key set of saved Sliding Tiles game names.
      *
-     * @return key set of this user account's saved game names
+     * @return key set of this user account's saved Sliding Tiles game names
      */
     public Set<String> getSlidingTilesGameNames() {
         return slidingTilesGameNames.keySet();
@@ -178,41 +180,57 @@ public class UserAccount implements Serializable {
     }
 
     /**
-     * Returns this user account's key set of saved game names.
+     * Returns this user account's key set of saved Snake game names.
      *
-     * @return key set of this user account's saved game names
+     * @return key set of this user account's saved Snake game names
      */
     public Set<String> getSnakeGameNames() {
         return snakeGameNames.keySet();
     }
+
     /**
      * Adds a new game name to this user account
      *
      * @param newName   a new game name added to the user account
-     * @param savedData saved data of the new game
+     * @param gridState grid state of the new game
      */
-    public void addBlocksGame(String newName, Object savedData) {
-        this.blocksGameNames.put(newName, savedData);
+    public void addBlocksGame(String newName, int[][] gridState) {
+        this.blocksGameNames.put(newName, gridState);
     }
+
     /**
      * Get a game saved by the game name.
      *
      * @param gameName a game name saved to the user account
-     * @return saved data of the game
+     * @return grid state of the game
      */
-    public Object getBlocksGame(String gameName) {
+    public int[][] getBlocksGame(String gameName) {
         if (this.blocksGameNames.containsKey(gameName)) {
             return this.blocksGameNames.get(gameName);
         } else {
             return null;
         }
     }
+
     /**
-     * Returns this user account's key set of saved game names.
+     * Returns this user account's key set of saved Blocks game names.
      *
-     * @return key set of this user account's saved game names
+     * @return key set of this user account's saved Blocks game names
      */
     public Set<String> getBlocksGameNames() {
-        return snakeGameNames.keySet();
+        return blocksGameNames.keySet();
+    }
+
+    /**
+     * Returns whether Object o equals this UserAccount - only if username and password match.
+     * @param o Object to compare to
+     * @return true if UserAccounts are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        return ((o != null) &&
+                (this.getClass() == o.getClass()) &&
+                (this.getUsername().equals(((UserAccount) o).getUsername())) &&
+                (this.getPassword().equals(((UserAccount) o).getPassword())));
     }
 }

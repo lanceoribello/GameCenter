@@ -49,7 +49,7 @@ public class GameSelectActivity extends AppCompatActivity {
     }
 
     /**
-     * Activate the sliding tiles button.
+     * Activate the Sliding Tiles button.
      */
     private void addSlidingTilesButtonListener() {
         Button slidingTilesButton = findViewById(R.id.slidingTilesButton);
@@ -62,7 +62,7 @@ public class GameSelectActivity extends AppCompatActivity {
     }
 
     /**
-     * Activate the snake button.
+     * Activate the Snake button.
      */
 
     private void addSnakeButtonListener() {
@@ -74,10 +74,10 @@ public class GameSelectActivity extends AppCompatActivity {
             }
         });
     }
-    /**
-     * Activate the snake button.
-     */
 
+    /**
+     * Activate the Blocks button.
+     */
     private void addBlocksButtonListener() {
         Button blocksButton = findViewById(R.id.BlocksGame);
         blocksButton.setOnClickListener(new View.OnClickListener() {
@@ -118,8 +118,9 @@ public class GameSelectActivity extends AppCompatActivity {
         intent.putExtra("currentUserAccount", currentUserAccount);
         startActivity(intent);
     }
+
     /**
-     * Switch to the Snake Menu.
+     * Switch to the Blocks Menu.
      */
     private void switchToBlocks() {
         Intent intent = new Intent(this, BlocksMenuActivity.class);
@@ -135,7 +136,6 @@ public class GameSelectActivity extends AppCompatActivity {
         intent.putExtra("currentUserAccount", currentUserAccount);
         startActivity(intent);
     }
-
 
     /**
      * Update current user account by finding and setting it from the file.
