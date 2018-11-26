@@ -9,8 +9,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.util.Random;
-
 /**
  * The view for Blocks.
  */
@@ -32,19 +30,13 @@ public class BlocksView extends SurfaceView implements Runnable {
     private final static long MILLIS_IN_A_SECOND = 1000;
 
     /**
-     * The width of the playable area in terms of the number of blocks.
-     * 40 by default.
-     */
-    private final static int NUM_BLOCKS_WIDE = 40;
-
-    /**
      * The canvas of the Blocks game.
      * Used to display the game.
      */
     Canvas canvas;
 
     /**
-     * The context of the Snake game.
+     * The context of the Blocks game.
      * Used to reference the game's activity.
      */
     Context context;
@@ -88,23 +80,7 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private long nextFrameTime;
 
-    /**
-     * The frames per second of the current Snake game.
-     */
-    private long FPS = 10;
-
-    /**
-     * The current score of the game.
-     */
-    private int score;
-
     private int blockSize;
-
-    /**
-     * The height of the playable area in terms of the number of blocks.
-     * Determined dynamically.
-     */
-    private int numBlocksHigh;
 
     /**
      * The gridManager of the Blocks game.
@@ -134,14 +110,16 @@ public class BlocksView extends SurfaceView implements Runnable {
         this.context = context;
         screenWidth = size.x;
         screenHeight = size.y;
-        blockSize = screenWidth / NUM_BLOCKS_WIDE;
-        //bottom third of the screen used for the movement buttons
-        numBlocksHigh = 2 * (screenHeight / blockSize) / 3;
+        blockSize = screenWidth / Grid.GRID_LENGTH;
+        // Bottom third of the screen used for the movement buttons
         holder = getHolder();
         paint = new Paint();
         gridManager = new GridManager();
     }
 
+    /**
+     * Runs the game.
+     */
     @Override
     public void run() {
         while (playing) {
@@ -178,10 +156,10 @@ public class BlocksView extends SurfaceView implements Runnable {
     private void drawGame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.argb(255, 102, 204, 255));
-            drawText();
+            canvas.drawColor(Color.argb(255, 155, 255, 165));
             drawGrid();
             drawControls();
+            drawText();
             holder.unlockCanvasAndPost(canvas);
         }
     }
@@ -190,8 +168,10 @@ public class BlocksView extends SurfaceView implements Runnable {
      * Draws the score text and the GAME OVER text.
      */
     private void drawText() {
+        paint.setColor(Color.argb(255, 255, 255, 255));
         paint.setTextSize(SCORE_TEXT_SIZE);
-        canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
+        canvas.drawText("Score:" + gridManager.getGrid().getScore(), 10,
+                SCORE_TEXT_SIZE, paint);
         if (gridManager.gameOver()) {
             paint.setTextSize(GAME_OVER_SIZE);
             canvas.drawText("GAME OVER", 10, GAME_OVER_SIZE + 50, paint);
@@ -219,7 +199,34 @@ public class BlocksView extends SurfaceView implements Runnable {
      * Draws the entire grid of the game.
      */
     private void drawGrid() {
+        for (int row = 0; row != Grid.GRID_LENGTH; row++) {
+            for (int col = 0; col != Grid.GRID_LENGTH; col++) {
+                int gridLocation = gridManager.getGrid().gridState[row][col];
+                if (gridLocation == Grid.EMPTY) {
+                    paint.setColor(Color.argb(255, 250, 195, 65));
+                } else if (gridLocation == Grid.PLAYER) {
+                    paint.setColor(Color.argb(255, 231, 126, 235));
+                } else if (gridLocation == Grid.BLOCK) {
+                    paint.setColor(Color.argb(255, 0, 0, 0));
+                } else {
+                    paint.setColor(Color.argb(255, 65, 36, 255));
+                }
+                drawGridSquare(row, col);
+            }
+        }
+    }
 
+    /**
+     * Helper method for drawGrid.
+     * Draws individual squares of the grid for the game.
+     *
+     * @param row the grid row associated with the grid square
+     * @param col the grid col associated with the grid square
+     */
+    public void drawGridSquare(int row, int col) {
+        canvas.drawRect(row * blockSize, col * blockSize,
+                (row * blockSize) + blockSize, (col * blockSize) + blockSize,
+                paint);
     }
 
     /**
@@ -230,10 +237,40 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private boolean checkForUpdate() {
         if (nextFrameTime <= System.currentTimeMillis()) {
-            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND / FPS;
+            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND;
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        performClick();
+        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_UP:
+                if (motionEvent.getX() >= screenWidth / 3
+                        && motionEvent.getX() <= 2 * screenWidth / 3
+                        && motionEvent.getY() <= 7 * screenHeight / 9
+                        && motionEvent.getY() >= 2 * screenHeight / 3) {
+                    gridManager.moveSuccess("down");
+                } else if (motionEvent.getX() >= screenWidth / 3
+                        && motionEvent.getX() <= 2 * screenWidth / 3
+                        && motionEvent.getY() <= screenHeight
+                        && motionEvent.getY() >= 8 * screenHeight / 9) {
+                    gridManager.moveSuccess("up");
+                } else if (motionEvent.getX() >= 2 * screenWidth / 3
+                        && motionEvent.getX() <= screenWidth
+                        && motionEvent.getY() <= 8 * screenHeight / 9
+                        && motionEvent.getY() >= 7 * screenHeight / 9) {
+                    gridManager.moveSuccess("right");
+                } else if (motionEvent.getX() >= 0
+                        && motionEvent.getX() <= screenWidth / 3
+                        && motionEvent.getY() <= 8 * screenHeight / 9
+                        && motionEvent.getY() >= 7 * screenHeight / 9) {
+                    gridManager.moveSuccess("left");
+                }
+        }
+        return true;
     }
 
     /**

@@ -28,7 +28,7 @@
         android:layout_marginBottom="288dp"
         android:text="@string/LoadBlocks"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintEnd_toStartOf="@+id/NewGameBlocks"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:layout_constraintVertical_bias="0.0" />
@@ -63,7 +63,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/LoadAutoSaveBlocks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="171dp"
@@ -79,7 +79,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/NumUndo"
+        android:id="@+id/NumUndoBlocks"
         android:layout_width="161dp"
         android:layout_height="48dp"
         android:layout_marginStart="57dp"
@@ -90,22 +90,23 @@
         android:hint="@string/Undo"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintEnd_toStartOf="@+id/UndoBlocks"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintTop_toBottomOf="@+id/LoadAutoSaveBlocks" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/UndoBlocks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="78dp"
         android:layout_marginBottom="81dp"
+        android:onClick="undoMoves"
         android:text="@string/button_undo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/NumUndo"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
+        app:layout_constraintStart_toEndOf="@+id/NumUndoBlocks"
+        app:layout_constraintTop_toBottomOf="@+id/LoadAutoSaveBlocks" />
 
 </android.support.constraint.ConstraintLayout>

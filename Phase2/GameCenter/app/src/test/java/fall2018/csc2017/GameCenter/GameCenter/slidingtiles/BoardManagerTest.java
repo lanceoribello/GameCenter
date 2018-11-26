@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class SlidingTilesBoardManagerTest {
+public class BoardManagerTest {
 
     /**
      * The arraylist of background IDs representing the tile images in R.drawable in row-major
@@ -28,7 +28,7 @@ public class SlidingTilesBoardManagerTest {
      * Boardmanager used for testing
      */
 
-    SlidingTilesBoardManager boardManager = new SlidingTilesBoardManager(5, fiveByArray);
+    BoardManager boardManager = new BoardManager(5, fiveByArray);
 
     /**
      * List of tiles used for a 5x5 board, in row major order

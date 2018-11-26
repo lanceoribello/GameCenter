@@ -30,21 +30,21 @@ import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 public class SnakeMenuActivity extends AppCompatActivity {
 
     /**
-     * The current user account obtained from the game select screen.
-     */
-    private UserAccount currentUserAccount;
-    /**
      * The file containing a temp version of the boardManager.
      */
     public static final String TEMP_SAVE_FILENAME = "snake_save_file_tmp.ser";
 
     /**
+     * The current user account obtained from the game select screen.
+     */
+    private UserAccount currentUserAccount;
+
+    /**
      * The current User snake game saved data.
-     * Consists of:
-     * {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty, direction, FPS}.
+     * Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score, difficulty, direction,
+     * FPS, bombX, bombY}.
      */
     private Object[] savedData;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +55,6 @@ public class SnakeMenuActivity extends AppCompatActivity {
         addLoadButtonListener();
         addSaveButtonListener();
         addLoadAutoSaveButtonListener();
-    }
-
-    /**
-     * Switch to SnakeStartingActivity to play the game.
-     * Passes savedData and difficulty into SnakeStartingActivity.
-     */
-    private void switchToGame(String difficulty, Object[] savedData) {
-        Intent intent = new Intent(this, SnakeStartingActivity.class);
-        intent.putExtra("currentUserAccount", currentUserAccount);
-        intent.putExtra("difficulty", difficulty);
-        intent.putExtra("savedData", savedData);
-        startActivity(intent);
     }
 
     /**
@@ -109,7 +97,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                 userAccountsToFile();
                 makeToastSavedText();
             }
-    });
+        });
     }
 
     /**
@@ -141,7 +129,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                         savedData = currentUserAccount.getSnakeGame(selectedGame);
                         makeToastLoadedText();
                         dialog.dismiss();
-                        switchToGame((String)savedData[6], savedData);
+                        switchToGame((String) savedData[6], savedData);
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -153,7 +141,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
     /**
      * Make a list of games names for displaying in load games.
      */
-    private String[] savedGamesList(){
+    private String[] savedGamesList() {
         String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
         int i = 0;
         for (String s : currentUserAccount.getSnakeGameNames()) {
@@ -168,6 +156,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
     private void makeToastLoadedText() {
         Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
     }
+
     /**
      * Activate the Load autoSave button, which loads the latest autoSave of Snake of
      * the currentAccount.
@@ -184,13 +173,13 @@ public class SnakeMenuActivity extends AppCompatActivity {
                         ObjectInputStream input = new ObjectInputStream(inputStream);
                         userAccountList = (ArrayList<UserAccount>) input.readObject();
                         inputStream.close();
-                        for (UserAccount ua : userAccountList) {
-                            if (ua.getUsername().equals(currentUserAccount.getUsername())) {
-                                currentUserAccount = ua;
+                        for (UserAccount user : userAccountList) {
+                            if (user.getUsername().equals(currentUserAccount.getUsername())) {
+                                currentUserAccount = user;
                             }
                         }
                         savedData = currentUserAccount.getSnakeGame("autoSave");
-                        switchToGame((String)savedData[6], savedData);
+                        switchToGame((String) savedData[6], savedData);
                     } else {
                         makeToastLoadAutoSaveFailText();
                     }
@@ -205,12 +194,26 @@ public class SnakeMenuActivity extends AppCompatActivity {
             }
         }));
     }
+
     /**
      * Display that there is no autoSaved game to load.
      */
     private void makeToastLoadAutoSaveFailText() {
         Toast.makeText(this, "No Autosaved Game to Load", Toast.LENGTH_SHORT).show();
     }
+
+    /**
+     * Switch to SnakeGameActivity to play the game.
+     * Passes savedData and difficulty into SnakeGameActivity.
+     */
+    private void switchToGame(String difficulty, Object[] savedData) {
+        Intent intent = new Intent(this, SnakeGameActivity.class);
+        intent.putExtra("currentUserAccount", currentUserAccount);
+        intent.putExtra("difficulty", difficulty);
+        intent.putExtra("savedData", savedData);
+        startActivity(intent);
+    }
+
     /**
      * Load the savePointData from snake_save_file_tmp.ser, the file used for temporarily holding a
      * savePointData.
@@ -232,6 +235,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                     + e.toString());
         }
     }
+
     /**
      * Saves a new game to the currentUserAccount.
      */
@@ -246,10 +250,10 @@ public class SnakeMenuActivity extends AppCompatActivity {
         LoginActivity.userAccountList.add(currentUserAccount);
         userAccountsToFile();
     }
+
     /**
      * Saves the userAccountList to a file.
      */
-
     private void userAccountsToFile() {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
@@ -259,5 +263,14 @@ public class SnakeMenuActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
+    }
+
+    /**
+     * Read the temporary game save data from disk.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadFromTempFile();
     }
 }

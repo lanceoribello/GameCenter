@@ -1,5 +1,6 @@
 package fall2018.csc2017.GameCenter.GameCenter.blocks;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -9,35 +10,37 @@ import java.util.ArrayList;
  * Contains methods for changing the grid's values: ex) moving the player, spawning food,
  * placing blocks.
  */
-public class Grid {
+public class Grid implements Serializable {
+
     /**
      * The int representing an empty location on the grid.
      */
-    private final static int EMPTY = 0;
+    final static int EMPTY = 0;
 
     /**
      * The int representing the player's location on the grid.
      */
-    private final static int PLAYER = 1;
+    final static int PLAYER = 1;
+
     /**
      * The int representing a block's location on the grid.
      */
-    private final static int BLOCK = 2;
+    final static int BLOCK = 2;
 
     /**
      * The int representing a food's location on the grid.
      */
-    private final static int FOOD = 3;
+    final static int FOOD = 3;
 
     /**
      * The length of the grid.
      */
-    private final static int GRID_LENGTH = 9;
+    final static int GRID_LENGTH = 13;
 
     /**
      * The number of food that must be on the grid at any point in the game.
      */
-    private final static int FOOD_NUM = 4;
+    final static int FOOD_NUM = 4;
 
     /**
      * The 2d int array representing the state of each coordinate-pair on the grid.
@@ -223,16 +226,16 @@ public class Grid {
      * Precondition: direction must be 1 or -1; 1 accounts for upward movement, -1 for downward.
      *
      * @param direction which direction is used; up or down
-     * @param makeMove whether the method shall move the player or not
+     * @param makeMove  whether the method shall move the player or not
      * @return the maximum number of grid-squares the player can move up or down
      */
     public int verticalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesY = new ArrayList<Integer>();
         int yVal = playerY + direction;
         boolean foodEaten = false;
-        while (gridState[playerX][yVal + direction] != BLOCK) {
+        while (gridState[playerX][yVal] != BLOCK) {
             emptyValuesY.add(yVal);
-            if (gridState[playerX][yVal + direction] == FOOD) {
+            if (gridState[playerX][yVal] == FOOD) {
                 foodEaten = true;
                 eatFood(playerX, yVal);
                 break;
@@ -294,11 +297,11 @@ public class Grid {
         ArrayList<Integer> emptyValuesX = new ArrayList<>();
         int xVal = playerX + direction;
         boolean foodEaten = false;
-        while (gridState[xVal + direction][playerY] != BLOCK) {
+        while (gridState[xVal][playerY] != BLOCK) {
             emptyValuesX.add(xVal);
-            if (gridState[xVal + direction][playerY] == FOOD) {
+            if (gridState[xVal][playerY] == FOOD) {
                 foodEaten = true;
-                eatFood(xVal + direction, playerY);
+                eatFood(xVal, playerY);
                 break;
             }
             if (direction == 1) {
@@ -404,5 +407,7 @@ public class Grid {
      *
      * @return the player's score
      */
-    public int getScore() { return score; }
+    public int getScore() {
+        return score;
+    }
 }

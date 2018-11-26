@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  * Also keeps track of the number of moves made and the boards corresponding to each move.
  */
-public class SlidingTilesBoardManager implements Serializable {
+public class BoardManager implements Serializable {
 
     /**
      * The board being managed.
@@ -45,7 +45,7 @@ public class SlidingTilesBoardManager implements Serializable {
      * @param complexity complexity of the game
      * @param tileIdList list of tile IDs
      */
-    public SlidingTilesBoardManager(int complexity, ArrayList<Integer> tileIdList) {
+    public BoardManager(int complexity, ArrayList<Integer> tileIdList) {
         this.tileIdList = tileIdList;
         this.complexity = complexity;
         this.savedBoards = new ArrayList<>();

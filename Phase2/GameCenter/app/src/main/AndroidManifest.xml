@@ -23,10 +23,10 @@
         </activity>
         <activity android:name=".lobby.activities.ScoreboardActivity" />
         <activity android:name=".slidingtiles.activities.SlidingTilesGameActivity" />
-        <activity android:name=".snake.activities.SnakeStartingActivity" />
+        <activity android:name=".snake.activities.SnakeGameActivity" />
         <activity android:name=".snake.activities.SnakeMenuActivity" />
         <activity android:name=".blocks.activities.BlocksMenuActivity" />
-        <activity android:name=".blocks.activities.BlocksStartingActivity" />
+        <activity android:name=".blocks.activities.BlocksGameActivity" />
     </application>
 
 </manifest>
