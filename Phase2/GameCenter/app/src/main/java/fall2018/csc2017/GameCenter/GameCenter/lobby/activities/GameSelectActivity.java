@@ -45,7 +45,6 @@ public class GameSelectActivity extends AppCompatActivity {
         addSnakeButtonListener();
         addBlocksButtonListener();
         addScoreboardButtonListener();
-
     }
 
     /**
@@ -64,7 +63,6 @@ public class GameSelectActivity extends AppCompatActivity {
     /**
      * Activate the Snake button.
      */
-
     private void addSnakeButtonListener() {
         Button slidingTilesButton = findViewById(R.id.snakeButton);
         slidingTilesButton.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +87,7 @@ public class GameSelectActivity extends AppCompatActivity {
     }
 
     /**
-     * Activate the View ScoreboardActivity button.
+     * Activate the View Scoreboards button.
      */
     private void addScoreboardButtonListener() {
         Button scoreboardButton = findViewById(R.id.scoreboardButton);
