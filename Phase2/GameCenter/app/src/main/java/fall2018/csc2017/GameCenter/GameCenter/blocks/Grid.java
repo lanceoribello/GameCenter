@@ -398,4 +398,11 @@ public class Grid {
     public int getPlayerY() {
         return playerY;
     }
+
+    /**
+     * Returns the score of the player for the current grid.
+     *
+     * @return the player's score
+     */
+    public int getScore() { return score; }
 }

@@ -80,7 +80,7 @@ public class GridManager {
      * Returns whether the Blocks game is over, wherein the player is unable to move any more.
      * @return whether the game is over
      */
-    private boolean gameOver(){
+    public boolean gameOver(){
         return (grid.horizontalMove(1, false) == 0 &&
                 grid.horizontalMove(-1,false ) == 0 &&
                 grid.verticalMove(1, false) == 0 &&
