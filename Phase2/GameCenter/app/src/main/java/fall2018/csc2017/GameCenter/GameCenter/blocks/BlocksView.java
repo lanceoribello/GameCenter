@@ -267,12 +267,12 @@ public class BlocksView extends SurfaceView implements Runnable {
                         && motionEvent.getX() <= 2 * screenWidth / 3
                         && motionEvent.getY() <= 7 * screenHeight / 9
                         && motionEvent.getY() >= 2 * screenHeight / 3) {
-                    gridManager.moveSuccess("up");
+                    gridManager.moveSuccess("down");
                 } else if (motionEvent.getX() >= screenWidth / 3
                         && motionEvent.getX() <= 2 * screenWidth / 3
                         && motionEvent.getY() <= screenHeight
                         && motionEvent.getY() >= 8 * screenHeight / 9) {
-                    gridManager.moveSuccess("down");
+                    gridManager.moveSuccess("up");
                 } else if (motionEvent.getX() >= 2 * screenWidth / 3
                         && motionEvent.getX() <= screenWidth
                         && motionEvent.getY() <= 8 * screenHeight / 9

@@ -230,9 +230,9 @@ public class Grid {
         ArrayList<Integer> emptyValuesY = new ArrayList<Integer>();
         int yVal = playerY + direction;
         boolean foodEaten = false;
-        while (gridState[playerX][yVal + direction] != BLOCK) {
+        while (gridState[playerX][yVal] != BLOCK) {
             emptyValuesY.add(yVal);
-            if (gridState[playerX][yVal + direction] == FOOD) {
+            if (gridState[playerX][yVal] == FOOD) {
                 foodEaten = true;
                 eatFood(playerX, yVal);
                 break;
@@ -294,9 +294,9 @@ public class Grid {
         ArrayList<Integer> emptyValuesX = new ArrayList<>();
         int xVal = playerX + direction;
         boolean foodEaten = false;
-        while (gridState[xVal + direction][playerY] != BLOCK) {
+        while (gridState[xVal][playerY] != BLOCK) {
             emptyValuesX.add(xVal);
-            if (gridState[xVal + direction][playerY] == FOOD) {
+            if (gridState[xVal][playerY] == FOOD) {
                 foodEaten = true;
                 eatFood(xVal + direction, playerY);
                 break;
