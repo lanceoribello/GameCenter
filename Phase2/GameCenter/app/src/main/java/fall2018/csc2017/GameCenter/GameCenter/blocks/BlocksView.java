@@ -35,7 +35,7 @@ public class BlocksView extends SurfaceView implements Runnable {
      * The width of the playable area in terms of the number of blocks.
      * 40 by default.
      */
-    private final static int NUM_BLOCKS_WIDE = 40;
+    private final static int NUM_BLOCKS_WIDE = 9;
 
     /**
      * The canvas of the Blocks game.
@@ -178,10 +178,10 @@ public class BlocksView extends SurfaceView implements Runnable {
     private void drawGame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.argb(255, 102, 204, 255));
-            drawText();
+            canvas.drawColor(Color.argb(255, 155, 255, 165));
             drawGrid();
             drawControls();
+            drawText();
             holder.unlockCanvasAndPost(canvas);
         }
     }
@@ -191,7 +191,8 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private void drawText() {
         paint.setTextSize(SCORE_TEXT_SIZE);
-        canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
+        canvas.drawText("Score:" + score, 10,
+                (2 * (screenHeight / blockSize) / 3) + SCORE_TEXT_SIZE, paint);
         if (gridManager.gameOver()) {
             paint.setTextSize(GAME_OVER_SIZE);
             canvas.drawText("GAME OVER", 10, GAME_OVER_SIZE + 50, paint);
@@ -219,7 +220,34 @@ public class BlocksView extends SurfaceView implements Runnable {
      * Draws the entire grid of the game.
      */
     private void drawGrid() {
+        for (int row = 0; row != Grid.GRID_LENGTH; row++) {
+            for (int col = 0; col != Grid.GRID_LENGTH; col++) {
+                int gridLocation = gridManager.getGrid().gridState[row][col];
+                if (gridLocation == Grid.EMPTY) {
+                    paint.setColor(Color.argb(255, 250, 195, 65));
+                } else if (gridLocation == Grid.PLAYER) {
+                    paint.setColor(Color.argb(255, 231, 126, 235));
+                } else if (gridLocation == Grid.BLOCK) {
+                    paint.setColor(Color.argb(255, 0, 0, 0));
+                } else {
+                    paint.setColor(Color.argb(255, 65, 36, 255));
+                }
+                drawGridSquare(row, col);
+            }
+        }
+    }
 
+    /**
+     * Helper method for drawGrid.
+     * Draws individual squares of the grid for the game.
+     *
+     * @param row the grid row associated with the grid square
+     * @param col the grid col associated with the grid squre
+     */
+    public void drawGridSquare(int row, int col) {
+        canvas.drawRect(row * blockSize, col * blockSize,
+                (row * blockSize) + blockSize, (col * blockSize) + blockSize,
+                paint);
     }
 
     /**
