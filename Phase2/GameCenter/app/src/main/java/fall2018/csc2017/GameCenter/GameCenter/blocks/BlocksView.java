@@ -111,12 +111,15 @@ public class BlocksView extends SurfaceView implements Runnable {
         screenWidth = size.x;
         screenHeight = size.y;
         blockSize = screenWidth / Grid.GRID_LENGTH;
-        //bottom third of the screen used for the movement buttons
+        // Bottom third of the screen used for the movement buttons
         holder = getHolder();
         paint = new Paint();
         gridManager = new GridManager();
     }
 
+    /**
+     * Runs the game.
+     */
     @Override
     public void run() {
         while (playing) {
@@ -264,9 +267,8 @@ public class BlocksView extends SurfaceView implements Runnable {
                         && motionEvent.getX() <= screenWidth / 3
                         && motionEvent.getY() <= 8 * screenHeight / 9
                         && motionEvent.getY() >= 7 * screenHeight / 9) {
-                    gridManager.moveSuccess("left");                }
-
-
+                    gridManager.moveSuccess("left");
+                }
         }
         return true;
     }

@@ -33,7 +33,7 @@ public class GridManager implements Serializable {
     public GridManager() {
         this.savedGrids = new ArrayList<>();
         this.grid = new Grid();
-        this.savedGrids.add(copiedGrid(grid));
+        addToSavedGrids();
         this.numMoves = 0;
     }
 
@@ -116,7 +116,7 @@ public class GridManager implements Serializable {
      * Adds a copy of the current grid to the savedGrids list.
      */
     void addToSavedGrids() {
-        this.savedGrids.add(copiedGrid((this.grid)));
+        this.savedGrids.add(copiedGrid(this.grid));
     }
 
     /**
@@ -155,14 +155,33 @@ public class GridManager implements Serializable {
      * @return whether the player actually moves
      */
     public boolean moveSuccess(String direction) {
+        boolean success;
         switch (direction) {
             case "up":
-                return grid.verticalMove(1, true) > 0;
+                success = grid.verticalMove(1, true) > 0;
+                if (success) {
+                    addToSavedGrids();
+                }
+                return success;
             case "down":
-                return grid.verticalMove(-1, true) > 0;
+                success = grid.verticalMove(-1, true) > 0;
+                if (success) {
+                    addToSavedGrids();
+                }
+                return success;
             case "right":
-                return grid.horizontalMove(1, true) > 0;
+                success = grid.horizontalMove(1, true) > 0;
+                if (success) {
+                    addToSavedGrids();
+                }
+                return success;
+            case "left":
+                success = grid.horizontalMove(-1, true) > 0;
+                if (success) {
+                    addToSavedGrids();
+                }
+                return success;
         }
-        return grid.horizontalMove(-1, true) > 0;
+        return false;
     }
 }
