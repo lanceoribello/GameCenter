@@ -38,7 +38,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     Canvas canvas;
 
     /**
-     * The context of the Snake game.
+     * The context of the Blocks game.
      * Used to reference the game's activity.
      */
     Context context;
@@ -247,6 +247,37 @@ public class BlocksView extends SurfaceView implements Runnable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        performClick();
+        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_UP:
+                if (motionEvent.getX() >= screenWidth / 3
+                        && motionEvent.getX() <= 2 * screenWidth / 3
+                        && motionEvent.getY() <= 7 * screenHeight / 9
+                        && motionEvent.getY() >= 2 * screenHeight / 3) {
+                    gridManager.moveSuccess("up");
+                } else if (motionEvent.getX() >= screenWidth / 3
+                        && motionEvent.getX() <= 2 * screenWidth / 3
+                        && motionEvent.getY() <= screenHeight
+                        && motionEvent.getY() >= 8 * screenHeight / 9) {
+                    gridManager.moveSuccess("down");
+                } else if (motionEvent.getX() >= 2 * screenWidth / 3
+                        && motionEvent.getX() <= screenWidth
+                        && motionEvent.getY() <= 8 * screenHeight / 9
+                        && motionEvent.getY() >= 7 * screenHeight / 9) {
+                    gridManager.moveSuccess("right");
+                } else if (motionEvent.getX() >= 0
+                        && motionEvent.getX() <= screenWidth / 3
+                        && motionEvent.getY() <= 8 * screenHeight / 9
+                        && motionEvent.getY() >= 7 * screenHeight / 9) {
+                    gridManager.moveSuccess("left");                }
+
+
+        }
+        return true;
     }
 
     /**
