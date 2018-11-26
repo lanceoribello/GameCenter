@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fall2018.csc2017.GameCenter.GameCenter.blocks.GridManager;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.BoardManager;
 
 /**
  * Stores a user account's account information.
@@ -28,7 +28,7 @@ public class UserAccount implements Serializable {
      * Keys: The names of the user account's past Sliding Tiles games.
      * Values: The board manager of each game.
      */
-    private Map<String, SlidingTilesBoardManager> slidingTilesGameNames;
+    private Map<String, BoardManager> slidingTilesGameNames;
 
     /**
      * Map of Snake games of user account.
@@ -130,7 +130,7 @@ public class UserAccount implements Serializable {
      * @param newName a new game name added to the user account
      * @param game    the board manager of the new game
      */
-    public void addSlidingTilesGame(String newName, SlidingTilesBoardManager game) {
+    public void addSlidingTilesGame(String newName, BoardManager game) {
         this.slidingTilesGameNames.put(newName, game);
     }
 
@@ -139,7 +139,7 @@ public class UserAccount implements Serializable {
      *
      * @param gameName a game name saved to this user account
      */
-    public SlidingTilesBoardManager getSlidingTilesGame(String gameName) {
+    public BoardManager getSlidingTilesGame(String gameName) {
         if (this.slidingTilesGameNames.containsKey(gameName)) {
             return this.slidingTilesGameNames.get(gameName);
         } else {

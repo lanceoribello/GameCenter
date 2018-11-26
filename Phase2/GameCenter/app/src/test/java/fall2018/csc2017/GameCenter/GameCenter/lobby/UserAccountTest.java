@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.BoardManager;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 
 import static org.junit.Assert.*;
@@ -79,8 +79,8 @@ public class UserAccountTest {
     public void testAddGetSlidingTilesGame() {
         String gameName = "Saved Game";
         ArrayList<Integer> gameTileIds = new ArrayList<>(Arrays.asList(this.tileIds3x3));
-        SlidingTilesBoardManager gameBoardManager = new
-                SlidingTilesBoardManager(3, gameTileIds);
+        BoardManager gameBoardManager = new
+                BoardManager(3, gameTileIds);
         tester.addSlidingTilesGame(gameName, gameBoardManager);
         assertEquals(gameBoardManager, tester.getSlidingTilesGame(gameName));
     }
@@ -92,15 +92,15 @@ public class UserAccountTest {
     public void testGetSlidingTilesGameNames() {
         String gameName1 = "Game 1";
         ArrayList<Integer> gameTileIds3x3 = new ArrayList<>(Arrays.asList(this.tileIds3x3));
-        SlidingTilesBoardManager gameBoardManager1 = new SlidingTilesBoardManager(3,
+        BoardManager gameBoardManager1 = new BoardManager(3,
                 gameTileIds3x3);
         String gameName2 = "Game 2";
         ArrayList<Integer> gameTileIds4x4 = new ArrayList<>(Arrays.asList(this.tileIds4x4));
-        SlidingTilesBoardManager gameBoardManager2 = new SlidingTilesBoardManager(4,
+        BoardManager gameBoardManager2 = new BoardManager(4,
                 gameTileIds4x4);
         String gameName3 = "Game 3";
         ArrayList<Integer> gameTileIds5x5 = new ArrayList<>(Arrays.asList(this.tileIds5x5));
-        SlidingTilesBoardManager gameBoardManager3 = new SlidingTilesBoardManager(5,
+        BoardManager gameBoardManager3 = new BoardManager(5,
                 gameTileIds5x5);
         tester.addSlidingTilesGame(gameName1, gameBoardManager1);
         tester.addSlidingTilesGame(gameName2, gameBoardManager2);

@@ -25,7 +25,7 @@ import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.BoardManager;
 
 /**
  * The menu activity for the Sliding Tile game.
@@ -45,12 +45,12 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
     /**
      * The board manager.
      */
-    private SlidingTilesBoardManager boardManager;
+    private BoardManager boardManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boardManager = new SlidingTilesBoardManager(3, getTileIdList(3));
+        boardManager = new BoardManager(3, getTileIdList(3));
         saveToTempFile();
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
@@ -77,17 +77,17 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                 switch (which) {
                     case 0:
                         boardManager = new
-                                SlidingTilesBoardManager(3, getTileIdList(3));
+                                BoardManager(3, getTileIdList(3));
                         switchToGame();
                         break;
                     case 1:
                         boardManager = new
-                                SlidingTilesBoardManager(4, getTileIdList(4));
+                                BoardManager(4, getTileIdList(4));
                         switchToGame();
                         break;
                     case 2:
                         boardManager = new
-                                SlidingTilesBoardManager(5, getTileIdList(5));
+                                BoardManager(5, getTileIdList(5));
                         switchToGame();
                         break;
                 }
@@ -277,7 +277,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             InputStream inputStream = this.openFileInput(TEMP_SAVE_FILENAME);
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
-                boardManager = (SlidingTilesBoardManager) input.readObject();
+                boardManager = (BoardManager) input.readObject();
                 inputStream.close();
             }
         } catch (FileNotFoundException e) {

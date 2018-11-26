@@ -22,7 +22,7 @@ import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.CustomAdapter;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.GestureDetectGridView;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.BoardManager;
 
 /**
  * The Sliding Tiles game activity.
@@ -32,7 +32,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
     /**
      * The board manager.
      */
-    private SlidingTilesBoardManager boardManager;
+    private BoardManager boardManager;
 
     /**
      * The account obtained from the login screen.
@@ -173,7 +173,7 @@ public class SlidingTilesGameActivity extends AppCompatActivity implements Obser
                     SlidingTilesMenuActivity.TEMP_SAVE_FILENAME);
             if (inputStream != null) {
                 ObjectInputStream input = new ObjectInputStream(inputStream);
-                boardManager = (SlidingTilesBoardManager) input.readObject();
+                boardManager = (BoardManager) input.readObject();
                 inputStream.close();
             }
         } catch (FileNotFoundException e) {

@@ -28,10 +28,6 @@ import fall2018.csc2017.GameCenter.GameCenter.blocks.BlocksView;
 import fall2018.csc2017.GameCenter.GameCenter.blocks.GridManager;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesBoardManager;
-import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeMenuActivity;
-import fall2018.csc2017.GameCenter.GameCenter.snake.activities.SnakeStartingActivity;
 
 /**
  * The menu activity for the Blocks game.
@@ -260,11 +256,11 @@ public class BlocksMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Switch to SnakeStartingActivity to play the game.
-     * Passes savedData and difficulty into BlocksStartingActivity.
+     * Switch to SnakeGameActivity to play the game.
+     * Passes savedData and difficulty into BlocksGameActivity.
      */
     private void switchToGame() {
-        Intent intent = new Intent(this, BlocksStartingActivity.class);
+        Intent intent = new Intent(this, BlocksGameActivity.class);
         intent.putExtra("currentUserAccount", currentUserAccount);
         saveToTempFile();
         startActivity(intent);

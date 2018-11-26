@@ -20,7 +20,7 @@ import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 /**
  * The Blocks starting activity.
  */
-public class BlocksStartingActivity extends AppCompatActivity {
+public class BlocksGameActivity extends AppCompatActivity {
 
     /**
      * The file containing a temp version of blocksView.gridManager.

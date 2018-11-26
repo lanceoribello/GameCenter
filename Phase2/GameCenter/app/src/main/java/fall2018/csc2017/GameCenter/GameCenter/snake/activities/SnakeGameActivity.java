@@ -20,7 +20,7 @@ Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
 /**
  * The Snake starting activity.
  */
-public class SnakeStartingActivity extends AppCompatActivity {
+public class SnakeGameActivity extends AppCompatActivity {
 
     /**
      * The current user account obtained from the game select screen.

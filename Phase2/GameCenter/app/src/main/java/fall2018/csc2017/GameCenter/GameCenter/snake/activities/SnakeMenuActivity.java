@@ -58,11 +58,11 @@ public class SnakeMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Switch to SnakeStartingActivity to play the game.
-     * Passes savedData and difficulty into SnakeStartingActivity.
+     * Switch to SnakeGameActivity to play the game.
+     * Passes savedData and difficulty into SnakeGameActivity.
      */
     private void switchToGame(String difficulty, Object[] savedData) {
-        Intent intent = new Intent(this, SnakeStartingActivity.class);
+        Intent intent = new Intent(this, SnakeGameActivity.class);
         intent.putExtra("currentUserAccount", currentUserAccount);
         intent.putExtra("difficulty", difficulty);
         intent.putExtra("savedData", savedData);
