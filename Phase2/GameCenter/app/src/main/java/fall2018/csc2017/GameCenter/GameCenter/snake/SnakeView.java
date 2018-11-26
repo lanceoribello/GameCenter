@@ -281,6 +281,7 @@ public class SnakeView extends SurfaceView implements Runnable {
 
     /**
      * Spawns a bomb at a given location
+     *
      * @param oldSaveDatum
      * @param oldSaveDatum1
      */
@@ -301,7 +302,6 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
 
-
     /**
      * Spawns a apple at a random location.
      */
@@ -315,7 +315,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      * Spawn a bomb at a random location
      */
 
-    private void spawnBomb(){
+    private void spawnBomb() {
         Random random = new Random();
         bombX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
         bombY = random.nextInt(numBlocksHigh - 1) + 1;
@@ -332,7 +332,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeLength++;
         spawnApple();
         score = score + 1;
-        if(score % 2==0){
+        if (score % 2 == 0) {
             spawnBomb();
         }
         if ((snakeLength) % (MAX_SNAKE_SIZE) == 0) {
@@ -379,7 +379,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         if (snakeYs[0] == -1) dead = true;
         if (snakeYs[0] == numBlocksHigh) dead = true;
 
-        if(snakeXs[0]==bombX && snakeYs[0] == bombY){
+        if (snakeXs[0] == bombX && snakeYs[0] == bombY) {
             dead = true;
         }
 
@@ -449,10 +449,10 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Draws the bomb
      */
-    private void drawBomb(){
+    private void drawBomb() {
         Paint p = new Paint();
         Bitmap bomb = BitmapFactory.decodeResource(context.getResources(), R.drawable.bomb);
-        canvas.drawBitmap(bomb, null , new Rect(bombX * blockSize,
+        canvas.drawBitmap(bomb, null, new Rect(bombX * blockSize,
                 (bombY * blockSize),
                 (bombX * blockSize) + blockSize,
                 (bombY * blockSize) + blockSize), p);
@@ -461,14 +461,15 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Draws the apple
      */
-    private void drawApple(){
+    private void drawApple() {
         Paint p = new Paint();
         Bitmap apple = BitmapFactory.decodeResource(context.getResources(), R.drawable.apple);
-        canvas.drawBitmap(apple, null , new Rect(appleX * blockSize,
+        canvas.drawBitmap(apple, null, new Rect(appleX * blockSize,
                 (appleY * blockSize),
                 (appleX * blockSize) + blockSize,
                 (appleY * blockSize) + blockSize), p);
     }
+
     /**
      * Draws the score text and the GAME OVER text.
      */
