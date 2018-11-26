@@ -23,6 +23,7 @@ import java.util.Calendar;
 import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
+import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuController;
 
 /**
  * The menu activity for the Snake game.
@@ -93,7 +94,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUserAccounts();
+                loadFromTempFile();
+                SnakeMenuController.updateUserAccounts(currentUserAccount,savedData);
                 userAccountsToFile();
                 makeToastSavedText();
             }
@@ -120,7 +122,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
                         SnakeMenuActivity.this);
                 builder.setTitle("Choose a game");
                 int checkedItem = 1; //Sets the choice to the first element.
-                builder.setSingleChoiceItems(savedGamesList(), checkedItem, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(SnakeMenuController.savedGamesList(currentUserAccount)
+                        , checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListView lw = ((AlertDialog) dialog).getListView();
@@ -136,18 +139,6 @@ public class SnakeMenuActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-    }
-
-    /**
-     * Make a list of games names for displaying in load games.
-     */
-    private String[] savedGamesList() {
-        String[] games = new String[(currentUserAccount.getSnakeGameNames().size())];
-        int i = 0;
-        for (String s : currentUserAccount.getSnakeGameNames()) {
-            games[i++] = s;
-        }
-        return games;
     }
 
     /**
@@ -236,20 +227,6 @@ public class SnakeMenuActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Saves a new game to the currentUserAccount.
-     */
-    private void updateUserAccounts() {
-        Calendar c = Calendar.getInstance();
-        DateFormat dateFormat =
-                DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-        String datetime = dateFormat.format(c.getTime());
-        LoginActivity.userAccountList.remove(currentUserAccount);
-        loadFromTempFile();
-        currentUserAccount.addSnakeGame(datetime, savedData);
-        LoginActivity.userAccountList.add(currentUserAccount);
-        userAccountsToFile();
-    }
 
     /**
      * Saves the userAccountList to a file.
