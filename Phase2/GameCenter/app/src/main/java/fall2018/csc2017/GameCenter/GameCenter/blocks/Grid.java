@@ -228,7 +228,7 @@ public class Grid {
      */
     public int verticalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesY = new ArrayList<Integer>();
-        int yVal = playerY;
+        int yVal = playerY + direction;
         boolean foodEaten = false;
         while (gridState[playerX][yVal] != BLOCK) {
             emptyValuesY.add(yVal);
@@ -292,13 +292,13 @@ public class Grid {
      */
     public int horizontalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesX = new ArrayList<>();
-        int xVal = playerX;
+        int xVal = playerX + direction;
         boolean foodEaten = false;
         while (gridState[xVal][playerY] != BLOCK) {
             emptyValuesX.add(xVal);
             if (gridState[xVal][playerY] == FOOD) {
                 foodEaten = true;
-                eatFood(xVal + direction, playerY);
+                eatFood(xVal, playerY);
                 break;
             }
             if (direction == 1) {
