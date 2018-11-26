@@ -508,7 +508,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
         if (detectDeath()) {
             paint.setTextSize(GAME_OVER_SIZE);
-            canvas.drawText("GAME OVER", 10, GAME_OVER_SIZE + 50, paint);
+            canvas.drawText("GAME OVER", screenWidth/8, screenHeight/3, paint);
         }
     }
 
