@@ -1,5 +1,6 @@
 package fall2018.csc2017.GameCenter.GameCenter.blocks;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Tile;
 /**
  * Manage a grid.
  */
-public class GridManager {
+public class GridManager implements Serializable {
 
     /**
      * The grid being managed.
