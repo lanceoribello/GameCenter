@@ -44,7 +44,7 @@ public class BlocksStartingActivity extends AppCompatActivity {
         // Make snakeView the default view of the Activity
         setContentView(blocksView);
     }
-
+    
     /**
      * Updates the high scores of the currentUserAccount if a new high score was achieved.
      */
@@ -140,3 +140,4 @@ public class BlocksStartingActivity extends AppCompatActivity {
         }
     }
 }
+

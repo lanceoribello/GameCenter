@@ -1,21 +1,29 @@
 package fall2018.csc2017.GameCenter.GameCenter.snake;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.support.constraint.solver.widgets.Rectangle;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.Random;
 
+import fall2018.csc2017.GameCenter.GameCenter.R;
+
 /*
 Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
 Manages a Snake game, running separately from the UI.
-Keeps track of
+ */
 
+/**
+ * The view for Snake.
  */
 public class SnakeView extends SurfaceView implements Runnable {
 
@@ -23,122 +31,150 @@ public class SnakeView extends SurfaceView implements Runnable {
      * The text size of the displayed score.
      */
     private final static int SCORE_TEXT_SIZE = 40;
+
     /**
      * The size of the GAME OVER text.
      */
     private final static int GAME_OVER_SIZE = 150;
+
     /**
      * The default FPS for easy mode.
      */
     private final static long EASY_MODE_FPS = 10;
+
     /**
      * The default FPS for hard mode.
      */
     private final static long HARD_MODE_FPS = 14;
+
     /**
      * How much the FPS is increased once the snake reaches its maximum size.
      */
     private final static long FPS_INCREASE = 2;
+
     /**
      * The maximum snake length before the snake is reset and the game is sped up.
      */
     private final static int MAX_SNAKE_SIZE = 15;
+
     /**
      * How many milliseconds in a second.
      */
     private final static long MILLIS_IN_A_SECOND = 1000;
+
     /**
      * The width of the playable area in terms of the number of blocks.
      * 40 by default.
      */
     private final static int NUM_BLOCKS_WIDE = 40;
+
     /**
      * The canvas of the Snake game.
      * Used to display the game.
      */
     Canvas canvas;
+
     /**
      * The context of the Snake game.
      * Used to reference the game's activity.
      */
     Context context;
+
     /**
      * The height of the screen being displayed upon.
      */
     int screenHeight;
+
     /**
      * An object array that contains any relevant data in the game used for saving and loading
      * save points.
      */
     Object[] savePointData;
+
     /**
      * The thread of the Snake game.
      */
     private Thread thread = null;
+
     /**
      * The volatile that determines whether the game is currently being played.
      * As a volatile, it can be accessed from inside and outside the thread.
      */
     private volatile boolean playing;
+
     /**
      * The SurfaceHolder used by the Canvas class to display the game.
      */
     private SurfaceHolder holder;
+
     /**
      * The paint used to select colors for displaying the game.
      */
     private Paint paint;
+
     /**
      * The current snake's direction.
      * Set to right for new games by default.
      */
     private Direction direction = Direction.RIGHT;
+
     /**
      * The width of the screen being displayed upon.
      */
     private int screenWidth;
+
     /**
      * The long that controls when the game will be updated next.
      */
     private long nextFrameTime;
+
     /**
      * The frames per second of the current Snake game.
      */
     private long FPS;
+
     /**
      * The current score of the game.
      */
     private int score;
+
     /**
      * The locations of all x-values of the snake.
      */
     private int[] snakeXs;
+
     /**
      * The locations of all y-values of the snake.
      */
     private int[] snakeYs;
+
     /**
      * The current length of the snake.
      */
     private int snakeLength;
+
     /**
      * The x value of the current mouse to be eaten.
      */
     private int mouseX;
+
     /**
      * The y value of the current mouse to be eaten.
      */
     private int mouseY;
+
     /**
      * The size in pixels of a block for the game display.
      * Corresponds to the size of an individual snake segment and the size of a mouse.
      */
     private int blockSize;
+
     /**
      * The height of the playable area in terms of the number of blocks.
      * Determined dynamically.
      */
     private int numBlocksHigh;
+
     /**
      * The difficulty level of the game.
      */
@@ -240,7 +276,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeLength = 1;
         snakeXs[0] = NUM_BLOCKS_WIDE / 2;
         snakeYs[0] = numBlocksHigh / 2;
-        spawnMouse();
+        spawnApple();
         score = 0;
         // Setup nextFrameTime so an update is triggered immediately
         nextFrameTime = System.currentTimeMillis();
@@ -278,7 +314,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * Spawns a mouse at a random location.
      */
-    private void spawnMouse() {
+    private void spawnApple() {
         Random random = new Random();
         mouseX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
         mouseY = random.nextInt(numBlocksHigh - 1) + 1;
@@ -292,7 +328,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     private void eatMouse() {
         snakeLength++;
-        spawnMouse();
+        spawnApple();
         score = score + 1;
         if ((snakeLength) % (MAX_SNAKE_SIZE) == 0) {
             increaseDifficulty();
@@ -392,10 +428,19 @@ public class SnakeView extends SurfaceView implements Runnable {
             canvas.drawColor(Color.argb(255, 102, 204, 255));
             drawText();
             drawSnake();
-            drawMouse();
+            drawApple();
             drawControls();
             holder.unlockCanvasAndPost(canvas);
         }
+    }
+
+    private void drawApple() {
+        Paint p = new Paint();
+        Bitmap apple = BitmapFactory.decodeResource(context.getResources(), R.drawable.apple);
+        canvas.drawBitmap(apple, null, new Rect(mouseX * blockSize,
+                (mouseY * blockSize),
+                (mouseX * blockSize) + blockSize,
+                (mouseY * blockSize) + blockSize), p);
     }
 
     /**
@@ -475,7 +520,9 @@ public class SnakeView extends SurfaceView implements Runnable {
         return score;
     }
 
-    //Necessary for onTouchEvent to have no warnings
+    /**
+     * Necessary for onTouchEvent to have no warnings
+     */
     @Override
     public boolean performClick() {
         super.performClick();
