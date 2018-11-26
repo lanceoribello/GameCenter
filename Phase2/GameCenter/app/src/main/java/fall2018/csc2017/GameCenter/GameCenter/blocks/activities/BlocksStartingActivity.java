@@ -1,11 +1,15 @@
 package fall2018.csc2017.GameCenter.GameCenter.blocks.activities;
 
+import android.graphics.Point;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import fall2018.csc2017.GameCenter.GameCenter.blocks.BlocksView;
 import fall2018.csc2017.GameCenter.GameCenter.blocks.GridManager;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
@@ -24,14 +28,33 @@ public class BlocksStartingActivity extends AppCompatActivity {
      * An instance of GridManager that will initialized in onCreate after getting more details
      * about the device.
      */
-    GridManager gridManager;
+    BlocksView blocksView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //find out the width and height of the screen
+        Display display = getWindowManager().getDefaultDisplay();
+        // Load the resolution into a Point object
+        Point size = new Point();
+        display.getSize(size);
+        currentUserAccount =
+                (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
+
+        // Create a new View based on the SnakeView class
+        blocksView = new BlocksView(this, size);
+        // Make snakeView the default view of the Activity
+        setContentView(blocksView);
+    }
+
+
 
     /**
      * Updates the high scores of the currentUserAccount if a new high score was achieved.
      */
     private void updateHighScore() {
-        int finalScore = gridManager.getGrid().getScore();
-        if (gridManager.gameOver() &&
+        int finalScore = blocksView.gridManager.getGrid().getScore();
+        if (blocksView.gridManager.gameOver() &&
                 this.currentUserAccount.getTopScore("Blocks") < finalScore) {
             this.currentUserAccount.setTopScore("Blocks", finalScore);
             updateUserAccounts();
