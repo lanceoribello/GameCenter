@@ -32,9 +32,19 @@ public class SnakeView extends SurfaceView implements Runnable {
     private final static int SCORE_TEXT_SIZE = 40;
 
     /**
+     * The text size of the pause button.
+     */
+    private final static int PAUSE_TEXT_SIZE = 40;
+
+    /**
      * The size of the GAME OVER text.
      */
     private final static int GAME_OVER_SIZE = 150;
+
+    /**
+     * The size of PAUSE text.
+     */
+    private final static int PAUSED_SIZE = 150;
 
     /**
      * The default FPS for easy mode.
@@ -101,6 +111,10 @@ public class SnakeView extends SurfaceView implements Runnable {
      * As a volatile, it can be accessed from inside and outside the thread.
      */
     private volatile boolean playing;
+    /**
+     * Set True when the game is paused else false
+     */
+    private boolean gamePaused;
 
     /**
      * The SurfaceHolder used by the Canvas class to display the game.
@@ -472,6 +486,7 @@ public class SnakeView extends SurfaceView implements Runnable {
             drawApple();
             drawBomb();
             drawControls();
+//            drawPause();
             holder.unlockCanvasAndPost(canvas);
         }
     }
@@ -506,9 +521,15 @@ public class SnakeView extends SurfaceView implements Runnable {
     private void drawText() {
         paint.setTextSize(SCORE_TEXT_SIZE);
         canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
+        paint.setTextSize(PAUSE_TEXT_SIZE);
+        canvas.drawText("Pause", screenWidth - 10, PAUSE_TEXT_SIZE, paint);
         if (detectDeath()) {
             paint.setTextSize(GAME_OVER_SIZE);
             canvas.drawText("GAME OVER", screenWidth/8, screenHeight/3, paint);
+        }
+        if(gamePaused){ //on click turns the condition to True.
+            paint.setTextSize(PAUSED_SIZE);
+            canvas.drawText("Paused", screenWidth/8, screenHeight/3, paint);
         }
     }
 
@@ -540,6 +561,8 @@ public class SnakeView extends SurfaceView implements Runnable {
                 8 * screenHeight / 9, paint);
         canvas.drawRect(2 * screenWidth / 3, 7 * screenHeight / 9, screenWidth,
                 8 * screenHeight / 9, paint);
+        paint.setTextSize(PAUSE_TEXT_SIZE);
+        canvas.drawText("Pause",2 * screenWidth / 3 + screenWidth/20, 8* screenHeight/9, paint);
     }
 
     /**
@@ -607,6 +630,11 @@ public class SnakeView extends SurfaceView implements Runnable {
                         && motionEvent.getY() <= 8 * screenHeight / 9
                         && motionEvent.getY() >= 7 * screenHeight / 9) {
                     direction = Direction.LEFT;
+                } else if (motionEvent.getX() >= 2 * screenWidth / 3
+                        && motionEvent.getX() <= screenWidth
+                        && motionEvent.getY() <= screenHeight
+                        && motionEvent.getY() >= 8 * screenHeight / 9){
+                    pauseGameClick();
                 }
         }
         return true;
@@ -617,5 +645,21 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     public enum Direction {
         UP, RIGHT, DOWN, LEFT
+    }
+
+    /**
+     * Changes the status of the playing boolean when the pause button is clicked.
+     */
+    private void pauseGameClick(){
+        if(this.playing){
+            this.playing = false;
+            this.gamePaused = true;
+            pause();
+        }
+        else{
+            this.playing = true;
+            this.gamePaused = false;
+            resume();
+        }
     }
 }
