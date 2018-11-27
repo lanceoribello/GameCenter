@@ -65,7 +65,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      * The width of the playable area in terms of the number of blocks.
      * 40 by default.
      */
-    private final static int NUM_BLOCKS_WIDE = 40;
+    private final static int NUM_BLOCKS_WIDE = 20;
 
     /**
      * The canvas of the Snake game.
