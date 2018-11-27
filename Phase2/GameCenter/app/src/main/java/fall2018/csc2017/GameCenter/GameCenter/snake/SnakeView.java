@@ -486,7 +486,6 @@ public class SnakeView extends SurfaceView implements Runnable {
             drawApple();
             drawBomb();
             drawControls();
-//            drawPause();
             holder.unlockCanvasAndPost(canvas);
         }
     }
@@ -521,15 +520,9 @@ public class SnakeView extends SurfaceView implements Runnable {
     private void drawText() {
         paint.setTextSize(SCORE_TEXT_SIZE);
         canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
-        paint.setTextSize(PAUSE_TEXT_SIZE);
-        canvas.drawText("Pause", screenWidth - 10, PAUSE_TEXT_SIZE, paint);
         if (detectDeath()) {
             paint.setTextSize(GAME_OVER_SIZE);
             canvas.drawText("GAME OVER", screenWidth/8, screenHeight/3, paint);
-        }
-        if(gamePaused){ //on click turns the condition to True.
-            paint.setTextSize(PAUSED_SIZE);
-            canvas.drawText("Paused", screenWidth/8, screenHeight/3, paint);
         }
     }
 
@@ -562,7 +555,8 @@ public class SnakeView extends SurfaceView implements Runnable {
         canvas.drawRect(2 * screenWidth / 3, 7 * screenHeight / 9, screenWidth,
                 8 * screenHeight / 9, paint);
         paint.setTextSize(PAUSE_TEXT_SIZE);
-        canvas.drawText("Pause",2 * screenWidth / 3 + screenWidth/20, 8* screenHeight/9, paint);
+        canvas.drawText("Pause",2 * screenWidth / 3 + screenWidth/12, 8* screenHeight/9
+                + screenHeight/18, paint);
     }
 
     /**
