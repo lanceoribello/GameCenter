@@ -237,7 +237,6 @@ public class Grid implements Serializable {
             emptyValuesY.add(yVal);
             if (gridState[playerX][yVal] == FOOD) {
                 foodEaten = true;
-                eatFood(playerX, yVal);
                 break;
             }
             if (direction == 1) {
@@ -268,6 +267,11 @@ public class Grid implements Serializable {
             int newXY = emptyValues.get(emptyValues.size() - 1);
             if (foodEaten) {
                 newXY = xyVal;
+                if (vertical) {
+                    eatFood(playerX, newXY);
+                } else {
+                    eatFood(newXY, playerY);
+                }
             }
             if (vertical) {
                 gridState[playerX][newXY] = PLAYER;
@@ -301,7 +305,6 @@ public class Grid implements Serializable {
             emptyValuesX.add(xVal);
             if (gridState[xVal][playerY] == FOOD) {
                 foodEaten = true;
-                eatFood(xVal, playerY);
                 break;
             }
             if (direction == 1) {
