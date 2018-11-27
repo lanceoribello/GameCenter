@@ -5,9 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.support.constraint.solver.widgets.Rectangle;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The view for Blocks.
@@ -28,6 +33,10 @@ public class BlocksView extends SurfaceView implements Runnable {
      * The gridManager of the Blocks game.
      */
     public GridManager gridManager;
+
+
+    ArrayList<Rect> rectangles = new ArrayList<>();//Assume these have been drawn in your draw method.
+
     /**
      * The canvas of the Blocks game.
      * Used to display the game.
@@ -213,6 +222,8 @@ public class BlocksView extends SurfaceView implements Runnable {
         canvas.drawRect(row * blockSize, col * blockSize,
                 (row * blockSize) + blockSize, (col * blockSize) + blockSize,
                 paint);
+        rectangles.add(new Rect(row * blockSize, col * blockSize,
+                (row * blockSize) + blockSize, (col * blockSize) + blockSize));
     }
 
     /**
@@ -251,6 +262,11 @@ public class BlocksView extends SurfaceView implements Runnable {
                         && motionEvent.getY() <= screenHeight - (screenHeight - screenWidth) / 3
                         && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
                     gridManager.movePlayer("left");
+                }
+                for(Rect rect: rectangles){
+                    if(rect.contains((int)motionEvent.getX(),(int)motionEvent.getY())){
+                        gridManager.placeBlock(rect.left/blockSize, rect.top/blockSize);
+                    }
                 }
         }
         return true;
