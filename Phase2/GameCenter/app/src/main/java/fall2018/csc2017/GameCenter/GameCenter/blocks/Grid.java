@@ -35,7 +35,7 @@ public class Grid implements Serializable {
     /**
      * The length of the grid.
      */
-    final static int GRID_LENGTH = 13;
+    final static int GRID_LENGTH = 9;
 
     /**
      * The number of food that must be on the grid at any point in the game.
@@ -107,16 +107,6 @@ public class Grid implements Serializable {
 
     }
 
-    /**
-     * Returns all the necessary data to load this grid at a later point.
-     *
-     * @return an object array of the data
-     */
-    public Object[] saveData() {
-        return new Object[]{playerX, playerY, intArrayListToArray(blockXs),
-                intArrayListToArray(blockYs), intArrayListToArray(foodXs),
-                intArrayListToArray(foodYs)};
-    }
 
     /**
      * Converts an arrayList of integers into an int array, returning the new int array.
