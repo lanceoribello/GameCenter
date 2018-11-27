@@ -43,33 +43,6 @@ public class BoardManagerTest {
 
 
     /**
-     * Tests if the boardmanager is able to save boards in an array list properly
-     * and if it's able to return that list back when the getter is called
-     */
-    @Test
-    public void getAndSetSavedBoards() {
-        ArrayList<Board> savedBoards = new ArrayList<>();
-
-        savedBoards.add(boardManager.getBoard());
-        boardManager.addToSavedBoards();
-        boardManager.getBoard().swapTiles(0, 0, 0, 1);
-        savedBoards.add(boardManager.getBoard());
-        boardManager.addToSavedBoards();
-        savedBoards.add(boardManager.getBoard());
-
-        for (int a = 0; a <= 2; a++) {
-            Iterator<Tile> iter = savedBoards.get(a).iterator();
-            Iterator<Tile> iter2 = boardManager.getBoard().iterator();
-
-            for (int b = 0; b != boardManager.getComplexity(); b++) {
-                Tile currentTile = iter.next();
-                Tile currentManagerTile = iter2.next();
-                assertEquals(currentTile, currentManagerTile);
-            }
-        }
-    }
-
-    /**
      * Tests if the complexity getter returns the correct value, which should be 5 for a 5x5 game
      */
     @Test
