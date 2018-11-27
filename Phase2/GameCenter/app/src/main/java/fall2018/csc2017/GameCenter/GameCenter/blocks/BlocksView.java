@@ -263,9 +263,10 @@ public class BlocksView extends SurfaceView implements Runnable {
                         && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
                     gridManager.movePlayer("left");
                 }
-                for(Rect rect: rectangles){
-                    if(rect.contains((int)motionEvent.getX(),(int)motionEvent.getY())){
-                        gridManager.placeBlock(rect.left/blockSize, rect.top/blockSize);
+                for(int i = 0; i< rectangles.size(); i++){
+                    if(rectangles.get(i).contains((int)motionEvent.getX(),(int)motionEvent.getY())){
+                        gridManager.placeBlock(rectangles.get(i).left/blockSize,
+                                rectangles.get(i).top/blockSize);
                     }
                 }
         }
