@@ -26,6 +26,8 @@ import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.BoardManager;
+import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesMenuController;
+import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuController;
 
 /**
  * The menu activity for the Sliding Tile game.
@@ -136,7 +138,8 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                         SlidingTilesMenuActivity.this);
                 builder.setTitle("Choose a game");
                 int checkedItem = 1;
-                builder.setSingleChoiceItems(savedGamesList(), checkedItem, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(SlidingTilesMenuController.savedGamesList(currentUserAccount),
+                        checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListView lw = ((AlertDialog) dialog).getListView();
@@ -155,17 +158,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Make a list of games names for displaying in load games.
-     */
-    private String[] savedGamesList(){
-        String[] games = new String[(currentUserAccount.getSlidingTilesGameNames().size())];
-        int i = 0;
-        for (String s : currentUserAccount.getSlidingTilesGameNames()) {
-            games[i++] = s;
-        }
-        return games;
-    }
+
 
     /**
      * Display that a game was loaded successfully.
@@ -182,7 +175,7 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUserAccounts();
+                SlidingTilesMenuController.updateUserAccounts(currentUserAccount, boardManager);
                 userAccountsToFile();
                 makeToastSavedText();
             }
@@ -305,19 +298,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Saves a new game to the currentUserAccount with game name as date and time.
-     */
-    private void updateUserAccounts() {
-        Calendar c = Calendar.getInstance();
-        DateFormat dateFormat =
-                DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-        String datetime = dateFormat.format(c.getTime());
-        LoginActivity.userAccountList.remove(currentUserAccount);
-        currentUserAccount.addSlidingTilesGame(datetime, boardManager);
-        LoginActivity.userAccountList.add(currentUserAccount);
-        userAccountsToFile();
-    }
 
     /**
      * Saves the userAccountList to a file.
