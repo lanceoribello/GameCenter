@@ -5,9 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.support.constraint.solver.widgets.Rectangle;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The view for Blocks.
@@ -25,13 +30,13 @@ public class BlocksView extends SurfaceView implements Runnable {
     private final static int GAME_OVER_SIZE = 150;
 
     /**
-     * How many milliseconds in a second.
-     */
-    private final static long MILLIS_IN_A_SECOND = 1000;
-    /**
      * The gridManager of the Blocks game.
      */
     public GridManager gridManager;
+
+
+    ArrayList<Rect> rectangles = new ArrayList<>();//Assume these have been drawn in your draw method.
+
     /**
      * The canvas of the Blocks game.
      * Used to display the game.
@@ -46,11 +51,6 @@ public class BlocksView extends SurfaceView implements Runnable {
      * The height of the screen being displayed upon.
      */
     int screenHeight;
-    /**
-     * An object array that contains any relevant data in the game used for saving and loading
-     * save points.
-     */
-    Object[] savePointData;
     /**
      * The thread of the Snake game.
      */
@@ -71,12 +71,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     /**
      * The width of the screen being displayed upon.
      */
-
     private int screenWidth;
-    /**
-     * The long that controls when the game will be updated next.
-     */
-    private long nextFrameTime;
     /**
      * The size in pixels of a block for the game display.
      * Corresponds to the size of a grid square.
@@ -107,19 +102,18 @@ public class BlocksView extends SurfaceView implements Runnable {
         screenWidth = size.x;
         screenHeight = size.y;
         blockSize = screenWidth / Grid.GRID_LENGTH;
-        // Bottom third of the screen used for the movement buttons
         holder = getHolder();
         paint = new Paint();
         gridManager = new GridManager();
     }
 
     /**
-     * Runs the game.
+     * Runs the game. Draws a new display whenever a touch is processed.
      */
     @Override
     public void run() {
         while (playing) {
-            if (checkForUpdate()) {
+            if (performClick()) {
                 drawGame();
             }
         }
@@ -152,7 +146,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     private void drawGame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.BLACK);
+            canvas.drawColor(Color.WHITE);
             drawGrid();
             drawControls();
             drawText();
@@ -179,9 +173,9 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     private void drawControls() {
         paint.setColor(Color.argb(255, 255, 255, 255));
-        canvas.drawRect(0, screenWidth, screenWidth, screenHeight, paint);
+        canvas.drawRect(0, screenWidth - 1, screenWidth, screenHeight, paint);
         paint.setColor(Color.BLACK);
-        canvas.drawRect(screenWidth / 3, screenWidth, 2 * screenWidth / 3,
+        canvas.drawRect(screenWidth / 3, screenWidth - 1, 2 * screenWidth / 3,
                 screenWidth + (screenHeight - screenWidth) / 3, paint);
         canvas.drawRect(screenWidth / 3, screenWidth + 2 *
                         (screenHeight - screenWidth) / 3,
@@ -228,20 +222,8 @@ public class BlocksView extends SurfaceView implements Runnable {
         canvas.drawRect(row * blockSize, col * blockSize,
                 (row * blockSize) + blockSize, (col * blockSize) + blockSize,
                 paint);
-    }
-
-    /**
-     * Determines whether the game should be updated for the timing of when updateGame() and
-     * drawGame() should be called, depending on the FPS of the game.
-     *
-     * @return whether the game is to be updated
-     */
-    private boolean checkForUpdate() {
-        if (nextFrameTime <= System.currentTimeMillis()) {
-            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND;
-            return true;
-        }
-        return false;
+        rectangles.add(new Rect(row * blockSize, col * blockSize,
+                (row * blockSize) + blockSize, (col * blockSize) + blockSize));
     }
 
     /**
@@ -280,6 +262,11 @@ public class BlocksView extends SurfaceView implements Runnable {
                         && motionEvent.getY() <= screenHeight - (screenHeight - screenWidth) / 3
                         && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
                     gridManager.movePlayer("left");
+                }
+                for(Rect rect: rectangles){
+                    if(rect.contains((int)motionEvent.getX(),(int)motionEvent.getY())){
+                        gridManager.placeBlock(rect.left/blockSize, rect.top/blockSize);
+                    }
                 }
         }
         return true;
