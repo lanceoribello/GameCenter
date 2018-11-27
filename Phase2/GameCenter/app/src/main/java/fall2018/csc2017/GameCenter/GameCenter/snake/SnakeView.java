@@ -65,7 +65,7 @@ public class SnakeView extends SurfaceView implements Runnable {
      * The width of the playable area in terms of the number of blocks.
      * 40 by default.
      */
-    private final static int NUM_BLOCKS_WIDE = 40;
+    private final static int NUM_BLOCKS_WIDE = 20;
 
     /**
      * The canvas of the Snake game.
@@ -366,9 +366,8 @@ public class SnakeView extends SurfaceView implements Runnable {
         snakeLength++;
         spawnApple();
         score = score + 1;
-        if (score % 2 == 0) {
-            spawnBomb();
-        }
+        spawnBomb();
+
         if ((snakeLength) % (MAX_SNAKE_SIZE) == 0) {
             increaseDifficulty();
         }
@@ -509,7 +508,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
         if (detectDeath()) {
             paint.setTextSize(GAME_OVER_SIZE);
-            canvas.drawText("GAME OVER", 10, GAME_OVER_SIZE + 50, paint);
+            canvas.drawText("GAME OVER", screenWidth/8, screenHeight/3, paint);
         }
     }
 
