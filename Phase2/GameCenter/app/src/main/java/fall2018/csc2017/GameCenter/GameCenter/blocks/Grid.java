@@ -211,9 +211,11 @@ public class Grid implements Serializable {
      * @param y the y-value of the block on the grid
      */
     public void placeBlockAt(int x, int y) {
-        gridState[x][y] = BLOCK;
-        blockXs.add(x);
-        blockYs.add(y);
+        if (validBlockPlacement(x,y)){
+            gridState[x][y] = BLOCK;
+            blockXs.add(x);
+            blockYs.add(y);
+        }
     }
 
     /**
