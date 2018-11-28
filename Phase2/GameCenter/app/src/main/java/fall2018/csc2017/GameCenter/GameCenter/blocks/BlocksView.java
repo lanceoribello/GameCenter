@@ -6,13 +6,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.support.constraint.solver.widgets.Rectangle;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The view for Blocks.
@@ -32,7 +30,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     /**
      * The gridManager of the Blocks game.
      */
-    public GridManager gridManager;
+    GridManager gridManager;
 
     /**
      * The rectangle object representations of the ones which have been drawn on the grid.
@@ -53,7 +51,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     /**
      * The height of the screen being displayed upon.
      */
-    int screenHeight;
+    private int screenHeight;
     /**
      * The thread of the Snake game.
      */
@@ -149,7 +147,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     private void drawGame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.WHITE);
+            canvas.drawColor(Color.argb(255, 250,195,65));
             drawGrid();
             drawControls();
             drawText();
@@ -200,16 +198,18 @@ public class BlocksView extends SurfaceView implements Runnable {
         for (int row = 0; row != Grid.GRID_LENGTH; row++) {
             for (int col = 0; col != Grid.GRID_LENGTH; col++) {
                 int gridLocation = gridManager.getGrid().gridState[row][col];
-                if (gridLocation == Grid.EMPTY) {
-                    paint.setColor(Color.argb(255, 250, 195, 65));
-                } else if (gridLocation == Grid.PLAYER) {
-                    paint.setColor(Color.argb(255, 231, 126, 235));
-                } else if (gridLocation == Grid.BLOCK) {
-                    paint.setColor(Color.argb(255, 0, 0, 0));
-                } else {
-                    paint.setColor(Color.argb(255, 65, 36, 255));
+                if (gridLocation != Grid.EMPTY) {
+                    if (gridLocation == Grid.PLAYER) {
+                        paint.setColor(Color.argb(255, 231, 126, 235));
+                    } else if (gridLocation == Grid.BLOCK) {
+                        paint.setColor(Color.argb(255, 0, 0, 0));
+                    } else if (gridLocation == Grid.FOOD) {
+                        paint.setColor(Color.argb(255, 65, 36, 255));
+                    }
+                    drawGridSquare(row, col);
                 }
-                drawGridSquare(row, col);
+                rectangles.add(new Rect(row * blockSize, col * blockSize,
+                        (row * blockSize) + blockSize, (col * blockSize) + blockSize));
             }
         }
     }
@@ -221,12 +221,10 @@ public class BlocksView extends SurfaceView implements Runnable {
      * @param row the grid row associated with the grid square
      * @param col the grid col associated with the grid square
      */
-    public void drawGridSquare(int row, int col) {
+    private void drawGridSquare(int row, int col) {
         canvas.drawRect(row * blockSize, col * blockSize,
                 (row * blockSize) + blockSize, (col * blockSize) + blockSize,
                 paint);
-        rectangles.add(new Rect(row * blockSize, col * blockSize,
-                (row * blockSize) + blockSize, (col * blockSize) + blockSize));
     }
 
     /**
