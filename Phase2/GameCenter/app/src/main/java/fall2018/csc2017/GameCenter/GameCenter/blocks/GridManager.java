@@ -117,7 +117,7 @@ public class GridManager implements Serializable {
                 break;
             }
         }
-        for (int i = 0; i != numTurns + 1; i++) {
+        for (int i = 0; i != numTurns; i++) {
             this.savedGrids.remove(this.savedGrids.size() - 1);
         }
         this.grid.setScore(oldScore - numTurns);
