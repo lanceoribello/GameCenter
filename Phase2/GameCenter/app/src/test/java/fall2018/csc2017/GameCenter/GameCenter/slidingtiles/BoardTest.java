@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -209,6 +210,45 @@ public class BoardTest {
             }
         }
 
+
+    }
+
+    /**
+     * Checks if the exception is thrown when the iterator goes out of range on a 3x3 board
+     */
+    @Test(expected = NoSuchElementException.class)
+    public void iteratorOutOfRange() {
+        Board.numRows = Board.numCols = 3;
+
+        numTiles = Board.numRows * Board.numCols;
+        List<Tile> tiles = setTileList();
+        Board board = new Board(tiles);
+        Iterator<Tile> iter = board.iterator();
+
+        for (int row = 0; row != Board.numRows; row++) {
+            for (int col = 0; col != Board.numCols; col++) {
+                iter.next();
+            }
+        }
+        iter.next();
+    }
+
+    /**
+     * Tests the correctness of the toString method
+     */
+    @Test
+    public void toStringCorrect() {
+        Board.numRows = Board.numCols = 3;
+
+        numTiles = Board.numRows * Board.numCols;
+        List<Tile> tiles = setTileList();
+        Board board = new Board(tiles);
+
+        String testerString = "Board{" +
+                "tiles=" + Arrays.toString(board.getTiles()) +
+                '}';
+
+        assertEquals(testerString, board.toString());
 
     }
 }

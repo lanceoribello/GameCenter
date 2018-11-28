@@ -115,7 +115,7 @@ public class Board extends Observable implements Serializable, Iterable<Tile> {
 
         @Override
         public boolean hasNext() {
-            return nextIndex <= numTiles();
+            return nextIndex < numTiles();
         }
 
         @Override
