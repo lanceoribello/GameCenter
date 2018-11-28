@@ -60,10 +60,9 @@ public class SnakeGameActivity extends AppCompatActivity {
      * Updates the high scores of the currentUserAccount if a new high score was achieved.
      */
     private void updateHighScore() {
-        int finalScore = snakeView.getScore();
-        if (snakeView.detectDeath() &&
-                this.currentUserAccount.getTopScore(difficulty) < finalScore) {
-            this.currentUserAccount.setTopScore(difficulty, finalScore);
+        int score = snakeView.getScore();
+        if (this.currentUserAccount.getTopScore(difficulty) < score) {
+            this.currentUserAccount.setTopScore(difficulty, score);
             updateUserAccounts();
         }
     }
