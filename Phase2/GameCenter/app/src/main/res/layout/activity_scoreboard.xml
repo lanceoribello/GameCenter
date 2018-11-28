@@ -13,9 +13,12 @@
         android:gravity="center"
         android:padding="20dip"
         android:stretchColumns="*"
-        tools:context="fall2018.csc2017.GameCenter.GameCenter.lobby.activities.ScoreboardActivity"
-        tools:layout_editor_absoluteX="189dp"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:context="fall2018.csc2017.GameCenter.GameCenter.lobby.activities.ScoreboardActivity">
 
         <TableRow>
 

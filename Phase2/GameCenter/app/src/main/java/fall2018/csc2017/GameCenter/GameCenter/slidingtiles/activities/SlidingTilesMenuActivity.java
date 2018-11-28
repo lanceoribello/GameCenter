@@ -140,24 +140,23 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                 int checkedItem = 1;
                 builder.setSingleChoiceItems(SlidingTilesMenuController.savedGamesList(currentUserAccount),
                         checkedItem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ListView lw = ((AlertDialog) dialog).getListView();
-                        Object selectedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
-                        String selectedGame = selectedItem.toString();
-                        boardManager = currentUserAccount.getSlidingTilesGame(selectedGame);
-                        Board.numRows = Board.numCols = boardManager.getComplexity();
-                        makeToastLoadedText();
-                        dialog.dismiss();
-                        switchToGame();
-                    }
-                });
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ListView lw = ((AlertDialog) dialog).getListView();
+                                Object selectedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+                                String selectedGame = selectedItem.toString();
+                                boardManager = currentUserAccount.getSlidingTilesGame(selectedGame);
+                                Board.numRows = Board.numCols = boardManager.getComplexity();
+                                makeToastLoadedText();
+                                dialog.dismiss();
+                                switchToGame();
+                            }
+                        });
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
         });
     }
-
 
 
     /**
@@ -211,8 +210,12 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
                             }
                         }
                         boardManager = currentUserAccount.getSlidingTilesGame("autoSave");
-                        Board.numRows = Board.numCols = boardManager.getComplexity();
-                        switchToGame();
+                        if (boardManager == null) {
+                            makeToastLoadAutoSaveFailText();
+                        } else {
+                            Board.numRows = Board.numCols = boardManager.getComplexity();
+                            switchToGame();
+                        }
                     } else {
                         makeToastLoadAutoSaveFailText();
                     }
