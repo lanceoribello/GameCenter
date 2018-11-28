@@ -175,7 +175,8 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SlidingTilesMenuController.updateUserAccounts(currentUserAccount, boardManager);
+                SlidingTilesMenuController.updateUserAccounts(currentUserAccount, boardManager,
+                        LoginActivity.userAccountList);
                 userAccountsToFile();
                 makeToastSavedText();
             }
