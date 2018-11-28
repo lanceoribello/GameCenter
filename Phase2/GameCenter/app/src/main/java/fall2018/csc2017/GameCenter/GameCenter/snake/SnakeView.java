@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
@@ -28,14 +27,9 @@ Manages a Snake game, running separately from the UI.
 public class SnakeView extends SurfaceView implements Runnable {
 
     /**
-     * The text size of the displayed score.
+     * The text size of the displayed score and save point text.
      */
-    private final static int SCORE_TEXT_SIZE = 40;
-
-    /**
-     * The text size of the pause button.
-     */
-    private final static int PAUSE_TEXT_SIZE = 40;
+    private final static int SMALL_TEXT_SIZE = 50;
 
     /**
      * The size of the GAME OVER text.
@@ -92,20 +86,21 @@ public class SnakeView extends SurfaceView implements Runnable {
 
     /**
      * An object array that contains any relevant data in the game used for saving and loading
-     * autosaves. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
+     * autoSaves. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
      * difficulty, direction, FPS, bombX, bombY}.
      */
     public Object[] autoSaveData;
 
 
     /**
-     * An arrayList of object arrays of game data that is updated every time the player reaches a
-     * certain number of points.
+     * An object array of game data that is updated every time the player reaches a
+     * certain number of points. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
+     * difficulty, direction, FPS, bombX, bombY}.
      */
-    private ArrayList<Object[]> savePoints;
+    private Object[] savePoint;
 
     /**
-     * Determines when a save point at certain scores.
+     * Determines when a save point is created at certain scores.
      */
     private static final int SAVE_POINT_EVERY = 3;
 
@@ -240,7 +235,6 @@ public class SnakeView extends SurfaceView implements Runnable {
         paint = new Paint();
         snakeXs = new int[MAX_SNAKE_SIZE];
         snakeYs = new int[MAX_SNAKE_SIZE];
-        savePoints = new ArrayList<>();
         try {
             resumeOldGame(oldSaveData);
         } catch (NullPointerException e) {
@@ -273,7 +267,7 @@ public class SnakeView extends SurfaceView implements Runnable {
             if (checkForUpdate()) {
                 updateGame();
                 drawGame();
-                setAutoSave();
+                autoSaveData = createSaveData();
             }
         }
     }
@@ -301,7 +295,7 @@ public class SnakeView extends SurfaceView implements Runnable {
 
     /**
      * Begins a new game of Snake.
-     * Spawns a snake with length 1 in the left side of the grid area as well as an apple in a
+     * Spawns a snake with length 1 in the left side of the grid area as well as an apple
      * and a bomb in random location.
      */
     private void startGame() {
@@ -347,7 +341,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Spawns a apple at a given location.
+     * Spawns an apple at a given location.
      *
      * @param x the x-value of the apple to be spawned
      * @param y the y-value of the apple to be spawned
@@ -358,7 +352,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Spawns a apple at a random location.
+     * Spawns an apple at a random location.
      */
     private void spawnApple() {
         Random random = new Random();
@@ -441,12 +435,14 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Sets the savePointData object array to include all the data necessary for loading up the
-     * current game again at a later point.
+     * Returns an object array of all the data necessary for loading up the game again at a later
+     * point.
+     *
+     * @return an object array of game data
      */
-    public void setAutoSave() {
-        autoSaveData = new Object[]{snakeXs, snakeYs, appleX, appleY, snakeLength, score,
-                difficulty, direction, FPS, bombX, bombY};
+    public Object[] createSaveData() {
+        return new Object[]{snakeXs.clone(), snakeYs.clone(), appleX, appleY,
+                snakeLength, score, difficulty, direction, FPS, bombX, bombY};
     }
 
     /**
@@ -455,20 +451,8 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     public void createSavePoint() {
         if (getScore() % SAVE_POINT_EVERY == 0 && getScore() != 0) {
-            Object[] newSavePoint = new Object[]{snakeXs, snakeYs, appleX, appleY, snakeLength,
-                    score, difficulty, direction, FPS, bombX, bombY};
-            savePoints.add(newSavePoint);
-            System.out.println("save point created");
+            savePoint = createSaveData();
         }
-    }
-
-    /**
-     * Returns the save points created for this Snake game.
-     *
-     * @return this game's list of save points
-     */
-    public ArrayList<Object[]> getSavePoints() {
-        return savePoints;
     }
 
     /**
@@ -478,6 +462,15 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     public Object[] getAutoSaveData() {
         return this.autoSaveData;
+    }
+
+    /**
+     * Returns the data of the latest savePoint of this Snake game.
+     *
+     * @return the data of the latest savePoint
+     */
+    public Object[] getSavePoint() {
+        return savePoint;
     }
 
     /**
@@ -543,11 +536,16 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Draws the score text and the GAME OVER text.
+     * Draws the score text, save point text, and the GAME OVER text.
      */
     private void drawText() {
-        paint.setTextSize(SCORE_TEXT_SIZE);
-        canvas.drawText("Score:" + score, 10, SCORE_TEXT_SIZE, paint);
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(SMALL_TEXT_SIZE);
+        canvas.drawText("Score:" + score, 10, SMALL_TEXT_SIZE, paint);
+        if (getScore() % SAVE_POINT_EVERY == 0 && getScore() != 0) {
+            canvas.drawText("New save point!", screenWidth / 4,
+                    SMALL_TEXT_SIZE, paint);
+        }
         if (detectDeath()) {
             paint.setTextSize(GAME_OVER_SIZE);
             canvas.drawText("GAME OVER", screenWidth / 8, screenHeight / 3, paint);
@@ -582,9 +580,10 @@ public class SnakeView extends SurfaceView implements Runnable {
                 8 * screenHeight / 9, paint);
         canvas.drawRect(2 * screenWidth / 3, 7 * screenHeight / 9, screenWidth,
                 8 * screenHeight / 9, paint);
-        paint.setTextSize(PAUSE_TEXT_SIZE);
-        canvas.drawText("Pause", 2 * screenWidth / 3 + screenWidth / 12, 8 * screenHeight / 9
-                + screenHeight / 18, paint);
+        paint.setTextSize(SMALL_TEXT_SIZE);
+        canvas.drawText("Pause", 2 * screenWidth / 3 + screenWidth / 12,
+                8 * screenHeight / 9
+                        + screenHeight / 18, paint);
     }
 
     /**

@@ -8,7 +8,6 @@ import android.graphics.Point;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
@@ -88,15 +87,12 @@ public class SnakeGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Writes any created save points of the Snake Game to the current userAccount.
+     * Writes the last savePoint of the Snake Game to the current userAccount.
      */
-    private void createSavePoints() {
-        ArrayList<Object[]> savePoints = snakeView.getSavePoints();
-        if (savePoints.size() > 0) {
-            for (Object[] sp : savePoints) {
-                currentUserAccount.addSnakeGame("Save point, Score: " + sp[5], sp);
-                System.out.println("Save point, Score: " + sp[5]);
-            }
+    private void createSavePoint() {
+        Object[] saveData = snakeView.getSavePoint();
+        if (saveData != null) {
+            currentUserAccount.addSnakeGame("Last savePoint: score " + saveData[5], saveData);
             updateUserAccounts();
         }
     }
@@ -135,7 +131,7 @@ public class SnakeGameActivity extends AppCompatActivity {
         super.onPause();
         saveToTempFile();
         createAutoSave();
-        createSavePoints();
+        createSavePoint();
         snakeView.pause();
         updateHighScore();
     }
@@ -148,7 +144,7 @@ public class SnakeGameActivity extends AppCompatActivity {
         super.onStop();
         saveToTempFile();
         createAutoSave();
-        createSavePoints();
+        createSavePoint();
         snakeView.pause();
         updateHighScore();
     }
