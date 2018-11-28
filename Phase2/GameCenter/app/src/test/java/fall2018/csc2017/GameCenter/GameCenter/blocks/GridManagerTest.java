@@ -1,10 +1,19 @@
 package fall2018.csc2017.GameCenter.GameCenter.blocks;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class GridManagerTest {
+
+    /**
+     * Sets up a test grid manager.
+     */
+    @Before
+    public void setUp() {
+        GridManager testGridManager = new GridManager();
+    }
 
     @Test
     public void getSavedGrids() {
