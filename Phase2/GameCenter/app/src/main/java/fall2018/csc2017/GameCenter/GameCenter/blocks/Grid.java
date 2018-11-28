@@ -90,7 +90,7 @@ public class Grid implements Serializable {
         playerX = GRID_LENGTH / 2;
         playerY = GRID_LENGTH / 2;
         gridState[playerX][playerY] = PLAYER;
-        spawnMultipleFoods(FOOD_NUM);
+        spawnMultipleFoods();
     }
 
     Grid(int pX, int pY, int[] blockXs, int[] blockYs, int[] foodXs, int[] foodYs) {
@@ -99,10 +99,9 @@ public class Grid implements Serializable {
         this.playerX = pX;
         this.playerY = pY;
         gridState[playerX][playerY] = PLAYER;
-        placeObjectsFromData(blockXs, blockYs, "block");
         placeObjectsFromData(foodXs, foodYs, "food");
+        placeObjectsFromData(blockXs, blockYs, "block");
     }
-
 
     /**
      * Converts an arrayList of integers into an int array, returning the new int array.
@@ -172,8 +171,8 @@ public class Grid implements Serializable {
     /**
      * Spawns multiple foods at random locations.
      */
-    private void spawnMultipleFoods(int howMany) {
-        for (int a = 0; a < howMany; a++) {
+    private void spawnMultipleFoods() {
+        for (int a = 0; a < FOOD_NUM; a++) {
             spawnFood();
         }
     }
@@ -191,13 +190,13 @@ public class Grid implements Serializable {
     }
 
     /**
-     * Places a block at a specific location.
+     * Places a block at a specific location if it is empty.
      *
      * @param x the x-value of the block on the grid
      * @param y the y-value of the block on the grid
      */
     void placeBlockAt(int x, int y) {
-        if (validBlockPlacement(x, y)) {
+        if (gridState[x][y] == EMPTY) {
             gridState[x][y] = BLOCK;
             blockXs.add(x);
             blockYs.add(y);
@@ -218,7 +217,7 @@ public class Grid implements Serializable {
      * @return the maximum number of grid-squares the player can move up or down
      */
     int verticalMove(int direction, boolean makeMove) {
-        ArrayList<Integer> emptyValuesY = new ArrayList<Integer>();
+        ArrayList<Integer> emptyValuesY = new ArrayList<>();
         int yVal = playerY + direction;
         boolean foodEaten = false;
         while (gridState[playerX][yVal] != BLOCK) {
@@ -324,17 +323,6 @@ public class Grid implements Serializable {
         }
         score++;
         spawnFood();
-    }
-
-    /**
-     * Returns whether a specific location on the grid is a valid location to place a block.
-     *
-     * @param x the x-value of the location
-     * @param y the y-value of the location
-     * @return whether the location is empty
-     */
-    private boolean validBlockPlacement(int x, int y) {
-        return gridState[x][y] == EMPTY;
     }
 
     /**
