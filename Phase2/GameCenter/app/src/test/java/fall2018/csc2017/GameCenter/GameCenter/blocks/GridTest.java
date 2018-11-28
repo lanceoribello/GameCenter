@@ -24,6 +24,11 @@ public class GridTest {
      */
     final static int BLOCK = 2;
 
+    /**
+     * The int representing a food's location on the grid.
+     */
+    final static int FOOD = 3;
+
     private int[] blockXs = {};
     private int[] blockYs = {};
     private int[] foodXs = {1, 7, 1, 7};
@@ -187,14 +192,23 @@ public class GridTest {
     }
 
     /**
-     * Tests if food is eaten correctly
+     * Tests if food is eaten correctly. First makes sure that (1,1) and (1,7) are foods
+     * previous to moves being made. Then the player gets moved to those locations, and checks
+     * to make sure that those grids are now the Player instead of food, confirming that the food
+     * has been eaten
      */
     @Test
     public void foodIsEaten() {
+        assertEquals(FOOD, testerGrid.gridState[1][1]);
+        assertEquals(FOOD, testerGrid.gridState[1][7]);
+
         testerGrid.verticalMove(-1, true);
         testerGrid.horizontalMove(-1, true);
+
         assertEquals(PLAYER, testerGrid.gridState[1][1]);
+
         testerGrid.verticalMove(1, true);
+
         assertEquals(PLAYER, testerGrid.gridState[1][7]);
     }
 
