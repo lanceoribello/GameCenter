@@ -57,7 +57,8 @@ public class BoardManager implements Serializable {
         }
         this.board = new Board(tiles);
         makeRandomMoves(complexity);
-        this.savedBoards.add(copiedBoard(board));
+        this.savedBoards = new ArrayList<>();
+        addToSavedBoards();
         this.numMoves = 0;
     }
 

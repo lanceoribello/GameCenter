@@ -8,6 +8,7 @@
     <string name="select_game">Select which game to play:</string>
     <string name="sliding_tiles">Sliding Tiles</string>
     <string name="snake">Snake</string>
+    <string name="blocks">Blocks</string>
     <string name="view_scoreboards">View Scoreboards</string>
     <string name="load_game">Load Game</string>
     <string name="new_game">New Game</string>
@@ -15,17 +16,11 @@
     <string name="button_undo">Undo</string>
     <string name="button_undo_number"># of moves to undo</string>
     <string name="create_account">Create Account</string>
-    <string name="load_auto_save">Load Auto Save</string>
+    <string name="load_auto_save_point">Load Auto Save Point</string>
     <string name="scoreboard_title">Scoreboard of User</string>
     <string name="scoreboards">Scoreboards</string>
     <string name="per_user">Per-User</string>
     <string name="per_game">Per-Game</string>
     <string name="complexity">Complexity</string>
     <string name="SnakeGameText">Welcome to snake. Get your Pyth ON.</string>
-    <string name="BlocksGame">Blocks</string>
-    <string name="LoadBlocks">Load Game</string>
-    <string name="NewBlocks">New Game</string>
-    <string name="SaveBlocks">Save Game</string>
-    <string name="LoadAutoSaveBlocks">Load Auto Save</string>
-    <string name="Undo">#of moves to undo</string>
 </resources>

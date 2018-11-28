@@ -55,7 +55,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
         addLoadButtonListener();
         addSaveButtonListener();
-        addLoadAutoSaveButtonListener();
+        addLoadAutoSavePointButtonListener();
     }
 
     /**
@@ -125,17 +125,17 @@ public class SnakeMenuActivity extends AppCompatActivity {
                 int checkedItem = 1; //Sets the choice to the first element.
                 builder.setSingleChoiceItems(SnakeMenuController.savedGamesList(currentUserAccount)
                         , checkedItem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ListView lw = ((AlertDialog) dialog).getListView();
-                        Object selectedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
-                        String selectedGame = selectedItem.toString();
-                        savedData = currentUserAccount.getSnakeGame(selectedGame);
-                        makeToastLoadedText();
-                        dialog.dismiss();
-                        switchToGame((String) savedData[6], savedData);
-                    }
-                });
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ListView lw = ((AlertDialog) dialog).getListView();
+                                Object selectedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+                                String selectedGame = selectedItem.toString();
+                                savedData = currentUserAccount.getSnakeGame(selectedGame);
+                                makeToastLoadedText();
+                                dialog.dismiss();
+                                switchToGame((String) savedData[6], savedData);
+                            }
+                        });
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
@@ -153,7 +153,7 @@ public class SnakeMenuActivity extends AppCompatActivity {
      * Activate the Load autoSave button, which loads the latest autoSave of Snake of
      * the currentAccount.
      */
-    private void addLoadAutoSaveButtonListener() {
+    private void addLoadAutoSavePointButtonListener() {
         Button load = findViewById(R.id.AutoSnake);
         load.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -171,7 +171,11 @@ public class SnakeMenuActivity extends AppCompatActivity {
                             }
                         }
                         savedData = currentUserAccount.getSnakeGame("autoSave");
-                        switchToGame((String) savedData[6], savedData);
+                        if (savedData == null) {
+                            makeToastLoadAutoSaveFailText();
+                        } else {
+                            switchToGame((String) savedData[6], savedData);
+                        }
                     } else {
                         makeToastLoadAutoSaveFailText();
                     }
