@@ -124,11 +124,13 @@ Updated docstring for snakeView.
 Testing for lobby classes, Board, BoardManager.
 Set up testing for activities, Mockito.
 Formatting fixes to SnakeView.
+Created the Grid class for Blocks.
 Added undo, save, load functionality to Blocks. Improved movement in Blocks.
 
 ## November 25, 2018
 Added Controllers for Login, Scoreboard, GameSelect (MVC).
 Created a D-pad for snake.
+Created the GridManager class for Blocks.
 Scoring completed in Blocks.
 Work on BlocksStartingActivity, BlocksView. Game can be displayed.
 Added apples and bombs to Snake.
@@ -147,3 +149,12 @@ Fixed food spawn bug in Blocks.
 Fixed load auto save issue in games for new users.
 Testing on Grid and GridManager.
 Save point functionality added to Snake.
+
+Need to do:
+Finish testing
+Go into more detail here on design decisions (from phase 1 feedback)
+Docstring updates
+Write instructions on application usage on README
+Write WALKTHROUGH.pdf
+Delete this list
+
