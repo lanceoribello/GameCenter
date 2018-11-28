@@ -93,6 +93,16 @@ public class Grid implements Serializable {
         spawnMultipleFoods();
     }
 
+    /**
+     * Creates a grid for the blocks games from the given data.
+     *
+     * @param pX      the x-value of the player
+     * @param pY      the y-value of the player
+     * @param blockXs the x-values of the blocks on the grid
+     * @param blockYs the y-values of the blocks on the grid
+     * @param foodXs  the x-values of the food on the grid
+     * @param foodYs  the y-values of the food on the grid
+     */
     Grid(int pX, int pY, int[] blockXs, int[] blockYs, int[] foodXs, int[] foodYs) {
         gridState = new int[GRID_LENGTH][GRID_LENGTH];
         generateEmptyGrid();
@@ -277,7 +287,6 @@ public class Grid implements Serializable {
      * Moves the player the maximum number of grid-squares the player can move in the left or right
      * direction until it meets a food or a block (the player stops before a block and stops
      * when a food is eaten).
-     * Returns how far the player has moved.
      * Precondition: direction must be 1 or -1; 1 accounts for rightward movement, -1 for leftward.
      *
      * @param direction which direction the method checks for

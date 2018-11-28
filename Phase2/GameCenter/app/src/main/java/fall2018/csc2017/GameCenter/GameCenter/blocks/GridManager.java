@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Manage a grid.
+ * Manages a grid; includes placing blocks, moving the player, and undoing turns.
+ * Also keeps track of the moves made by saving the grids corresponding to each move.
  */
 public class GridManager implements Serializable {
 

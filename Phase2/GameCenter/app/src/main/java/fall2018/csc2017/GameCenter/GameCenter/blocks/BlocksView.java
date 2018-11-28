@@ -147,7 +147,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     private void drawGame() {
         if (holder.getSurface().isValid()) {
             canvas = holder.lockCanvas();
-            canvas.drawColor(Color.argb(255, 250,195,65));
+            canvas.drawColor(Color.argb(255, 250, 195, 65));
             drawGrid();
             drawControls();
             drawText();
@@ -228,7 +228,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Necessary for onTouchEvent to have no warnings.
+     * Necessary for onTouchEvent.
      *
      * @return true
      */
@@ -253,10 +253,10 @@ public class BlocksView extends SurfaceView implements Runnable {
                 double x = motionEvent.getX();
                 double y = motionEvent.getY();
 
-                if (withinTop(x, y)){
+                if (withinTop(x, y)) {
                     gridManager.movePlayer("down");
 
-                } else if(withinBottom(x, y))  {
+                } else if (withinBottom(x, y)) {
                     gridManager.movePlayer("up");
 
                 } else if (withinRight(x, y)) {
@@ -277,33 +277,36 @@ public class BlocksView extends SurfaceView implements Runnable {
 
     /**
      * Helper method for onTouch to see if user has clicked the top movement button
+     *
      * @param x x-coordinate
      * @param y y-coordinate
      * @return true if within the bounds of the button
      */
-    private boolean withinTop(double x, double y){
-        return (x >= screenWidth / 3 && x <= 2 * screenWidth / 3  && y >= screenWidth  &&
+    private boolean withinTop(double x, double y) {
+        return (x >= screenWidth / 3 && x <= 2 * screenWidth / 3 && y >= screenWidth &&
                 y <= screenWidth + (screenHeight - screenWidth) / 3);
     }
 
     /**
      * Helper method for onTouch to see if user has clicked the bottom movement button
+     *
      * @param x x-coordinate
      * @param y y-coordinate
      * @return true if within the bounds of the button
      */
-    private boolean withinBottom(double x, double y){
+    private boolean withinBottom(double x, double y) {
         return (x >= screenWidth / 3 && x <= 2 * screenWidth / 3 && y <= screenHeight &&
                 y >= screenHeight - (screenHeight - screenWidth) / 3);
     }
 
     /**
      * Helper method for onTouch to see if user has clicked the Right movement button
+     *
      * @param x x-coordinate
      * @param y y-coordinate
      * @return true if within the bounds of the button
      */
-    private boolean withinRight(double x, double y){
+    private boolean withinRight(double x, double y) {
         return (x >= 2 * screenWidth / 3 && x <= screenWidth &&
                 y <= screenHeight - (screenHeight - screenWidth) / 3 &&
                 y >= screenWidth + (screenHeight - screenWidth) / 3);
@@ -311,12 +314,13 @@ public class BlocksView extends SurfaceView implements Runnable {
 
     /**
      * Helper method for onTouch to see if user has clicked the Left movement button
+     *
      * @param x x-coordinate
      * @param y y-coordinate
      * @return true if within the bounds of the button
      */
-    private boolean withinLeft(double x, double y){
-        return (x >= 0 && x <= screenWidth / 3  &&
+    private boolean withinLeft(double x, double y) {
+        return (x >= 0 && x <= screenWidth / 3 &&
                 y <= screenHeight - (screenHeight - screenWidth) / 3 &&
                 y >= screenWidth + (screenHeight - screenWidth) / 3);
     }
