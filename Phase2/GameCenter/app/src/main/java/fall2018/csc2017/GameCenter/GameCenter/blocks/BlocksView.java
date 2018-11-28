@@ -254,10 +254,10 @@ public class BlocksView extends SurfaceView implements Runnable {
                 double y = motionEvent.getY();
 
                 if (withinTop(x, y)) {
-                    gridManager.movePlayer("down");
+                    gridManager.movePlayer("up");
 
                 } else if (withinBottom(x, y)) {
-                    gridManager.movePlayer("up");
+                    gridManager.movePlayer("down");
 
                 } else if (withinRight(x, y)) {
                     gridManager.movePlayer("right");

@@ -128,9 +128,9 @@ public class GridManager implements Serializable {
         boolean success = false;
         addToSavedGrids();
         if (direction.equals("up")) {
-            success = grid.verticalMove(1, true) > 0;
-        } else if (direction.equals("down"))
             success = grid.verticalMove(-1, true) > 0;
+        } else if (direction.equals("down"))
+            success = grid.verticalMove(1, true) > 0;
         else if (direction.equals("right")) {
             success = grid.horizontalMove(1, true) > 0;
         } else if (direction.equals("left")) {
