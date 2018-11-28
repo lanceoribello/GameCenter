@@ -150,6 +150,7 @@ Fixed load auto save issue in games for new users.
 Testing on Grid and GridManager.
 Save point functionality added to Snake.
 
+## November 28, 2018
 Need to do:
 Finish testing
 Go into more detail here on design decisions (from phase 1 feedback)
