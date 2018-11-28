@@ -10,13 +10,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DateFormat;
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,6 +27,9 @@ import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 import static org.junit.Assert.*;
 
 public class SnakeMenuActivityTest {
+    //Test that the object loaded is correct.
+    //Test that an overwritten object was loaded correctly.
+    //Test that the userAccounts to File was saved with proper changes.
     /**
      * an Instance of UserAccount for testing purposes.
      */
@@ -33,7 +37,7 @@ public class SnakeMenuActivityTest {
     /**
      *  A dummy userAccountList
      */
-    private ArrayList<UserAccount> userAccounts = new ArrayList<>();
+    private ArrayList<UserAccount> testUserAccountList = new ArrayList<>();
     /**
      * Temp File for data reading and writing
      */
@@ -45,22 +49,33 @@ public class SnakeMenuActivityTest {
     /**
      * An instance of SnakeMenuActivity
      */
-    private Context menu = new SnakeMenuActivity().getApplicationContext();
+    public Context menu = new SnakeMenuActivity();
+    /**
+     * int arrays specifying a snakes position. Used as data in saved Data
+     */
+    private  int[] snakeXs = {0};
+    private  int[] snakeYs = {0};
     /**
      * Some data to write and load
      */
-    private Object[] savedData = {1, 1, 2, 2, 1, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT};
+    private Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode",
+            SnakeView.Direction.RIGHT, 10, 5, 5};
 
     /**
      * Initial file with some Data.
      */
+    /**
+     * Sets up user account list to begin with tester.
+     */
     @Before
-    private void fillFilewithData(){
+    public void setUp() {
+        testUserAccountList.add(account);
+    }
+    @Before
+    public void fillTempFilewithData(){
         FileOutputStream fos;
         try {
             fos = menu.openFileOutput(TEMP_SAVE_FILENAME, menu.MODE_PRIVATE);
-
-
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(savedData);
             oos.close();
@@ -87,47 +102,30 @@ public class SnakeMenuActivityTest {
 
         }
 
-
-    /**
-     * Fill up the list.
-     */
-    @Before
-    private void setUserAccounts() {
-        userAccounts.add(new UserAccount("Paul", "yougetanA"));
-        userAccounts.add(new UserAccount("Lindsey", "seconDED"));
-        userAccounts.add(new UserAccount("David", "groupOfTheYear"));
-        userAccounts.add(account);
-    }
     /**
      * Test for update User Accounts list
      */
     @Test
-    private void testUpdateUserAccounts(){
-        boolean updated = false;
-        fillFilewithData();
-        Calendar c = Calendar.getInstance();
-        DateFormat dateFormat =
-                DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-        String datetime = dateFormat.format(c.getTime());
-        userAccounts.remove(account);
-        loadFromTempFile();
-        account.addSnakeGame(datetime, savedData);
-        userAccounts.add(account);
-        //check if the game was added with the proper data
-        if (userAccounts.contains(account) && account.getSnakeGame(datetime).equals(savedData)){
-            updated = true;
-        }
-        assertTrue(updated);
+    public void testUserAccountsToFile(){
+
     }
     @Test
-    private void testListOfSavedGames(){
-        Object[] savedData1 = {2, 2, 3, 3, 2, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT};
-        Object[] savedData2 = {3, 3, 4, 4, 3, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT};
-        account.addSnakeGame("game1", savedData);
-        account.addSnakeGame("game2", savedData1);
-        account.addSnakeGame("game3", savedData2);
-        Set<String> expected = new HashSet<>(Arrays.asList("game1", "game2", "game3"));
-        assertEquals(account.getSnakeGameNames(),expected );
+    public void testLoadFromTempFile(){
+        fillTempFilewithData();
+        FileInputStream fis;
+        Object[] got;
+        try {
+            fis = menu.openFileInput(TEMP_SAVE_FILENAME);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            got = (Object[]) ois.readObject();
+            ois.close();
+            assertEquals(savedData, got);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
     }
 
 }
