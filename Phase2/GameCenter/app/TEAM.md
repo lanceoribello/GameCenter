@@ -119,3 +119,31 @@ Fixed tile id error.
 Set up unit testing.
 Wrote unit tests for lobby and sliding tiles classes.
 Updated docstring for snakeView.
+
+## November 24, 2018
+Testing for lobby classes, Board, BoardManager.
+Set up testing for activities, Mockito.
+Formatting fixes to SnakeView.
+Added undo, save, load functionality to Blocks. Improved movement in Blocks.
+
+## November 25, 2018
+Added Controllers for Login, Scoreboard, GameSelect (MVC).
+Created a D-pad for snake.
+Scoring completed in Blocks.
+Work on BlocksStartingActivity, BlocksView. Game can be displayed.
+Added apples and bombs to Snake.
+Testing on SnakeMenu.
+
+## November 26, 2018
+Created SnakeMenuController, SlidingTilesMenuController.
+Edited grid display in Blocks.
+Fixed Blocks bugs (eating food, placing blocks). Blocks can now be placed.
+
+## November 27, 2018
+Added pause functionality to Snake.
+Increased code coverage in lobby and sliding tiles tests.
+Code optimization.
+Fixed food spawn bug in Blocks.
+Fixed load auto save issue in games for new users.
+Testing on Grid and GridManager.
+Save point functionality added to Snake.
