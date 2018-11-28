@@ -38,7 +38,7 @@ public class TileTest {
     @Test
     public void compareToDifferentTile() {
         Tile tileCompare = new Tile(5, 2131099793);
-        assertNotSame(tileCompare, tile);
+        assertNotEquals(tile.compareTo(tileCompare),0);
     }
 
     /**
@@ -46,6 +46,6 @@ public class TileTest {
      */
     @Test
     public void compareToSameTile() {
-        assertSame(tile, tile);
+        assertEquals(tile.compareTo(tile),0);;
     }
 }
