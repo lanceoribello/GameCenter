@@ -95,7 +95,8 @@ public class SnakeMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadFromTempFile();
-                SnakeMenuController.updateUserAccounts(currentUserAccount,savedData);
+                SnakeMenuController.updateUserAccounts(currentUserAccount,savedData,
+                        LoginActivity.userAccountList);
                 userAccountsToFile();
                 makeToastSavedText();
             }
