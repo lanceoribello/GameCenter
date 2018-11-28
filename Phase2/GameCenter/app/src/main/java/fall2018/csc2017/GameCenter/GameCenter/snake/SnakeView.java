@@ -14,18 +14,15 @@ import android.view.SurfaceView;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
 
-/*
-Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
-Manages a Snake game, running separately from the UI.
- */
-
 /**
- * The view for Snake.
+ * Adapted (loosely) from https://androidgameprogramming.com/programming-a-snake-game/
+ * The view for Snake; displays the Snake game on the screen using the logic from SnakeController.
+ * Contains the directional input buttons and the pause button for the game.
  */
 public class SnakeView extends SurfaceView implements Runnable {
 
     /**
-     * The text size of the displayed score and save point text.
+     * The text size of the displayed score, save point, and pause button text.
      */
     private final static int SMALL_TEXT_SIZE = 50;
 
@@ -100,7 +97,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     private int blockSize;
 
     /**
-     * The controller for this game.
+     * The controller for this game; contains all the game's logic.
      */
     private SnakeController snakeController;
 
@@ -115,9 +112,8 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * An instance of SnakeView that manages the Snake game.
-     * Sets up the display the game.
-     * Processes whether a new game is started or a past game is being loaded.
+     * An instance of SnakeView that displays the game and initializes an instance of
+     * SnakeController that manages the game's logic.
      *
      * @param context     the context of SnakeView
      * @param size        the size to be displayed
@@ -130,15 +126,15 @@ public class SnakeView extends SurfaceView implements Runnable {
         screenWidth = size.x;
         screenHeight = size.y;
         blockSize = screenWidth / NUM_BLOCKS_WIDE;
-        // Bottom third of the screen used for the movement buttons
         holder = getHolder();
         paint = new Paint();
         snakeController = new SnakeController(difficulty, oldSaveData,
                 2 * (screenHeight / blockSize) / 3);
+        // Bottom third of the screen used for the movement buttons
     }
 
     /**
-     * Runs the game.
+     * Runs the game; checks whether the display should be updated and when autoSaves are created.
      */
     @Override
     public void run() {
@@ -285,7 +281,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Necessary for onTouchEvent to have no warnings.
+     * Necessary method for onTouchEvent.
      *
      * @return true
      */
@@ -296,8 +292,11 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
+     * On the event that the screen is touched:
      * Changes the direction of our snake based on if the mouseClick event falls in the bounds
-     * of the 4 black rectangles I set up as buttons to move up, down, left or right.
+     * of the 4 black rectangles set up as buttons to move up, down, left or right.
+     * Pauses the game if the mouseClick event falls within the bounds of the pause button in the
+     * bottom-right corner.
      *
      * @return true
      */
@@ -307,34 +306,17 @@ public class SnakeView extends SurfaceView implements Runnable {
         SnakeController.Direction direction = snakeController.getDirection();
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
-                if (motionEvent.getX() >= screenWidth / 3
-                        && motionEvent.getX() <= 2 * screenWidth / 3
-                        && motionEvent.getY() <= 7 * screenHeight / 9
-                        && motionEvent.getY() >= 2 * screenHeight / 3
-                        && direction != SnakeController.Direction.DOWN) {
+                double x = motionEvent.getX();
+                double y = motionEvent.getY();
+                if (withinTop(x, y) && direction != SnakeController.Direction.DOWN) {
                     snakeController.setDirection(SnakeController.Direction.UP);
-                } else if (motionEvent.getX() >= screenWidth / 3
-                        && motionEvent.getX() <= 2 * screenWidth / 3
-                        && motionEvent.getY() <= screenHeight
-                        && motionEvent.getY() >= 8 * screenHeight / 9
-                        && direction != SnakeController.Direction.UP) {
+                } else if (withinBottom(x, y) && direction != SnakeController.Direction.UP) {
                     snakeController.setDirection(SnakeController.Direction.DOWN);
-                } else if (motionEvent.getX() >= 2 * screenWidth / 3
-                        && motionEvent.getX() <= screenWidth
-                        && motionEvent.getY() <= 8 * screenHeight / 9
-                        && motionEvent.getY() >= 7 * screenHeight / 9
-                        && direction != SnakeController.Direction.LEFT) {
+                } else if (withinRight(x, y) && direction != SnakeController.Direction.LEFT) {
                     snakeController.setDirection(SnakeController.Direction.RIGHT);
-                } else if (motionEvent.getX() >= 0
-                        && motionEvent.getX() <= screenWidth / 3
-                        && motionEvent.getY() <= 8 * screenHeight / 9
-                        && motionEvent.getY() >= 7 * screenHeight / 9
-                        && direction != SnakeController.Direction.RIGHT) {
+                } else if (withinLeft(x, y) && direction != SnakeController.Direction.RIGHT) {
                     snakeController.setDirection(SnakeController.Direction.LEFT);
-                } else if (motionEvent.getX() >= 2 * screenWidth / 3
-                        && motionEvent.getX() <= screenWidth
-                        && motionEvent.getY() <= screenHeight
-                        && motionEvent.getY() >= 8 * screenHeight / 9) {
+                } else if (withinPause(x, y)) {
                     pauseGameClick();
                 }
         }
@@ -342,7 +324,68 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Changes the status of the playing boolean when the pause button is clicked.
+     * Helper method for onTouch to see if user has clicked the top movement button
+     *
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if within the bounds of the button
+     */
+    private boolean withinTop(double x, double y) {
+        return (x >= screenWidth / 3 && x <= 2 * screenWidth / 3
+                && y <= 7 * screenHeight / 9 && y >= 2 * screenHeight / 3);
+    }
+
+    /**
+     * Helper method for onTouch to see if user has clicked the bottom movement button
+     *
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if within the bounds of the button
+     */
+    private boolean withinBottom(double x, double y) {
+        return (x >= screenWidth / 3 && x <= 2 * screenWidth / 3
+                && y <= screenHeight && y >= 8 * screenHeight / 9);
+    }
+
+    /**
+     * Helper method for onTouch to see if user has clicked the Right movement button
+     *
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if within the bounds of the button
+     */
+    private boolean withinRight(double x, double y) {
+        return (x >= 2 * screenWidth / 3 && x <= screenWidth
+                && y <= 8 * screenHeight / 9 && y >= 7 * screenHeight / 9);
+    }
+
+    /**
+     * Helper method for onTouch to see if user has clicked the Left movement button
+     *
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if within the bounds of the button
+     */
+    private boolean withinLeft(double x, double y) {
+        return (x >= 0 && x <= screenWidth / 3
+                && y <= 8 * screenHeight / 9 && y >= 7 * screenHeight / 9);
+    }
+
+    /**
+     * Helper method for onTouch to see if user has clicked the Pause button on the screen's
+     * bottom right.
+     *
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if within the bounds of the button
+     */
+    private boolean withinPause(double x, double y) {
+        return (x >= 2 * screenWidth / 3 && x <= screenWidth
+                && y <= screenHeight && y >= 8 * screenHeight / 9);
+    }
+
+    /**
+     * Processes when the pause button is clicked.
      */
     private void pauseGameClick() {
         if (this.playing) {
