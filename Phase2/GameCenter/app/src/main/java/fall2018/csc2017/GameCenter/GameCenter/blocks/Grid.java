@@ -157,11 +157,11 @@ public class Grid implements Serializable {
      */
     private void spawnFood() {
         Random random = new Random();
-        int foodX = random.nextInt(GRID_LENGTH - 1) + 1;
-        int foodY = random.nextInt(GRID_LENGTH - 1) + 1;
+        int foodX = random.nextInt(GRID_LENGTH - 3) + 1;
+        int foodY = random.nextInt(GRID_LENGTH - 3) + 1;
         while (gridState[foodX][foodY] != EMPTY) {
-            foodX = random.nextInt(GRID_LENGTH - 1) + 1;
-            foodY = random.nextInt(GRID_LENGTH - 1) + 1;
+            foodX = random.nextInt(GRID_LENGTH - 3) + 1;
+            foodY = random.nextInt(GRID_LENGTH - 3) + 1;
         }
         gridState[foodX][foodY] = FOOD;
         foodXs.add(foodX);
