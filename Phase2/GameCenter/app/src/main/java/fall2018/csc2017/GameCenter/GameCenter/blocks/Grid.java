@@ -2,6 +2,7 @@ package fall2018.csc2017.GameCenter.GameCenter.blocks;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -397,5 +398,17 @@ public class Grid implements Serializable {
      */
     public int getScore() {
         return score;
+    }
+
+    /**
+     * Returns whether Object o equals this Grid.
+     *
+     * @param o Object to compare to
+     * @return true if Grids are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        return ((o != null) && (this.getClass() == o.getClass()) &&
+                (Arrays.equals(this.gridState, (((Grid) o).gridState))));
     }
 }

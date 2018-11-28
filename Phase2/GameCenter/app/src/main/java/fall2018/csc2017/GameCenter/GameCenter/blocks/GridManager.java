@@ -95,7 +95,7 @@ public class GridManager implements Serializable {
     /**
      * Adds a copy of the current grid to the savedGrids list.
      */
-    private void addToSavedGrids() {
+    void addToSavedGrids() {
         this.savedGrids.add(copiedGrid(this.grid));
     }
 
