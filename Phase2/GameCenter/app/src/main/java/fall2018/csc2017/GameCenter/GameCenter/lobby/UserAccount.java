@@ -237,10 +237,9 @@ public class UserAccount implements Serializable {
                     scoresMatch = false;
                 }
             }
-        } else {
-            return false;
         }
-        return ((this.getUsername().equals(((UserAccount) o).getUsername())) &&
+        return ((o != null) && (this.getClass() == o.getClass()) &&
+                (this.getUsername().equals(((UserAccount) o).getUsername())) &&
                 (this.getPassword().equals(((UserAccount) o).getPassword())) &&
                 (this.getSlidingTilesGameNames().equals((((UserAccount) o).getSlidingTilesGameNames())))
                 && (this.getSnakeGameNames().equals((((UserAccount) o).getSnakeGameNames())))

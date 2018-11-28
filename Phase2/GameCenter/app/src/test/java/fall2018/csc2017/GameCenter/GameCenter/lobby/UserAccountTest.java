@@ -221,6 +221,14 @@ public class UserAccountTest {
     }
 
     /**
+     * Tests if get score returns null for game level that does not exist.
+     */
+    @Test
+    public void testGetScoreNull() {
+        assertNull(tester.getTopScore("Scrabble"));
+    }
+
+    /**
      * Tests if get Sliding Tiles game returns null for game name that does not exist.
      */
     @Test
@@ -258,7 +266,8 @@ public class UserAccountTest {
         GridManager gameGridManager = new GridManager();
         tester.addBlocksGame(gameName, gameGridManager);
         testerTwin.addBlocksGame(gameName, gameGridManager);
-        assertEquals(testerTwin, tester);
+        boolean isEqual = testerTwin.equals(tester);
+        assertTrue(isEqual);
     }
 
     /**
