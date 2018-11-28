@@ -313,6 +313,7 @@ public class Grid implements Serializable {
      * @param y the y-value where the food is eaten
      */
     private void eatFood(int x, int y) {
+        spawnFood();
         gridState[x][y] = EMPTY;
         for (int i = 0; i < foodXs.size(); i++) {
             if (foodXs.get(i) == x && foodYs.get(i) == y) {
@@ -322,7 +323,6 @@ public class Grid implements Serializable {
             }
         }
         score++;
-        spawnFood();
     }
 
     /**
