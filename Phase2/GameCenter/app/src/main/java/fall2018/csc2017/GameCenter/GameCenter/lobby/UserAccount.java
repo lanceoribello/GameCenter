@@ -192,7 +192,7 @@ public class UserAccount implements Serializable {
     /**
      * Adds a new game name to this user account
      *
-     * @param newName   a new game name added to the user account
+     * @param newName     a new game name added to the user account
      * @param gridManager grid manager of the new game
      */
     public void addBlocksGame(String newName, GridManager gridManager) {
@@ -224,14 +224,27 @@ public class UserAccount implements Serializable {
 
     /**
      * Returns whether Object o equals this UserAccount - only if username and password match.
+     *
      * @param o Object to compare to
      * @return true if UserAccounts are equal
      */
     @Override
     public boolean equals(Object o) {
-        return ((o != null) &&
-                (this.getClass() == o.getClass()) &&
-                (this.getUsername().equals(((UserAccount) o).getUsername())) &&
-                (this.getPassword().equals(((UserAccount) o).getPassword())));
+        boolean scoresMatch = true;
+        if ((o != null) && (this.getClass() == o.getClass())) {
+            for (String gameLevel : gameLevels) {
+                if (!this.getTopScore(gameLevel).equals(((UserAccount) o).getTopScore(gameLevel))) {
+                    scoresMatch = false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return ((this.getUsername().equals(((UserAccount) o).getUsername())) &&
+                (this.getPassword().equals(((UserAccount) o).getPassword())) &&
+                (this.getSlidingTilesGameNames().equals((((UserAccount) o).getSlidingTilesGameNames())))
+                && (this.getSnakeGameNames().equals((((UserAccount) o).getSnakeGameNames())))
+                && (this.getBlocksGameNames().equals((((UserAccount) o).getBlocksGameNames())))
+                && scoresMatch);
     }
 }

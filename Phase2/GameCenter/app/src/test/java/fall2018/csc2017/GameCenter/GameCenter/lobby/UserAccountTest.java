@@ -219,4 +219,81 @@ public class UserAccountTest {
         tester.addBlocksGame(autoSavedGameName, autoSave2);
         assertEquals(autoSave2, tester.getBlocksGame(autoSavedGameName));
     }
+
+    /**
+     * Tests if get Sliding Tiles game returns null for game name that does not exist.
+     */
+    @Test
+    public void testGetSlidingTilesGameNull() {
+        assertNull(tester.getSlidingTilesGame("Not there"));
+    }
+
+    /**
+     * Tests if get Snake game returns null for game name that does not exist.
+     */
+    @Test
+    public void testGetSnakeGameNull() {
+        assertNull(tester.getSnakeGame("Not there"));
+    }
+
+    /**
+     * Tests if get Blocks game returns null for game name that does not exist.
+     */
+    @Test
+    public void testGetBlocksGameNull() {
+        assertNull(tester.getBlocksGame("Not there"));
+    }
+
+    /**
+     * Tests if equals returns true on two identical user accounts.
+     */
+    @Test
+    public void testEqualsTrue() {
+        UserAccount testerTwin = new UserAccount("nancyishaneelance", "207");
+        String gameLevel = "Sliding Tiles 3x3";
+        Integer topScore = 42;
+        tester.setTopScore(gameLevel, topScore);
+        testerTwin.setTopScore(gameLevel, topScore);
+        String gameName = "Blocks Game";
+        GridManager gameGridManager = new GridManager();
+        tester.addBlocksGame(gameName, gameGridManager);
+        testerTwin.addBlocksGame(gameName, gameGridManager);
+        assertEquals(testerTwin, tester);
+    }
+
+    /**
+     * Tests if equals returns false on two different user accounts.
+     */
+    @Test
+    public void testEqualsFalseDifferentUserAccount() {
+        UserAccount differentTester = new UserAccount("someone else", "password");
+        tester.setTopScore("Sliding Tiles 4x4", 123);
+        differentTester.setTopScore("Snake Easy Mode", 5);
+        String blocksGameName = "Blocks Game";
+        GridManager gameGridManager = new GridManager();
+        tester.addBlocksGame(blocksGameName, gameGridManager);
+        String snakeGameName = "Snake Game";
+        int[] snakeXs = {0};
+        int[] snakeYs = {0};
+        Object[] gameSavedData = {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode",
+                SnakeView.Direction.RIGHT};
+        differentTester.addSnakeGame(snakeGameName, gameSavedData);
+        assertNotEquals(differentTester, tester);
+    }
+
+    /**
+     * Tests if equals returns false on two different objects.
+     */
+    @Test
+    public void testEqualsFalseDifferentObjects() {
+        assertNotEquals("Hello", tester);
+    }
+
+    /**
+     * Tests if equals returns false for comparing to null.
+     */
+    @Test
+    public void testEqualsFalseNull() {
+        assertNotEquals(null, tester);
+    }
 }
