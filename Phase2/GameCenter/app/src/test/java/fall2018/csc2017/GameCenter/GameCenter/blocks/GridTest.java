@@ -1,12 +1,12 @@
 package fall2018.csc2017.GameCenter.GameCenter.blocks;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class GridTest {
     /**
@@ -26,18 +26,19 @@ public class GridTest {
 
     private int[] blockXs = {};
     private int[] blockYs = {};
-    private int[] foodXs = {1,7,1,7};
-    private int[] foodYs = {1,1,7,7};
-    private Grid testerGrid =  new Grid(4,4,blockXs,blockYs,foodXs,foodYs);
+    private int[] foodXs = {1, 7, 1, 7};
+    private int[] foodYs = {1, 1, 7, 7};
+    private Grid testerGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs);
 
     /**
      * Sets up a new grid where the player starts in the middle, with 1 food object
      * in each corner of the grid.
+     *
      * @throws Exception
      */
     @After
     public void tearDown() throws Exception {
-        testerGrid = new Grid(4,4,blockXs,blockYs,foodXs,foodYs);
+        testerGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs);
     }
 
     /**
@@ -46,7 +47,7 @@ public class GridTest {
      */
     @Test
     public void placeBlockAtFood() {
-        Grid beforeGrid = new Grid(4,4,blockXs,blockYs,foodXs,foodYs);
+        Grid beforeGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs);
         testerGrid.placeBlockAt(1, 1);
         assertEquals(beforeGrid.gridState[1][1], testerGrid.gridState[1][1]);
 
@@ -58,7 +59,7 @@ public class GridTest {
      */
     @Test
     public void placeBlockAtEmpty() {
-        Grid beforeGrid = new Grid(4,4,blockXs,blockYs,foodXs,foodYs);
+        Grid beforeGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs);
         testerGrid.placeBlockAt(1, 2);
         assertNotEquals(beforeGrid.gridState[1][2], testerGrid.gridState[1][2]);
 
@@ -85,6 +86,7 @@ public class GridTest {
         testerGrid.verticalMove(1, true);
         assertEquals(PLAYER, testerGrid.gridState[4][7]);
     }
+
     /**
      * Makes a vertical move downwards on the player from when the player starts at (4,4) and
      * there is no food overhead. Player should thus end up at (7,4), where he collides
@@ -116,6 +118,7 @@ public class GridTest {
 
         assertEquals(0, testerGrid.getBlockXsIntArray().length);
     }
+
     /**
      * Gets the array of non-border block y values on the grid. Should be empty as we haven't placed
      * any blocks
@@ -132,7 +135,7 @@ public class GridTest {
      */
     @Test
     public void getFoodXsIntArray() {
-        assert(Arrays.equals(foodXs, testerGrid.getFoodXsIntArray()));
+        assert (Arrays.equals(foodXs, testerGrid.getFoodXsIntArray()));
 
     }
 
@@ -142,7 +145,7 @@ public class GridTest {
      */
     @Test
     public void getFoodYsIntArray() {
-        assert(Arrays.equals(foodYs, testerGrid.getFoodYsIntArray()));
+        assert (Arrays.equals(foodYs, testerGrid.getFoodYsIntArray()));
 
     }
 
@@ -170,24 +173,24 @@ public class GridTest {
      */
     @Test
     public void getScore() {
-        assertEquals(0,testerGrid.getScore() );
+        assertEquals(0, testerGrid.getScore());
     }
 
     /**
      * Tests if two of the same grid return equal for our equals method
      */
     @Test
-    public void equalsCorrect(){
+    public void equalsCorrect() {
         Grid test = new Grid();
         Grid test2 = test;
-        assert(test.equals(test2));
+        assert (test.equals(test2));
     }
 
     /**
      * Tests if food is eaten correctly
      */
     @Test
-    public void foodIsEaten(){
+    public void foodIsEaten() {
         testerGrid.verticalMove(-1, true);
         testerGrid.horizontalMove(-1, true);
         assertEquals(PLAYER, testerGrid.gridState[1][1]);
