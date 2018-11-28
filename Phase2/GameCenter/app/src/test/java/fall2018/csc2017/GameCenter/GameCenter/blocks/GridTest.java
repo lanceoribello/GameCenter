@@ -28,7 +28,7 @@ public class GridTest {
     private int[] blockYs = {};
     private int[] foodXs = {1, 7, 1, 7};
     private int[] foodYs = {1, 1, 7, 7};
-    private Grid testerGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs);
+    private Grid testerGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs, 0);
 
     /**
      * Sets up a new grid where the player starts in the middle, with 1 food object
@@ -38,7 +38,7 @@ public class GridTest {
      */
     @After
     public void tearDown() throws Exception {
-        testerGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs);
+        testerGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs, 0);
     }
 
     /**
@@ -47,7 +47,7 @@ public class GridTest {
      */
     @Test
     public void placeBlockAtFood() {
-        Grid beforeGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs);
+        Grid beforeGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs, 0);
         testerGrid.placeBlockAt(1, 1);
         assertEquals(beforeGrid.gridState[1][1], testerGrid.gridState[1][1]);
 
@@ -59,7 +59,7 @@ public class GridTest {
      */
     @Test
     public void placeBlockAtEmpty() {
-        Grid beforeGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs);
+        Grid beforeGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs, 0);
         testerGrid.placeBlockAt(1, 2);
         assertNotEquals(beforeGrid.gridState[1][2], testerGrid.gridState[1][2]);
 

@@ -86,12 +86,13 @@ public class Grid implements Serializable {
      * of the grid.
      */
     Grid() {
-        gridState = new int[GRID_LENGTH][GRID_LENGTH];
+        this.gridState = new int[GRID_LENGTH][GRID_LENGTH];
         generateEmptyGrid();
-        playerX = GRID_LENGTH / 2;
-        playerY = GRID_LENGTH / 2;
-        gridState[playerX][playerY] = PLAYER;
+        this.playerX = GRID_LENGTH / 2;
+        this.playerY = GRID_LENGTH / 2;
+        this.gridState[this.playerX][this.playerY] = PLAYER;
         spawnMultipleFoods();
+        this.score = 0;
     }
 
     /**
@@ -104,14 +105,15 @@ public class Grid implements Serializable {
      * @param foodXs  the x-values of the food on the grid
      * @param foodYs  the y-values of the food on the grid
      */
-    Grid(int pX, int pY, int[] blockXs, int[] blockYs, int[] foodXs, int[] foodYs) {
-        gridState = new int[GRID_LENGTH][GRID_LENGTH];
+    Grid(int pX, int pY, int[] blockXs, int[] blockYs, int[] foodXs, int[] foodYs, int score) {
+        this.gridState = new int[GRID_LENGTH][GRID_LENGTH];
         generateEmptyGrid();
         this.playerX = pX;
         this.playerY = pY;
-        gridState[playerX][playerY] = PLAYER;
+        this.gridState[this.playerX][this.playerY] = PLAYER;
         placeObjectsFromData(foodXs, foodYs, "food");
         placeObjectsFromData(blockXs, blockYs, "block");
+        this.score = score;
     }
 
     /**
@@ -151,13 +153,13 @@ public class Grid implements Serializable {
      * Sets the gridState to be completely empty, other than the blocks at the grid's borders.
      */
     private void generateEmptyGrid() {
-        gridState = new int[GRID_LENGTH][GRID_LENGTH];
+        this.gridState = new int[GRID_LENGTH][GRID_LENGTH];
         for (int row = 0; row != GRID_LENGTH; row++) {
             for (int col = 0; col != GRID_LENGTH; col++) {
                 if (row == 0 || col == 0 || row == GRID_LENGTH - 1 || col == GRID_LENGTH - 1) {
-                    gridState[row][col] = BLOCK;
+                    this.gridState[row][col] = BLOCK;
                 } else {
-                    gridState[row][col] = EMPTY;
+                    this.gridState[row][col] = EMPTY;
                 }
             }
         }
@@ -170,13 +172,13 @@ public class Grid implements Serializable {
         Random random = new Random();
         int foodX = random.nextInt(GRID_LENGTH - 3) + 1;
         int foodY = random.nextInt(GRID_LENGTH - 3) + 1;
-        while (gridState[foodX][foodY] != EMPTY) {
+        while (this.gridState[foodX][foodY] != EMPTY) {
             foodX = random.nextInt(GRID_LENGTH - 3) + 1;
             foodY = random.nextInt(GRID_LENGTH - 3) + 1;
         }
-        gridState[foodX][foodY] = FOOD;
-        foodXs.add(foodX);
-        foodYs.add(foodY);
+        this.gridState[foodX][foodY] = FOOD;
+        this.foodXs.add(foodX);
+        this.foodYs.add(foodY);
     }
 
     /**
@@ -195,9 +197,9 @@ public class Grid implements Serializable {
      * @param y the y-value of the food on the grid
      */
     private void spawnFoodAt(int x, int y) {
-        gridState[x][y] = FOOD;
-        foodXs.add(x);
-        foodYs.add(y);
+        this.gridState[x][y] = FOOD;
+        this.foodXs.add(x);
+        this.foodYs.add(y);
     }
 
     /**
@@ -207,10 +209,10 @@ public class Grid implements Serializable {
      * @param y the y-value of the block on the grid
      */
     void placeBlockAt(int x, int y) {
-        if (gridState[x][y] == EMPTY) {
-            gridState[x][y] = BLOCK;
-            blockXs.add(x);
-            blockYs.add(y);
+        if (this.gridState[x][y] == EMPTY) {
+            this.gridState[x][y] = BLOCK;
+            this.blockXs.add(x);
+            this.blockYs.add(y);
         }
     }
 
@@ -229,11 +231,11 @@ public class Grid implements Serializable {
      */
     int verticalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesY = new ArrayList<>();
-        int yVal = playerY + direction;
+        int yVal = this.playerY + direction;
         boolean foodEaten = false;
-        while (gridState[playerX][yVal] != BLOCK) {
+        while (this.gridState[this.playerX][yVal] != BLOCK) {
             emptyValuesY.add(yVal);
-            if (gridState[playerX][yVal] == FOOD) {
+            if (this.gridState[this.playerX][yVal] == FOOD) {
                 foodEaten = true;
                 break;
             }
@@ -261,22 +263,22 @@ public class Grid implements Serializable {
     private void moveHelper(ArrayList<Integer> emptyValues, boolean foodEaten, int xyVal,
                             boolean vertical) {
         if (emptyValues.size() != 0) {
-            gridState[playerX][playerY] = EMPTY;
+            this.gridState[this.playerX][this.playerY] = EMPTY;
             int newXY = emptyValues.get(emptyValues.size() - 1);
             if (foodEaten) {
                 newXY = xyVal;
                 if (vertical) {
-                    eatFood(playerX, newXY);
+                    eatFood(this.playerX, newXY);
                 } else {
-                    eatFood(newXY, playerY);
+                    eatFood(newXY, this.playerY);
                 }
             }
             if (vertical) {
-                gridState[playerX][newXY] = PLAYER;
-                playerY = newXY;
+                this.gridState[this.playerX][newXY] = PLAYER;
+                this.playerY = newXY;
             } else {
-                gridState[newXY][playerY] = PLAYER;
-                playerX = newXY;
+                this.gridState[newXY][this.playerY] = PLAYER;
+                this.playerX = newXY;
             }
         }
     }
@@ -296,11 +298,11 @@ public class Grid implements Serializable {
      */
     int horizontalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesX = new ArrayList<>();
-        int xVal = playerX + direction;
+        int xVal = this.playerX + direction;
         boolean foodEaten = false;
-        while (gridState[xVal][playerY] != BLOCK) {
+        while (this.gridState[xVal][this.playerY] != BLOCK) {
             emptyValuesX.add(xVal);
-            if (gridState[xVal][playerY] == FOOD) {
+            if (this.gridState[xVal][this.playerY] == FOOD) {
                 foodEaten = true;
                 break;
             }
@@ -324,15 +326,15 @@ public class Grid implements Serializable {
      */
     private void eatFood(int x, int y) {
         spawnFood();
-        gridState[x][y] = EMPTY;
+        this.gridState[x][y] = EMPTY;
         for (int i = 0; i < foodXs.size(); i++) {
-            if (foodXs.get(i) == x && foodYs.get(i) == y) {
-                foodXs.remove(i);
-                foodYs.remove(i);
+            if (this.foodXs.get(i) == x && this.foodYs.get(i) == y) {
+                this.foodXs.remove(i);
+                this.foodYs.remove(i);
                 break;
             }
         }
-        score++;
+        this.score++;
     }
 
     /**
@@ -342,7 +344,7 @@ public class Grid implements Serializable {
      * @return an int array of all non-border block x-values on the grid.
      */
     int[] getBlockXsIntArray() {
-        return intArrayListToArray(blockXs);
+        return intArrayListToArray(this.blockXs);
     }
 
     /**
@@ -352,7 +354,7 @@ public class Grid implements Serializable {
      * @return an int array of all non-border block y-values on the grid
      */
     int[] getBlockYsIntArray() {
-        return intArrayListToArray(blockYs);
+        return intArrayListToArray(this.blockYs);
     }
 
     /**
@@ -361,7 +363,7 @@ public class Grid implements Serializable {
      * @return an int array of all food x-values on the grid
      */
     int[] getFoodXsIntArray() {
-        return intArrayListToArray(foodXs);
+        return intArrayListToArray(this.foodXs);
     }
 
     /**
@@ -370,7 +372,7 @@ public class Grid implements Serializable {
      * @return an int array of all food y-values on the grid
      */
     int[] getFoodYsIntArray() {
-        return intArrayListToArray(foodYs);
+        return intArrayListToArray(this.foodYs);
     }
 
     /**
@@ -379,7 +381,7 @@ public class Grid implements Serializable {
      * @return the player's x-value on the grid
      */
     int getPlayerX() {
-        return playerX;
+        return this.playerX;
     }
 
     /**
@@ -388,7 +390,7 @@ public class Grid implements Serializable {
      * @return the player's y-value on the grid
      */
     int getPlayerY() {
-        return playerY;
+        return this.playerY;
     }
 
     /**
@@ -397,11 +399,21 @@ public class Grid implements Serializable {
      * @return the player's score
      */
     public int getScore() {
-        return score;
+        return this.score;
+    }
+
+    /**
+     * Sets the score of the player for the current grid.
+     *
+     * @param newScore new score to set to
+     */
+    public void setScore(int newScore) {
+        this.score = newScore;
     }
 
     /**
      * Returns whether Object o equals this Grid.
+     * Compares for pX, pY, blockXs, blockYs, foodXs, foodYs, score
      *
      * @param o Object to compare to
      * @return true if Grids are equal
@@ -409,7 +421,12 @@ public class Grid implements Serializable {
     @Override
     public boolean equals(Object o) {
         return ((o != null) && (this.getClass() == o.getClass()) &&
-                (Arrays.equals(this.gridState, (((Grid) o).gridState))) &&
+                (this.getPlayerX() == ((Grid) o).getPlayerX()) &&
+                (this.getPlayerY() == ((Grid) o).getPlayerY()) &&
+                (Arrays.equals(this.getBlockXsIntArray(), ((Grid) o).getBlockXsIntArray())) &&
+                (Arrays.equals(this.getBlockYsIntArray(), ((Grid) o).getBlockYsIntArray())) &&
+                (Arrays.equals(this.getFoodXsIntArray(), ((Grid) o).getFoodXsIntArray())) &&
+                (Arrays.equals(this.getFoodYsIntArray(), ((Grid) o).getFoodYsIntArray())) &&
                 (this.getScore() == ((Grid) o).getScore()));
     }
 }

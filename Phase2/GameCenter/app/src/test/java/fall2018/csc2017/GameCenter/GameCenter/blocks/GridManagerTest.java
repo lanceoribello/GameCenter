@@ -40,7 +40,7 @@ public class GridManagerTest {
         int[] blockYs = {1};
         int[] foodXs = {2, 4, 5, 6};
         int[] foodYs = {2, 4, 5, 6};
-        Grid newGrid = new Grid(3, 3, blockXs, blockYs, foodXs, foodYs);
+        Grid newGrid = new Grid(3, 3, blockXs, blockYs, foodXs, foodYs, 0);
         testGridManager.setGrid(newGrid);
         assertEquals(newGrid, testGridManager.getGrid());
     }
@@ -54,7 +54,7 @@ public class GridManagerTest {
         int[] blockYs = {2, 1};
         int[] foodXs = {2, 3, 4, 5};
         int[] foodYs = {2, 3, 4, 5};
-        Grid gameOverGrid = new Grid(1, 1, blockXs, blockYs, foodXs, foodYs);
+        Grid gameOverGrid = new Grid(1, 1, blockXs, blockYs, foodXs, foodYs, 0);
         testGridManager.setGrid(gameOverGrid);
         assertTrue(testGridManager.gameOver());
     }
@@ -68,7 +68,7 @@ public class GridManagerTest {
         int[] blockYs = {};
         int[] foodXs = {2, 3, 4, 5};
         int[] foodYs = {2, 3, 4, 5};
-        Grid notGameOverGrid = new Grid(1, 1, blockXs, blockYs, foodXs, foodYs);
+        Grid notGameOverGrid = new Grid(1, 1, blockXs, blockYs, foodXs, foodYs, 0);
         testGridManager.setGrid(notGameOverGrid);
         assertFalse(testGridManager.gameOver());
     }
@@ -82,7 +82,7 @@ public class GridManagerTest {
         int[] blockYs = {2};
         int[] foodXs = {5, 6, 7, 8};
         int[] foodYs = {5, 6, 7, 8};
-        Grid baseGrid = new Grid(3, 3, blockXs, blockYs, foodXs, foodYs);
+        Grid baseGrid = new Grid(3, 3, blockXs, blockYs, foodXs, foodYs, 0);
         testGridManager.setGrid(baseGrid);
         testGridManager.placeBlock(5, 5);
         testGridManager.placeBlock(2, 1);
@@ -99,12 +99,13 @@ public class GridManagerTest {
     public void testUndoOneMove() {
         ArrayList<Grid> testerSavedGrids = new ArrayList<>();
         Grid initialGrid = testGridManager.getGrid();
+        initialGrid.setScore(-1);
         testerSavedGrids.add(initialGrid);
         int[] blockXs = {};
         int[] blockYs = {};
         int[] foodXs = {5, 6, 7, 8};
         int[] foodYs = {5, 6, 7, 8};
-        Grid oneMove = new Grid(3, 3, blockXs, blockYs, foodXs, foodYs);
+        Grid oneMove = new Grid(3, 3, blockXs, blockYs, foodXs, foodYs, 0);
         testGridManager.setGrid(oneMove);
         testGridManager.addToSavedGrids();
         testGridManager.undo(1);
@@ -123,24 +124,25 @@ public class GridManagerTest {
         int[] blockYs1 = {};
         int[] foodXs = {5, 6, 7, 8};
         int[] foodYs = {5, 6, 7, 8};
-        Grid oneMove = new Grid(3, 3, blockXs1, blockYs1, foodXs, foodYs);
+        Grid oneMove = new Grid(3, 3, blockXs1, blockYs1, foodXs, foodYs, 0);
         testGridManager.setGrid(oneMove);
         testGridManager.addToSavedGrids();
-        testerSavedGrids.add(oneMove);
         int[] blockXs2 = {2};
         int[] blockYs2 = {2};
-        Grid twoMove = new Grid(3, 3, blockXs2, blockYs2, foodXs, foodYs);
+        Grid twoMove = new Grid(3, 3, blockXs2, blockYs2, foodXs, foodYs, 0);
         testGridManager.setGrid(twoMove);
         testGridManager.addToSavedGrids();
-        Grid threeMove = new Grid(3, 1, blockXs2, blockYs2, foodXs, foodYs);
+        Grid threeMove = new Grid(3, 1, blockXs2, blockYs2, foodXs, foodYs, 0);
         testGridManager.setGrid(threeMove);
         testGridManager.addToSavedGrids();
-        Grid fourMove = new Grid(1, 1, blockXs2, blockYs2, foodXs, foodYs);
+        Grid fourMove = new Grid(1, 1, blockXs2, blockYs2, foodXs, foodYs, 0);
         testGridManager.setGrid(fourMove);
         testGridManager.addToSavedGrids();
         testGridManager.undo(3);
+        Grid tester = new Grid(3, 3, blockXs1, blockYs1, foodXs, foodYs, -5);
+        testerSavedGrids.add(tester);
         assertTrue((testerSavedGrids.equals(testGridManager.getSavedGrids())) &&
-                (oneMove.equals(testGridManager.getGrid())));
+                (tester.equals(testGridManager.getGrid())));
     }
 
     /**

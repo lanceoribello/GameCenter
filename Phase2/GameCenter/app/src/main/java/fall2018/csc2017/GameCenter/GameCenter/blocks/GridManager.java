@@ -40,7 +40,8 @@ public class GridManager implements Serializable {
         int[] blockYs = gridToBeCopied.getBlockYsIntArray();
         int[] foodXs = gridToBeCopied.getFoodXsIntArray();
         int[] foodYs = gridToBeCopied.getFoodYsIntArray();
-        return new Grid(pX, pY, blockXs, blockYs, foodXs, foodYs);
+        int score = gridToBeCopied.getScore();
+        return new Grid(pX, pY, blockXs, blockYs, foodXs, foodYs, score);
     }
 
     /**
@@ -58,7 +59,7 @@ public class GridManager implements Serializable {
      * @return the current grid
      */
     public Grid getGrid() {
-        return grid;
+        return this.grid;
     }
 
     /**
@@ -76,10 +77,10 @@ public class GridManager implements Serializable {
      * @return whether the game is over
      */
     public boolean gameOver() {
-        return (grid.horizontalMove(1, false) == 0 &&
-                grid.horizontalMove(-1, false) == 0 &&
-                grid.verticalMove(1, false) == 0 &&
-                grid.verticalMove(-1, false) == 0);
+        return (this.grid.horizontalMove(1, false) == 0 &&
+                this.grid.horizontalMove(-1, false) == 0 &&
+                this.grid.verticalMove(1, false) == 0 &&
+                this.grid.verticalMove(-1, false) == 0);
     }
 
     /**
@@ -89,7 +90,7 @@ public class GridManager implements Serializable {
      * @param y the y-value of the new block.
      */
     void placeBlock(int x, int y) {
-        grid.placeBlockAt(x, y);
+        this.grid.placeBlockAt(x, y);
     }
 
     /**
@@ -105,6 +106,7 @@ public class GridManager implements Serializable {
      * @param numTurns the number of turns that are undone
      */
     public void undo(int numTurns) {
+        int oldScore = this.grid.getScore();
         for (int i = 1; i != this.savedGrids.size(); i++) {
             if (i == numTurns) {
                 this.setGrid(this.savedGrids.get(this.savedGrids.size() - i));
@@ -114,6 +116,7 @@ public class GridManager implements Serializable {
         for (int i = 0; i != numTurns; i++) {
             this.savedGrids.remove(this.savedGrids.size() - 1);
         }
+        this.grid.setScore(oldScore - numTurns);
     }
 
     /**
@@ -137,7 +140,7 @@ public class GridManager implements Serializable {
             success = grid.horizontalMove(-1, true) > 0;
         }
         if (!success) {
-            savedGrids.remove(savedGrids.size() - 1);
+            this.savedGrids.remove(this.savedGrids.size() - 1);
         }
     }
 }
