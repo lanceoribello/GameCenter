@@ -7,8 +7,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import difflib.myers.Snake;
 import fall2018.csc2017.GameCenter.GameCenter.blocks.GridManager;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.BoardManager;
+import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeController;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 
 import static org.junit.Assert.*;
@@ -116,7 +118,7 @@ public class UserAccountTest {
         int[] snakeXs = {0};
         int[] snakeYs = {0};
         Object[] gameSavedData = {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode",
-                SnakeView.Direction.RIGHT};
+                SnakeController.Direction.RIGHT};
         tester.addSnakeGame(gameName, gameSavedData);
         assertArrayEquals(gameSavedData, tester.getSnakeGame(gameName));
     }
@@ -132,13 +134,13 @@ public class UserAccountTest {
         int[] snakeYs = {0};
         String gameName1 = "Game 1";
         Object[] gameSavedData1 = {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode",
-                SnakeView.Direction.RIGHT, 10, 5, 5};
+                SnakeController.Direction.RIGHT, 10, 5, 5};
         String gameName2 = "Game 2";
         Object[] gameSavedData2 = {snakeXs, snakeYs, 3, 3, 1, 0, "Snake Hard Mode",
-                SnakeView.Direction.LEFT, 14, 5, 5};
+                SnakeController.Direction.LEFT, 14, 5, 5};
         String gameName3 = "Game 3";
         Object[] gameSavedData3 = {snakeXs, snakeYs, 4, 4, 1, 0, "Snake Easy Mode",
-                SnakeView.Direction.UP, 10, 5, 5};
+                SnakeController.Direction.UP, 10, 5, 5};
         tester.addSnakeGame(gameName1, gameSavedData1);
         tester.addSnakeGame(gameName2, gameSavedData2);
         tester.addSnakeGame(gameName3, gameSavedData3);
@@ -199,10 +201,10 @@ public class UserAccountTest {
         int[] snakeYs = {0};
         String autoSavedGameName = "autoSave";
         Object[] autoSave1 = {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode",
-                SnakeView.Direction.RIGHT, 10, 5, 5};
+                SnakeController.Direction.RIGHT, 10, 5, 5};
         tester.addSnakeGame(autoSavedGameName, autoSave1);
         Object[] autoSave2 = {snakeXs, snakeYs, 3, 3, 1, 0, "Snake Hard Mode",
-                SnakeView.Direction.LEFT, 14, 5, 5};
+                SnakeController.Direction.LEFT, 14, 5, 5};
         tester.addSnakeGame(autoSavedGameName, autoSave2);
         assertArrayEquals(autoSave2, tester.getSnakeGame(autoSavedGameName));
     }
@@ -285,7 +287,7 @@ public class UserAccountTest {
         int[] snakeXs = {0};
         int[] snakeYs = {0};
         Object[] gameSavedData = {snakeXs, snakeYs, 2, 2, 1, 0, "Snake Easy Mode",
-                SnakeView.Direction.RIGHT};
+                SnakeController.Direction.RIGHT};
         differentTester.addSnakeGame(snakeGameName, gameSavedData);
         assertNotEquals(differentTester, tester);
     }
