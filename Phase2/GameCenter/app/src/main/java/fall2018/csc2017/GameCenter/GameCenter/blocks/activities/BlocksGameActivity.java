@@ -59,10 +59,9 @@ public class BlocksGameActivity extends AppCompatActivity {
      * Updates the high scores of the currentUserAccount if a new high score was achieved.
      */
     private void updateHighScore() {
-        int finalScore = blocksView.gridManager.getGrid().getScore();
-        if (blocksView.gridManager.gameOver() &&
-                this.currentUserAccount.getTopScore("Blocks") < finalScore) {
-            this.currentUserAccount.setTopScore("Blocks", finalScore);
+        int score = blocksView.gridManager.getGrid().getScore();
+        if (this.currentUserAccount.getTopScore("Blocks") < score) {
+            this.currentUserAccount.setTopScore("Blocks", score);
             updateUserAccounts();
         }
     }
