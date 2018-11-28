@@ -97,7 +97,7 @@ public class SlidingTilesMenuControllerTest {
         account.addSlidingTilesGame(gameName2, gameBoardManager2);
         account.addSlidingTilesGame(gameName3, gameBoardManager3);
         String[] gameNames = {gameName1, gameName2, gameName3};
-        assertEquals(gameNames, SlidingTilesMenuController.savedGamesList(account));
+        assertArrayEquals(gameNames, SlidingTilesMenuController.savedGamesList(account));
         tearDown();
     }
 }
