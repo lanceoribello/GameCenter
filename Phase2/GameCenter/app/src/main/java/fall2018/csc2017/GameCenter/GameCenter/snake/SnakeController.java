@@ -2,13 +2,11 @@ package fall2018.csc2017.GameCenter.GameCenter.snake;
 
 import java.util.Random;
 
-/*
-Adapted from: https://androidgameprogramming.com/programming-a-snake-game/
-Manages a Snake game, running separately from the UI.
- */
-
 /**
- * The view for Snake.
+ * Adapted (loosely) from https://androidgameprogramming.com/programming-a-snake-game/
+ * The controller for Snake; manages the game's logic.
+ * Encompasses the starting and resuming of games, the saving and loading of games, setting the
+ * difficulty of the game, spawning bombs and apples, and managing the snake's growth and movement.
  */
 public class SnakeController {
 
@@ -41,8 +39,9 @@ public class SnakeController {
 
 
     /**
-     * An object array of game data that is updated every time the player reaches a
-     * certain number of points. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
+     * An object array of game data that is updated every time the player reaches certain scores.
+     * Used for setting automatic save points.
+     * Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
      * difficulty, direction, FPS, bombX, bombY}.
      */
     private Object[] savePoint;
@@ -105,13 +104,11 @@ public class SnakeController {
 
     /**
      * The height of the playable area in terms of the number of blocks.
-     * Determined dynamically.
      */
     private int numBlocksHigh;
 
     /**
      * The width of the playable area in terms of the number of blocks.
-     * 40 by default.
      */
     private final static int NUM_BLOCKS_WIDE = 20;
 
@@ -121,7 +118,7 @@ public class SnakeController {
     private long fps;
 
     /**
-     * An instance of SnakeController that manages the Snake game.
+     * An instance of SnakeController that manages the logic of the Snake game.
      * Processes whether a new game is started or a past game is being loaded.
      *
      * @param difficulty  the difficulty of the current Snake game
@@ -166,8 +163,6 @@ public class SnakeController {
         spawnApple();
         spawnBomb();
         score = 0;
-        // Setup nextFrameTime so an update is triggered immediately
-        //nextFrameTime = System.currentTimeMillis();
     }
 
     /**
@@ -186,8 +181,6 @@ public class SnakeController {
         difficulty = (String) oldSaveData[6];
         direction = (Direction) oldSaveData[7];
         fps = (long) oldSaveData[8];
-        // Setup nextFrameTime so an update is triggered immediately
-        //nextFrameTime = System.currentTimeMillis();
     }
 
     /**
@@ -232,9 +225,9 @@ public class SnakeController {
 
     /**
      * Processes a snake eating a apple, increasing its length and the score by 1.
-     * Spawns a new apple at a random location.
+     * Spawns a new apple and a new bomb at random locations.
      * Also checks if the snake has reached its maximum length to determine whether the difficulty
-     * should be increased.
+     * should be increased and the snake's length should be reset.
      */
     private void eatApple() {
         snakeLength++;
@@ -273,8 +266,8 @@ public class SnakeController {
 
     /**
      * Returns whether the snake has died, either through hitting the wall of the game area or by
-     * making contact with one of its own body segments. If the snake[0] touches a bomb the game
-     * ends as well and the snake is now dead.
+     * making contact with one of its own body segments. A bomb touching the snake's head also
+     * kills the snake.
      *
      * @return whether the snake has died
      */
@@ -288,6 +281,7 @@ public class SnakeController {
             dead = true;
         }
         for (int i = snakeLength - 1; i > 0; i--) {
+            //impossible for snake to eat itself if length is <= 4
             if ((i > 4) && (snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
                 dead = true;
             }
@@ -307,7 +301,7 @@ public class SnakeController {
     }
 
     /**
-     * Creates a save point every time the player gets a number of points equal to
+     * Creates a save point every time the player gets a number of points that is a multiple of
      * SAVE_POINT_EVERY.
      */
     private void createSavePoint() {
@@ -335,7 +329,8 @@ public class SnakeController {
     }
 
     /**
-     * Processes when a snake eats a apple on contact and the movement of the snake.
+     * Processes when a snake eats a apple on contact, the movement of the snake, and whether
+     * a save point should be created.
      */
     void updateGame() {
         if (snakeXs[0] == appleX && snakeYs[0] == appleY) {
