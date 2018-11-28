@@ -3,6 +3,8 @@ package fall2018.csc2017.GameCenter.GameCenter.blocks;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -83,37 +85,114 @@ public class GridTest {
         testerGrid.verticalMove(1, true);
         assertEquals(PLAYER, testerGrid.gridState[4][7]);
     }
-
+    /**
+     * Makes a vertical move downwards on the player from when the player starts at (4,4) and
+     * there is no food overhead. Player should thus end up at (7,4), where he collides
+     * with the wall
+     */
     @Test
     public void horizontalMoveRight() {
-
+        testerGrid.horizontalMove(1, true);
+        assertEquals(PLAYER, testerGrid.gridState[7][4]);
     }
 
+    /**
+     * Makes a vertical move downwards on the player from when the player starts at (4,4) and
+     * there is no food overhead. Player should thus end up at (1,4), where he collides
+     * with the wall
+     */
+    @Test
+    public void horizontalMoveLeft() {
+        testerGrid.horizontalMove(-1, true);
+        assertEquals(PLAYER, testerGrid.gridState[1][4]);
+    }
+
+    /**
+     * Gets the array of non-border block x values on the grid. Should be empty as we haven't placed
+     * any blocks
+     */
     @Test
     public void getBlockXsIntArray() {
-    }
 
+        assertEquals(0, testerGrid.getBlockXsIntArray().length);
+    }
+    /**
+     * Gets the array of non-border block y values on the grid. Should be empty as we haven't placed
+     * any blocks
+     */
     @Test
     public void getBlockYsIntArray() {
+        assertEquals(0, testerGrid.getBlockYsIntArray().length);
+
     }
 
+    /**
+     * Gets the array of non-border block x values on the grid. Should be the same as our
+     * initialized foodXs
+     */
     @Test
     public void getFoodXsIntArray() {
+        assert(Arrays.equals(foodXs, testerGrid.getFoodXsIntArray()));
+
     }
 
+    /**
+     * Gets the array of non-border block y values on the grid. Should be the same as our
+     * initialized foodYs
+     */
     @Test
     public void getFoodYsIntArray() {
+        assert(Arrays.equals(foodYs, testerGrid.getFoodYsIntArray()));
+
     }
 
+    /**
+     * Gets the x-coordinate of the player. Should be 4 as that's what we initialized the player to
+     * be
+     */
     @Test
     public void getPlayerX() {
+        assertEquals(4, testerGrid.getPlayerX());
     }
 
+    /**
+     * Gets the x-coordinate of the player. Should be 4 as that's what we initialized the player to
+     * be
+     */
     @Test
     public void getPlayerY() {
+        assertEquals(4, testerGrid.getPlayerY());
+
     }
 
+    /**
+     * Gets the current score of the player. Should be 0 as the game starts at 0
+     */
     @Test
     public void getScore() {
+        assertEquals(0,testerGrid.getScore() );
     }
+
+    /**
+     * Tests if two of the same grid return equal for our equals method
+     */
+    @Test
+    public void equalsCorrect(){
+        Grid test = new Grid();
+        Grid test2 = test;
+        assert(test.equals(test2));
+    }
+
+    /**
+     * Tests if food is eaten correctly
+     */
+    @Test
+    public void foodIsEaten(){
+        testerGrid.verticalMove(-1, true);
+        testerGrid.horizontalMove(-1, true);
+        assertEquals(PLAYER, testerGrid.gridState[1][1]);
+        testerGrid.verticalMove(1, true);
+        assertEquals(PLAYER, testerGrid.gridState[1][7]);
+    }
+
 }
