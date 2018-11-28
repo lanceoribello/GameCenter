@@ -1,8 +1,8 @@
 package fall2018.csc2017.GameCenter.GameCenter.blocks;
 
 import java.io.Serializable;
-import java.util.Random;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * The grid used for the Blocks game.
@@ -26,21 +26,18 @@ public class Grid implements Serializable {
      * The int representing a block's location on the grid.
      */
     final static int BLOCK = 2;
-
-    /**
-     * The int representing a food's location on the grid.
-     */
-    final static int FOOD = 3;
-
     /**
      * The length of the grid.
      */
     final static int GRID_LENGTH = 9;
-
+    /**
+     * The int representing a food's location on the grid.
+     */
+    private final static int FOOD = 3;
     /**
      * The number of food that must be on the grid at any point in the game.
      */
-    final static int FOOD_NUM = 4;
+    private final static int FOOD_NUM = 4;
 
     /**
      * The 2d int array representing the state of each coordinate-pair on the grid.
@@ -50,22 +47,22 @@ public class Grid implements Serializable {
     /**
      * The arrayList of all non-border block x-values on the grid.
      */
-    private ArrayList<Integer> blockXs = new ArrayList<Integer>();
+    private ArrayList<Integer> blockXs = new ArrayList<>();
 
     /**
      * The arrayList of all non-border block y-values on the grid.
      */
-    private ArrayList<Integer> blockYs = new ArrayList<Integer>();
+    private ArrayList<Integer> blockYs = new ArrayList<>();
 
     /**
      * The arrayList of all food x-values currently on the grid.
      */
-    private ArrayList<Integer> foodXs = new ArrayList<Integer>();
+    private ArrayList<Integer> foodXs = new ArrayList<>();
 
     /**
      * The arrayList of all food y-values currently on the grid.
      */
-    private ArrayList<Integer> foodYs = new ArrayList<Integer>();
+    private ArrayList<Integer> foodYs = new ArrayList<>();
 
     /**
      * The x-value of the player on the grid.
@@ -104,7 +101,6 @@ public class Grid implements Serializable {
         gridState[playerX][playerY] = PLAYER;
         placeObjectsFromData(blockXs, blockYs, "block");
         placeObjectsFromData(foodXs, foodYs, "food");
-
     }
 
 
@@ -131,7 +127,7 @@ public class Grid implements Serializable {
      * @param objYs       the y-values of the objects to be placed
      * @param foodOrBlock determines whether food or blocks are being placed
      */
-    public void placeObjectsFromData(int[] objXs, int[] objYs, String foodOrBlock) {
+    private void placeObjectsFromData(int[] objXs, int[] objYs, String foodOrBlock) {
         for (int i = 0; i != objXs.length; i++) {
             if (foodOrBlock.equals("food")) {
                 spawnFoodAt(objXs[i], objYs[i]);
@@ -160,7 +156,7 @@ public class Grid implements Serializable {
     /**
      * Spawns a food at a random empty location.
      */
-    public void spawnFood() {
+    private void spawnFood() {
         Random random = new Random();
         int foodX = random.nextInt(GRID_LENGTH - 1) + 1;
         int foodY = random.nextInt(GRID_LENGTH - 1) + 1;
@@ -176,7 +172,7 @@ public class Grid implements Serializable {
     /**
      * Spawns multiple foods at random locations.
      */
-    public void spawnMultipleFoods(int howMany) {
+    private void spawnMultipleFoods(int howMany) {
         for (int a = 0; a < howMany; a++) {
             spawnFood();
         }
@@ -200,8 +196,8 @@ public class Grid implements Serializable {
      * @param x the x-value of the block on the grid
      * @param y the y-value of the block on the grid
      */
-    public void placeBlockAt(int x, int y) {
-        if (validBlockPlacement(x,y)){
+    void placeBlockAt(int x, int y) {
+        if (validBlockPlacement(x, y)) {
             gridState[x][y] = BLOCK;
             blockXs.add(x);
             blockYs.add(y);
@@ -221,7 +217,7 @@ public class Grid implements Serializable {
      * @param makeMove  whether the method shall move the player or not
      * @return the maximum number of grid-squares the player can move up or down
      */
-    public int verticalMove(int direction, boolean makeMove) {
+    int verticalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesY = new ArrayList<Integer>();
         int yVal = playerY + direction;
         boolean foodEaten = false;
@@ -289,7 +285,7 @@ public class Grid implements Serializable {
      * @param makeMove  whether the method shall move the player or not
      * @return the maximum number of grid-squares the player can move left or right
      */
-    public int horizontalMove(int direction, boolean makeMove) {
+    int horizontalMove(int direction, boolean makeMove) {
         ArrayList<Integer> emptyValuesX = new ArrayList<>();
         int xVal = playerX + direction;
         boolean foodEaten = false;
@@ -337,7 +333,7 @@ public class Grid implements Serializable {
      * @param y the y-value of the location
      * @return whether the location is empty
      */
-    public boolean validBlockPlacement(int x, int y) {
+    private boolean validBlockPlacement(int x, int y) {
         return gridState[x][y] == EMPTY;
     }
 
@@ -347,7 +343,7 @@ public class Grid implements Serializable {
      *
      * @return an int array of all non-border block x-values on the grid.
      */
-    public int[] getBlockXsIntArray() {
+    int[] getBlockXsIntArray() {
         return intArrayListToArray(blockXs);
     }
 
@@ -357,7 +353,7 @@ public class Grid implements Serializable {
      *
      * @return an int array of all non-border block y-values on the grid
      */
-    public int[] getBlockYsIntArray() {
+    int[] getBlockYsIntArray() {
         return intArrayListToArray(blockYs);
     }
 
@@ -366,7 +362,7 @@ public class Grid implements Serializable {
      *
      * @return an int array of all food x-values on the grid
      */
-    public int[] getFoodXsIntArray() {
+    int[] getFoodXsIntArray() {
         return intArrayListToArray(foodXs);
     }
 
@@ -375,7 +371,7 @@ public class Grid implements Serializable {
      *
      * @return an int array of all food y-values on the grid
      */
-    public int[] getFoodYsIntArray() {
+    int[] getFoodYsIntArray() {
         return intArrayListToArray(foodYs);
     }
 
@@ -384,7 +380,7 @@ public class Grid implements Serializable {
      *
      * @return the player's x-value on the grid
      */
-    public int getPlayerX() {
+    int getPlayerX() {
         return playerX;
     }
 
@@ -393,7 +389,7 @@ public class Grid implements Serializable {
      *
      * @return the player's y-value on the grid
      */
-    public int getPlayerY() {
+    int getPlayerY() {
         return playerY;
     }
 

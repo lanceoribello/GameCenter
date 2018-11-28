@@ -2,10 +2,6 @@ package fall2018.csc2017.GameCenter.GameCenter.blocks;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
-import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Tile;
 
 /**
  * Manage a grid.
@@ -16,11 +12,6 @@ public class GridManager implements Serializable {
      * The grid being managed.
      */
     private Grid grid;
-
-    /**
-     * The number of moves played so far in the current instance of the game.
-     */
-    private int numMoves;
 
     /**
      * The list of each grid that is associated with each turn
@@ -34,7 +25,6 @@ public class GridManager implements Serializable {
         this.savedGrids = new ArrayList<>();
         this.grid = new Grid();
         addToSavedGrids();
-        this.numMoves = 0;
     }
 
     /**
@@ -97,35 +87,15 @@ public class GridManager implements Serializable {
      * @param x the x-value of the new block.
      * @param y the y-value of the new block.
      */
-    public void placeBlock(int x, int y) {
+    void placeBlock(int x, int y) {
         grid.placeBlockAt(x, y);
-    }
-
-    /**
-     * Returns whether the location at the the given x and y is a valid place to place a block.
-     *
-     * @param x the x-value on the grid that is checked
-     * @param y the y-value on the grid that is checked
-     * @return whether the given location is a valid block placement location
-     */
-    public boolean isValidBlockPlacement(int x, int y) {
-        return grid.validBlockPlacement(x, y);
     }
 
     /**
      * Adds a copy of the current grid to the savedGrids list.
      */
-    void addToSavedGrids() {
+    private void addToSavedGrids() {
         this.savedGrids.add(copiedGrid(this.grid));
-    }
-
-    /**
-     * Returns the number of moves made in this game so far/
-     *
-     * @return the number of moves made so far in the game
-     */
-    public int getMoves() {
-        return this.numMoves;
     }
 
     /**
@@ -153,7 +123,7 @@ public class GridManager implements Serializable {
      *
      * @param direction the direction the player wishes to move; can be up, down, left, or right
      */
-    public void movePlayer(String direction) {
+    void movePlayer(String direction) {
         boolean success = false;
         addToSavedGrids();
         if (direction.equals("up")) {
@@ -165,8 +135,8 @@ public class GridManager implements Serializable {
         } else if (direction.equals("left")) {
             success = grid.horizontalMove(-1, true) > 0;
         }
-        if(!success){
-            savedGrids.remove(savedGrids.size()-1);
+        if (!success) {
+            savedGrids.remove(savedGrids.size() - 1);
         }
     }
 }
