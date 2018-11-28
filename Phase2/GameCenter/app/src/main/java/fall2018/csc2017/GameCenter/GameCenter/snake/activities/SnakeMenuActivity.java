@@ -31,6 +31,11 @@ import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuController;
 public class SnakeMenuActivity extends AppCompatActivity {
 
     /**
+     * The user account file containing all UserAccount objects.
+     */
+    private static final String USER_ACCOUNTS_FILENAME = "accounts.ser";
+
+    /**
      * The file containing a temp version of the boardManager.
      */
     public static final String TEMP_SAVE_FILENAME = "snake_save_file_tmp.ser";
@@ -248,11 +253,41 @@ public class SnakeMenuActivity extends AppCompatActivity {
     }
 
     /**
+     * Update current user account by finding and setting it from the file.
+     *
+     * @param fileName the name of the file
+     */
+    public void setCurrentUserAccount(String fileName) {
+        try {
+            InputStream inputStream = this.openFileInput(fileName);
+            if (inputStream != null) {
+                ObjectInputStream input = new ObjectInputStream(inputStream);
+                ArrayList<UserAccount> userAccountList = (ArrayList<UserAccount>) input.readObject();
+                // Update current user account from file
+                for (UserAccount user : userAccountList) {
+                    if (user.getUsername().equals(this.currentUserAccount.getUsername())) {
+                        this.currentUserAccount = user;
+                    }
+                }
+                inputStream.close();
+            }
+        } catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        } catch (ClassNotFoundException e) {
+            Log.e("login activity", "File contained unexpected data type: "
+                    + e.toString());
+        }
+    }
+
+    /**
      * Read the temporary game save data from disk.
      */
     @Override
     protected void onResume() {
         super.onResume();
+        setCurrentUserAccount(USER_ACCOUNTS_FILENAME);
         loadFromTempFile();
     }
 }

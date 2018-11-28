@@ -16,7 +16,7 @@
     <string name="button_undo">Undo</string>
     <string name="button_undo_number"># of moves to undo</string>
     <string name="create_account">Create Account</string>
-    <string name="load_auto_save_point">Load Auto Save Point</string>
+    <string name="load_auto_save">Load Auto Save</string>
     <string name="scoreboard_title">Scoreboard of User</string>
     <string name="scoreboards">Scoreboards</string>
     <string name="per_user">Per-User</string>
