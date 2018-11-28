@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.blocks.BlockMenuController;
 import fall2018.csc2017.GameCenter.GameCenter.blocks.BlocksView;
 import fall2018.csc2017.GameCenter.GameCenter.blocks.GridManager;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
@@ -124,7 +125,9 @@ public class BlocksMenuActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUserAccounts();
+                loadFromTempFile();
+                BlockMenuController.updateUserAccounts(currentUserAccount, blocksView.gridManager,
+                        LoginActivity.userAccountList);
                 userAccountsToFile();
                 makeToastSavedText();
             }
@@ -151,7 +154,8 @@ public class BlocksMenuActivity extends AppCompatActivity {
                         BlocksMenuActivity.this);
                 builder.setTitle("Choose a game");
                 int checkedItem = 1; //Sets the choice to the first element.
-                builder.setSingleChoiceItems(savedGamesList(), checkedItem, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(BlockMenuController.savedGamesList(currentUserAccount),
+                        checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListView lw = ((AlertDialog) dialog).getListView();
@@ -226,21 +230,6 @@ public class BlocksMenuActivity extends AppCompatActivity {
     }
 
     /**
-     * Saves a new game to the currentUserAccount with game name as date and time.
-     */
-    private void updateUserAccounts() {
-        Calendar c = Calendar.getInstance();
-        DateFormat dateFormat =
-                DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-        String datetime = dateFormat.format(c.getTime());
-        LoginActivity.userAccountList.remove(currentUserAccount);
-        loadFromTempFile();
-        currentUserAccount.addBlocksGame(datetime, blocksView.gridManager);
-        LoginActivity.userAccountList.add(currentUserAccount);
-        userAccountsToFile();
-    }
-
-    /**
      * Saves the userAccountList to a file.
      */
     private void userAccountsToFile() {
@@ -252,18 +241,6 @@ public class BlocksMenuActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
         }
-    }
-
-    /**
-     * Make a list of games names for displaying in load games.
-     */
-    private String[] savedGamesList() {
-        String[] games = new String[(currentUserAccount.getBlocksGameNames().size())];
-        int i = 0;
-        for (String s : currentUserAccount.getBlocksGameNames()) {
-            games[i++] = s;
-        }
-        return games;
     }
 
     /**
