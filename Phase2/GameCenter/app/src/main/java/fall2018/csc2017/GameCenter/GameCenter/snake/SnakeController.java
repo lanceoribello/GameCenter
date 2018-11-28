@@ -37,7 +37,7 @@ public class SnakeController {
      * autoSaves. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
      * difficulty, direction, FPS, bombX, bombY}.
      */
-    public Object[] autoSaveData;
+    private Object[] autoSaveData;
 
 
     /**
@@ -127,7 +127,7 @@ public class SnakeController {
      * @param difficulty  the difficulty of the current Snake game
      * @param oldSaveData the data used to load a saved game; can be null if a new game is started
      */
-    public SnakeController(String difficulty, Object[] oldSaveData, int numBlocksHigh) {
+    SnakeController(String difficulty, Object[] oldSaveData, int numBlocksHigh) {
         this.numBlocksHigh = numBlocksHigh;
         snakeXs = new int[MAX_SNAKE_SIZE];
         snakeYs = new int[MAX_SNAKE_SIZE];
@@ -278,7 +278,7 @@ public class SnakeController {
      *
      * @return whether the snake has died
      */
-    public boolean detectDeath() {
+    boolean detectDeath() {
         boolean dead = false;
         if (snakeXs[0] == -1) dead = true;
         if (snakeXs[0] >= NUM_BLOCKS_WIDE) dead = true;
@@ -301,7 +301,7 @@ public class SnakeController {
      *
      * @return an object array of game data
      */
-    public Object[] createSaveData() {
+    Object[] createSaveData() {
         return new Object[]{snakeXs.clone(), snakeYs.clone(), appleX, appleY,
                 snakeLength, score, difficulty, direction, fps, bombX, bombY};
     }
@@ -310,7 +310,7 @@ public class SnakeController {
      * Creates a save point every time the player gets a number of points equal to
      * SAVE_POINT_EVERY.
      */
-    public void createSavePoint() {
+    private void createSavePoint() {
         if (getScore() % SAVE_POINT_EVERY == 0 && getScore() != 0) {
             savePoint = createSaveData();
         }
@@ -375,89 +375,100 @@ public class SnakeController {
 
     /**
      * Return the x-value of the apple.
+     *
      * @return the apple's x-value
      */
-    public int getAppleX() {
+    int getAppleX() {
         return appleX;
     }
 
     /**
      * Return the y-value of the apple.
+     *
      * @return the apple's y-value
      */
-    public int getAppleY() {
+    int getAppleY() {
         return appleY;
     }
 
     /**
      * Return the x-value of the bomb.
+     *
      * @return the bomb's x-value
      */
-    public int getBombX() {
+    int getBombX() {
         return bombX;
     }
 
     /**
      * Return the y-value of the bomb.
+     *
      * @return the bomb's y-value
      */
-    public int getBombY() {
+    int getBombY() {
         return bombY;
     }
 
     /**
      * Return the x-values of the snake.
+     *
      * @return the snake's x-values
      */
-    public int[] getSnakeXs() {
+    int[] getSnakeXs() {
         return snakeXs;
     }
 
     /**
      * Return the y-values of the snake.
+     *
      * @return the snake's y-values
      */
-    public int[] getSnakeYs() {
+    int[] getSnakeYs() {
         return snakeYs;
     }
 
     /**
      * Return the length of the snake.
+     *
      * @return the snake's length
      */
-    public int getSnakeLength() {
+    int getSnakeLength() {
         return snakeLength;
     }
 
     /**
      * Return the snake's current direction of movement
+     *
      * @return the snake's direction
      */
-    public Direction getDirection() {
+    Direction getDirection() {
         return direction;
     }
 
     /**
      * Sets the snake's direction of movement.
+     *
      * @param direction the new direction the snake will move in
      */
-    public void setDirection(Direction direction) {
+    void setDirection(Direction direction) {
         this.direction = direction;
     }
 
     /**
      * Return the current frames-per-second of the game.
+     *
      * @return the game's frames-per-second
      */
-    public long getFps() {
+    long getFps() {
         return fps;
     }
 
     /**
      * Sets the autoSaveData of the current game
+     *
      * @param autoSaveData the game's current autoSaveData
      */
-    public void setAutoSaveData(Object[] autoSaveData) {
+    void setAutoSaveData(Object[] autoSaveData) {
         this.autoSaveData = autoSaveData;
     }
 }

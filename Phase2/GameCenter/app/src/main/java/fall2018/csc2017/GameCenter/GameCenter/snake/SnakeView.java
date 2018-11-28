@@ -133,7 +133,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         // Bottom third of the screen used for the movement buttons
         holder = getHolder();
         paint = new Paint();
-        snakeController = new SnakeController(difficulty,oldSaveData,
+        snakeController = new SnakeController(difficulty, oldSaveData,
                 2 * (screenHeight / blockSize) / 3);
     }
 
@@ -354,6 +354,7 @@ public class SnakeView extends SurfaceView implements Runnable {
 
     /**
      * Returns the controller of the current Snake game.
+     *
      * @return the game's controller
      */
     public SnakeController getSnakeController() {
