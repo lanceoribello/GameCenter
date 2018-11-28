@@ -30,7 +30,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     /**
      * The gridManager of the Blocks game.
      */
-    GridManager gridManager;
+    public GridManager gridManager;
 
     /**
      * The rectangle object representations of the ones which have been drawn on the grid.

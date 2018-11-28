@@ -33,7 +33,7 @@ public class Grid implements Serializable {
     /**
      * The int representing a food's location on the grid.
      */
-    private final static int FOOD = 3;
+    final static int FOOD = 3;
     /**
      * The number of food that must be on the grid at any point in the game.
      */
