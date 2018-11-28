@@ -184,13 +184,21 @@ public class GridTest {
 
 
     /**
-     * Tests if two of the same grid return equal for our equals method
+     * Tests if a hard copy of a test grid returns true if the equals method is applied between them
      */
     @Test
     public void equalsCorrect() {
         Grid test = new Grid();
-        Grid test2 = test;
-        assert (test.equals(test2));
+        int pX = test.getPlayerX();
+        int pY = test.getPlayerY();
+        int[] blockXs = test.getBlockXsIntArray();
+        int[] blockYs = test.getBlockYsIntArray();
+        int[] foodXs = test.getFoodXsIntArray();
+        int[] foodYs = test.getFoodYsIntArray();
+        int score = test.getScore();
+        Grid testCopy = new Grid(pX, pY, blockXs, blockYs, foodXs, foodYs, score);
+
+        assert (test.equals(testCopy));
     }
 
     /**
