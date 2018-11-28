@@ -20,6 +20,9 @@ public class GridManagerTest {
         testGridManager = new GridManager();
     }
 
+    /**
+     * Tests if get saved grids consisting of initial grid returns correct list.
+     */
     @Test
     public void testGetSavedGridsInitial() {
         Grid initialGrid = testGridManager.getGrid();
@@ -28,6 +31,9 @@ public class GridManagerTest {
         assertEquals(initialGridList, testGridManager.getSavedGrids());
     }
 
+    /**
+     * Tests if setting a new grid works, returns grid when calling get grid.
+     */
     @Test
     public void testSetGetGrid() {
         int[] blockXs = {1};
@@ -39,8 +45,11 @@ public class GridManagerTest {
         assertEquals(newGrid, testGridManager.getGrid());
     }
 
+    /**
+     * Tests if game over returns true when player is immediately surrounded by blocks.
+     */
     @Test
-    public void testGameOver() {
+    public void testGameOverTrue() {
         int[] blockXs = {1, 2};
         int[] blockYs = {2, 1};
         int[] foodXs = {2, 3, 4, 5};
@@ -50,6 +59,23 @@ public class GridManagerTest {
         assertTrue(testGridManager.gameOver());
     }
 
+    /**
+     * Tests if game over returns false when player is able to move.
+     */
+    @Test
+    public void testGameOverFalse() {
+        int[] blockXs = {};
+        int[] blockYs = {};
+        int[] foodXs = {2, 3, 4, 5};
+        int[] foodYs = {2, 3, 4, 5};
+        Grid notGameOverGrid = new Grid(1, 1, blockXs, blockYs, foodXs, foodYs);
+        testGridManager.setGrid(notGameOverGrid);
+        assertFalse(testGridManager.gameOver());
+    }
+
+    /**
+     * Tests if placing a block is reflected in the new grid's arrays of block x and y positions.
+     */
     @Test
     public void testPlaceBlock() {
         int[] blockXs = {1};
@@ -66,11 +92,68 @@ public class GridManagerTest {
                 && Arrays.equals(testGridManager.getGrid().getBlockYsIntArray(), newBlockYs));
     }
 
+    /**
+     * Tests if undoing one move results in the correct state.
+     */
     @Test
-    public void testUndo() {
+    public void testUndoOneMove() {
+        ArrayList<Grid> testerSavedGrids = new ArrayList<>();
+        Grid initialGrid = testGridManager.getGrid();
+        testerSavedGrids.add(initialGrid);
+        int[] blockXs = {};
+        int[] blockYs = {};
+        int[] foodXs = {5, 6, 7, 8};
+        int[] foodYs = {5, 6, 7, 8};
+        Grid oneMove = new Grid(3, 3, blockXs, blockYs, foodXs, foodYs);
+        testGridManager.setGrid(oneMove);
+        testGridManager.addToSavedGrids();
+        testGridManager.undo(1);
+        assertTrue((testerSavedGrids.equals(testGridManager.getSavedGrids())) &&
+                (initialGrid.equals(testGridManager.getGrid())));
     }
 
+    /**
+     * Tests if undoing multiple moves results in the correct state.
+     */
     @Test
-    public void testMovePlayer() {
+    public void testUndoMultipleMoves() {
+        ArrayList<Grid> testerSavedGrids = new ArrayList<>();
+        testerSavedGrids.add(testGridManager.getGrid());
+        int[] blockXs1 = {};
+        int[] blockYs1 = {};
+        int[] foodXs = {5, 6, 7, 8};
+        int[] foodYs = {5, 6, 7, 8};
+        Grid oneMove = new Grid(3, 3, blockXs1, blockYs1, foodXs, foodYs);
+        testGridManager.setGrid(oneMove);
+        testGridManager.addToSavedGrids();
+        testerSavedGrids.add(oneMove);
+        int[] blockXs2 = {2};
+        int[] blockYs2 = {2};
+        Grid twoMove = new Grid(3, 3, blockXs2, blockYs2, foodXs, foodYs);
+        testGridManager.setGrid(twoMove);
+        testGridManager.addToSavedGrids();
+        Grid threeMove = new Grid(3, 1, blockXs2, blockYs2, foodXs, foodYs);
+        testGridManager.setGrid(threeMove);
+        testGridManager.addToSavedGrids();
+        Grid fourMove = new Grid(1, 1, blockXs2, blockYs2, foodXs, foodYs);
+        testGridManager.setGrid(fourMove);
+        testGridManager.addToSavedGrids();
+        testGridManager.undo(3);
+        assertTrue((testerSavedGrids.equals(testGridManager.getSavedGrids())) &&
+                (oneMove.equals(testGridManager.getGrid())));
+    }
+
+    /**
+     * Tests a successful move if move is added to saved grids.
+     */
+    @Test
+    public void testMovePlayerSuccess() {
+    }
+
+    /**
+     * Tests a failed move if move is not added to saved grids.
+     */
+    @Test
+    public void testMovePlayerFailed() {
     }
 }

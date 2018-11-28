@@ -409,6 +409,7 @@ public class Grid implements Serializable {
     @Override
     public boolean equals(Object o) {
         return ((o != null) && (this.getClass() == o.getClass()) &&
-                (Arrays.equals(this.gridState, (((Grid) o).gridState))));
+                (Arrays.equals(this.gridState, (((Grid) o).gridState))) &&
+                (this.getScore() == ((Grid) o).getScore()));
     }
 }
