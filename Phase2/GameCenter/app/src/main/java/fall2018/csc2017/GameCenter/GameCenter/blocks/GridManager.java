@@ -90,7 +90,11 @@ public class GridManager implements Serializable {
      * @param y the y-value of the new block.
      */
     void placeBlock(int x, int y) {
+        Grid oldGrid = copiedGrid(this.grid);
         this.grid.placeBlockAt(x, y);
+        if (!oldGrid.equals(this.grid)) {
+            addToSavedGrids();
+        }
     }
 
     /**
@@ -109,11 +113,11 @@ public class GridManager implements Serializable {
         int oldScore = this.grid.getScore();
         for (int i = 1; i != this.savedGrids.size(); i++) {
             if (i == numTurns) {
-                this.setGrid(this.savedGrids.get(this.savedGrids.size() - i));
+                this.setGrid(this.savedGrids.get(this.savedGrids.size() - i - 1));
                 break;
             }
         }
-        for (int i = 0; i != numTurns; i++) {
+        for (int i = 0; i != numTurns + 1; i++) {
             this.savedGrids.remove(this.savedGrids.size() - 1);
         }
         this.grid.setScore(oldScore - numTurns);
@@ -129,7 +133,6 @@ public class GridManager implements Serializable {
      */
     void movePlayer(String direction) {
         boolean success = false;
-        addToSavedGrids();
         if (direction.equals("up")) {
             success = grid.verticalMove(-1, true) > 0;
         } else if (direction.equals("down"))
@@ -139,8 +142,8 @@ public class GridManager implements Serializable {
         } else if (direction.equals("left")) {
             success = grid.horizontalMove(-1, true) > 0;
         }
-        if (!success) {
-            this.savedGrids.remove(this.savedGrids.size() - 1);
+        if (success) {
+            addToSavedGrids();
         }
     }
 }

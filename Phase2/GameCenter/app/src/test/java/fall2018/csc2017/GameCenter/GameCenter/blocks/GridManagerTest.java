@@ -8,6 +8,9 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test Class for GridManager.
+ */
 public class GridManagerTest {
 
     private GridManager testGridManager;
@@ -88,8 +91,9 @@ public class GridManagerTest {
         testGridManager.placeBlock(2, 1);
         int[] newBlockXs = {1, 2};
         int[] newBlockYs = {2, 1};
-        assertTrue((Arrays.equals(testGridManager.getGrid().getBlockXsIntArray(), newBlockXs))
-                && Arrays.equals(testGridManager.getGrid().getBlockYsIntArray(), newBlockYs));
+        assertTrue((Arrays.equals(testGridManager.getGrid().getBlockXsIntArray(),
+                newBlockXs)) && Arrays.equals(testGridManager.getGrid().getBlockYsIntArray(),
+                newBlockYs));
     }
 
     /**
