@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.rule.ActivityTestRule;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
+import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -32,5 +33,6 @@ public class LoginActivityTest {
                 .perform(typeText("Username"), closeSoftKeyboard());
         onView(withId(R.id.Password))
                 .perform(typeText("Password"), closeSoftKeyboard());
+        UserAccount newUser = new UserAccount("Username", "Password");
     }
 }

@@ -8,6 +8,7 @@ import android.graphics.Point;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
@@ -79,11 +80,25 @@ public class SnakeGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Writes the current boardManager to the current userAccount.
+     * Writes the current Snake Game to the current userAccount.
      */
     private void createAutoSave() {
-        currentUserAccount.addSnakeGame("autoSave", snakeView.getSavePointData());
+        currentUserAccount.addSnakeGame("autoSave", snakeView.getAutoSaveData());
         updateUserAccounts();
+    }
+
+    /**
+     * Writes any created save points of the Snake Game to the current userAccount.
+     */
+    private void createSavePoints() {
+        ArrayList<Object[]> savePoints = snakeView.getSavePoints();
+        if (savePoints.size() > 0) {
+            for (Object[] sp : savePoints) {
+                currentUserAccount.addSnakeGame("Save point, Score: " + sp[5], sp);
+                System.out.println("Save point, Score: " + sp[5]);
+            }
+            updateUserAccounts();
+        }
     }
 
     /**
@@ -120,6 +135,7 @@ public class SnakeGameActivity extends AppCompatActivity {
         super.onPause();
         saveToTempFile();
         createAutoSave();
+        createSavePoints();
         snakeView.pause();
         updateHighScore();
     }
@@ -132,6 +148,7 @@ public class SnakeGameActivity extends AppCompatActivity {
         super.onStop();
         saveToTempFile();
         createAutoSave();
+        createSavePoints();
         snakeView.pause();
         updateHighScore();
     }
@@ -144,7 +161,7 @@ public class SnakeGameActivity extends AppCompatActivity {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(SnakeMenuActivity.TEMP_SAVE_FILENAME, MODE_PRIVATE));
-            outputStream.writeObject(snakeView.getSavePointData());
+            outputStream.writeObject(snakeView.getAutoSaveData());
             outputStream.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());

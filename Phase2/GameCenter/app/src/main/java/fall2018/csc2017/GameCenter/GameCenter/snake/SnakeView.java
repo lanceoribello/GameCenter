@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
@@ -44,12 +45,12 @@ public class SnakeView extends SurfaceView implements Runnable {
     /**
      * The default FPS for easy mode.
      */
-    private final static long EASY_MODE_FPS = 8;
+    private final static long EASY_MODE_FPS = 7;
 
     /**
      * The default FPS for hard mode.
      */
-    private final static long HARD_MODE_FPS = 12;
+    private final static long HARD_MODE_FPS = 10;
 
     /**
      * How much the FPS is increased once the snake reaches its maximum size.
@@ -91,10 +92,22 @@ public class SnakeView extends SurfaceView implements Runnable {
 
     /**
      * An object array that contains any relevant data in the game used for saving and loading
-     * save points. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
+     * autosaves. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
      * difficulty, direction, FPS, bombX, bombY}.
      */
-    public Object[] savePointData;
+    public Object[] autoSaveData;
+
+
+    /**
+     * An arrayList of object arrays of game data that is updated every time the player reaches a
+     * certain number of points.
+     */
+    private ArrayList<Object[]> savePoints;
+
+    /**
+     * Determines when a save point at certain scores.
+     */
+    private static final int SAVE_POINT_EVERY = 3;
 
     /**
      * The thread of the Snake game.
@@ -227,6 +240,7 @@ public class SnakeView extends SurfaceView implements Runnable {
         paint = new Paint();
         snakeXs = new int[MAX_SNAKE_SIZE];
         snakeYs = new int[MAX_SNAKE_SIZE];
+        savePoints = new ArrayList<>();
         try {
             resumeOldGame(oldSaveData);
         } catch (NullPointerException e) {
@@ -259,7 +273,7 @@ public class SnakeView extends SurfaceView implements Runnable {
             if (checkForUpdate()) {
                 updateGame();
                 drawGame();
-                setAutoSavePoint();
+                setAutoSave();
             }
         }
     }
@@ -430,18 +444,40 @@ public class SnakeView extends SurfaceView implements Runnable {
      * Sets the savePointData object array to include all the data necessary for loading up the
      * current game again at a later point.
      */
-    public void setAutoSavePoint() {
-        savePointData = new Object[]{snakeXs, snakeYs, appleX, appleY, snakeLength, score,
+    public void setAutoSave() {
+        autoSaveData = new Object[]{snakeXs, snakeYs, appleX, appleY, snakeLength, score,
                 difficulty, direction, FPS, bombX, bombY};
     }
 
     /**
-     * Returns the current save point data of this Snake game.
-     *
-     * @return this game's current save point data
+     * Creates a save point every time the player gets a number of points equal to
+     * SAVE_POINT_EVERY.
      */
-    public Object[] getSavePointData() {
-        return this.savePointData;
+    public void createSavePoint() {
+        if (getScore() % SAVE_POINT_EVERY == 0 && getScore() != 0) {
+            Object[] newSavePoint = new Object[]{snakeXs, snakeYs, appleX, appleY, snakeLength,
+                    score, difficulty, direction, FPS, bombX, bombY};
+            savePoints.add(newSavePoint);
+            System.out.println("save point created");
+        }
+    }
+
+    /**
+     * Returns the save points created for this Snake game.
+     *
+     * @return this game's list of save points
+     */
+    public ArrayList<Object[]> getSavePoints() {
+        return savePoints;
+    }
+
+    /**
+     * Returns the current autoSave data of this Snake game.
+     *
+     * @return this game's current autoSave data
+     */
+    public Object[] getAutoSaveData() {
+        return this.autoSaveData;
     }
 
     /**
@@ -450,6 +486,7 @@ public class SnakeView extends SurfaceView implements Runnable {
     private void updateGame() {
         if (snakeXs[0] == appleX && snakeYs[0] == appleY) {
             eatApple();
+            createSavePoint();
         }
         if (!detectDeath()) {
             moveSnake();

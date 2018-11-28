@@ -1,7 +1,5 @@
 package fall2018.csc2017.GameCenter.GameCenter.snake;
 
-import android.support.annotation.NonNull;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +7,7 @@ import org.junit.Test;
 import java.text.DateFormat;
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import java.util.Calendar;
 
 
@@ -18,8 +17,9 @@ import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import static org.junit.Assert.*;
 
 public class SnakeMenuControllerTest{
+
     /**
-     * an Instance of UserAccount for testing purposes.
+     * An instance of UserAccount for testing purposes.
      */
     private UserAccount account = new UserAccount("testName", "testPassword");
 
@@ -27,6 +27,11 @@ public class SnakeMenuControllerTest{
      * The user account list for testing.
      */
     private ArrayList<UserAccount> testUserAccountList = new ArrayList<>();
+
+    /**
+     * Some data to write and load.
+     */
+    private Object[] savedData = {1, 1, 2, 2, 1, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT};
 
     /**
      * Sets up user account list to begin with tester.
@@ -37,10 +42,6 @@ public class SnakeMenuControllerTest{
     }
 
     /**
-     * Some data to write and load
-     */
-    private Object[] savedData = {1, 1, 2, 2, 1, 0, "Snake Easy Mode", SnakeView.Direction.RIGHT};
-    /**
      * Clears the user account list.
      */
     @After
@@ -49,28 +50,24 @@ public class SnakeMenuControllerTest{
     }
 
     /**
-     * test for updateUserAccounts
+     * Test for updateUserAccounts
      */
     @Test
-
     public void testUpdateUserAccounts(){
-        setUp();
         SnakeMenuController.updateUserAccounts(account, savedData, testUserAccountList);
         Calendar c = Calendar.getInstance();
         DateFormat dateFormat =
                 DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
         String datetime = dateFormat.format(c.getTime());
         assertTrue(testUserAccountList.contains(account)&&
-                account.getSnakeGame(datetime).equals(savedData)) ;
-        tearDown();
+                Arrays.equals(account.getSnakeGame(datetime), savedData));
     }
 
     /**
-     * test that the saved games list has all the names of previously saved games and an autosave
+     * Test that the saved games list has all the names of previously saved games and an autosave
      */
     @Test
     public void testSavedGamesList(){
-        setUp();
         int[] snakeXs = {0};
         int[] snakeYs = {0};
         String gameName1 = "Game 1";
@@ -86,7 +83,6 @@ public class SnakeMenuControllerTest{
         account.addSnakeGame(gameName2, gameSavedData2);
         account.addSnakeGame(gameName3, gameSavedData3);
         String[] gameNames = {gameName1, gameName2, gameName3};
-        assertEquals(gameNames, SnakeMenuController.savedGamesList(account));
-        tearDown();
+        assertArrayEquals(gameNames, SnakeMenuController.savedGamesList(account));
     }
 }

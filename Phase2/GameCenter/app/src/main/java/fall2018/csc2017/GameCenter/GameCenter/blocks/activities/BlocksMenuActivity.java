@@ -198,7 +198,11 @@ public class BlocksMenuActivity extends AppCompatActivity {
                         }
                         blocksView.gridManager =
                                 currentUserAccount.getBlocksGame("autoSave");
-                        switchToGame();
+                        if (blocksView.gridManager == null) {
+                            makeToastLoadAutoSaveFailText();
+                        } else {
+                            switchToGame();
+                        }
                     } else {
                         makeToastLoadAutoSaveFailText();
                     }
@@ -253,7 +257,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
     /**
      * Make a list of games names for displaying in load games.
      */
-    private String[] savedGamesList(){
+    private String[] savedGamesList() {
         String[] games = new String[(currentUserAccount.getBlocksGameNames().size())];
         int i = 0;
         for (String s : currentUserAccount.getBlocksGameNames()) {
