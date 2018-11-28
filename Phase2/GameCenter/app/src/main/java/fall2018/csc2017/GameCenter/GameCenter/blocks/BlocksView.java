@@ -34,8 +34,11 @@ public class BlocksView extends SurfaceView implements Runnable {
      */
     public GridManager gridManager;
 
-
-    ArrayList<Rect> rectangles = new ArrayList<>();//Assume these have been drawn in your draw method.
+    /**
+     * The rectangle object representations of the ones which have been drawn on the grid.
+     * Used to check where an OnTouch event is contained on the grid
+     */
+    ArrayList<Rect> rectangles = new ArrayList<>();
 
     /**
      * The canvas of the Blocks game.
@@ -263,10 +266,10 @@ public class BlocksView extends SurfaceView implements Runnable {
                         && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
                     gridManager.movePlayer("left");
                 }
-                for(int i = 0; i< rectangles.size(); i++){
-                    if(rectangles.get(i).contains((int)motionEvent.getX(),(int)motionEvent.getY())){
-                        gridManager.placeBlock(rectangles.get(i).left/blockSize,
-                                rectangles.get(i).top/blockSize);
+                for (int i = 0; i < rectangles.size(); i++) {
+                    if (rectangles.get(i).contains((int) motionEvent.getX(), (int) motionEvent.getY())) {
+                        gridManager.placeBlock(rectangles.get(i).left / blockSize,
+                                rectangles.get(i).top / blockSize);
                     }
                 }
         }
