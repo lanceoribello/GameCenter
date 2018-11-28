@@ -452,4 +452,12 @@ public class SnakeController {
     public long getFps() {
         return fps;
     }
+
+    /**
+     * Sets the autoSaveData of the current game
+     * @param autoSaveData the game's current autoSaveData
+     */
+    public void setAutoSaveData(Object[] autoSaveData) {
+        this.autoSaveData = autoSaveData;
+    }
 }

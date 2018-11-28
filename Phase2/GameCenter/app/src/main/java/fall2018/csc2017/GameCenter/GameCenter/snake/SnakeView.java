@@ -12,8 +12,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.util.Random;
-
 import fall2018.csc2017.GameCenter.GameCenter.R;
 
 /*
@@ -35,26 +33,6 @@ public class SnakeView extends SurfaceView implements Runnable {
      * The size of the GAME OVER text.
      */
     private final static int GAME_OVER_SIZE = 150;
-
-    /**
-     * The default FPS for easy mode.
-     */
-    private final static long EASY_MODE_FPS = 7;
-
-    /**
-     * The default FPS for hard mode.
-     */
-    private final static long HARD_MODE_FPS = 10;
-
-    /**
-     * How much the FPS is increased once the snake reaches its maximum size.
-     */
-    private final static long FPS_INCREASE = 2;
-
-    /**
-     * The maximum snake length before the snake is reset and the game is sped up.
-     */
-    private final static int MAX_SNAKE_SIZE = 15;
 
     /**
      * How many milliseconds in a second.
@@ -85,26 +63,6 @@ public class SnakeView extends SurfaceView implements Runnable {
     int screenHeight;
 
     /**
-     * An object array that contains any relevant data in the game used for saving and loading
-     * autoSaves. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
-     * difficulty, direction, FPS, bombX, bombY}.
-     */
-    public Object[] autoSaveData;
-
-
-    /**
-     * An object array of game data that is updated every time the player reaches a
-     * certain number of points. Consists of: {snakeXs, snakeYs, mouseX, mouseY, snakeLength, score,
-     * difficulty, direction, FPS, bombX, bombY}.
-     */
-    private Object[] savePoint;
-
-    /**
-     * Determines when a save point is created at certain scores.
-     */
-    private static final int SAVE_POINT_EVERY = 3;
-
-    /**
      * The thread of the Snake game.
      */
     private Thread thread = null;
@@ -126,12 +84,6 @@ public class SnakeView extends SurfaceView implements Runnable {
     private Paint paint;
 
     /**
-     * The current snake's direction.
-     * Set to right for new games by default.
-     */
-    private Direction direction = Direction.RIGHT;
-
-    /**
      * The width of the screen being displayed upon.
      */
     private int screenWidth;
@@ -142,66 +94,15 @@ public class SnakeView extends SurfaceView implements Runnable {
     private long nextFrameTime;
 
     /**
-     * The frames per second of the current Snake game.
-     */
-    private long FPS;
-
-    /**
-     * The current score of the game.
-     */
-    private int score;
-
-    /**
-     * The locations of all x-values of the snake.
-     */
-    private int[] snakeXs;
-
-    /**
-     * The locations of all y-values of the snake.
-     */
-    private int[] snakeYs;
-
-    /**
-     * The current length of the snake.
-     */
-    private int snakeLength;
-
-    /**
-     * The x value of the current apple to be eaten.
-     */
-    private int appleX;
-
-    /**
-     * The y value of the current apple to be eaten.
-     */
-    private int appleY;
-
-    /**
-     * The x value of the current bomb to be avoided.
-     */
-    private int bombX;
-
-    /**
-     * The y value of the current bomb to be avoided.
-     */
-    private int bombY;
-
-    /**
      * The size in pixels of a block for the game display.
      * Corresponds to the size of an individual snake segment and the size of a apple.
      */
     private int blockSize;
 
     /**
-     * The height of the playable area in terms of the number of blocks.
-     * Determined dynamically.
+     * The controller for this game.
      */
-    private int numBlocksHigh;
-
-    /**
-     * The difficulty level of the game.
-     */
-    private String difficulty;
+    private SnakeController snakeController;
 
     /**
      * Constructor of SnakeView that only takes in context.
@@ -230,32 +131,10 @@ public class SnakeView extends SurfaceView implements Runnable {
         screenHeight = size.y;
         blockSize = screenWidth / NUM_BLOCKS_WIDE;
         // Bottom third of the screen used for the movement buttons
-        numBlocksHigh = 2 * (screenHeight / blockSize) / 3;
         holder = getHolder();
         paint = new Paint();
-        snakeXs = new int[MAX_SNAKE_SIZE];
-        snakeYs = new int[MAX_SNAKE_SIZE];
-        try {
-            resumeOldGame(oldSaveData);
-        } catch (NullPointerException e) {
-            setDifficulty(difficulty);
-            startGame();
-        }
-    }
-
-    /**
-     * Sets the difficulty level of the game, which is based on how many frames per second are
-     * shown. A higher number of frames per second results in the snake moving faster.
-     *
-     * @param difficulty the game's difficulty
-     */
-    private void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
-        if (difficulty.equals("Snake Easy Mode")) {
-            FPS = EASY_MODE_FPS;
-        } else {
-            FPS = HARD_MODE_FPS;
-        }
+        snakeController = new SnakeController(difficulty,oldSaveData,
+                2 * (screenHeight / blockSize) / 3);
     }
 
     /**
@@ -265,9 +144,9 @@ public class SnakeView extends SurfaceView implements Runnable {
     public void run() {
         while (playing) {
             if (checkForUpdate()) {
-                updateGame();
+                snakeController.updateGame();
                 drawGame();
-                autoSaveData = createSaveData();
+                snakeController.setAutoSaveData(snakeController.createSaveData());
             }
         }
     }
@@ -294,208 +173,6 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Begins a new game of Snake.
-     * Spawns a snake with length 1 in the left side of the grid area as well as an apple
-     * and a bomb in random location.
-     */
-    private void startGame() {
-        snakeLength = 1;
-        snakeXs[0] = NUM_BLOCKS_WIDE / 5;
-        snakeYs[0] = numBlocksHigh / 2;
-        spawnApple();
-        spawnBomb();
-        score = 0;
-        // Setup nextFrameTime so an update is triggered immediately
-        nextFrameTime = System.currentTimeMillis();
-    }
-
-    /**
-     * Resumes a past game of Snake using an Object array of saved data.
-     *
-     * @param oldSaveData saved data of a past Snake game Consists of: {snakeXs, snakeYs, mouseX,
-     *                    mouseY, snakeLength, score, difficulty, direction, FPS, bombX, bombY}.
-     */
-    private void resumeOldGame(Object[] oldSaveData) {
-        snakeXs = (int[]) oldSaveData[0];
-        snakeYs = (int[]) oldSaveData[1];
-        spawnAppleAt((int) oldSaveData[2], (int) oldSaveData[3]);
-        spawnBombAt((int) oldSaveData[9], (int) oldSaveData[10]);
-        snakeLength = (int) oldSaveData[4];
-        score = (int) oldSaveData[5];
-        difficulty = (String) oldSaveData[6];
-        direction = (Direction) oldSaveData[7];
-        FPS = (long) oldSaveData[8];
-        // Setup nextFrameTime so an update is triggered immediately
-        nextFrameTime = System.currentTimeMillis();
-    }
-
-    /**
-     * Spawns a bomb at a given location
-     *
-     * @param x x coordinate of bomb
-     * @param y y coordinate of bomb
-     */
-    private void spawnBombAt(int x, int y) {
-        bombX = x;
-        bombY = y;
-    }
-
-    /**
-     * Spawns an apple at a given location.
-     *
-     * @param x the x-value of the apple to be spawned
-     * @param y the y-value of the apple to be spawned
-     */
-    private void spawnAppleAt(int x, int y) {
-        appleX = x;
-        appleY = y;
-    }
-
-    /**
-     * Spawns an apple at a random location.
-     */
-    private void spawnApple() {
-        Random random = new Random();
-        appleX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
-        appleY = random.nextInt(numBlocksHigh - 1) + 1;
-    }
-
-    /**
-     * Spawn a bomb at a random location
-     */
-    private void spawnBomb() {
-        Random random = new Random();
-        bombX = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
-        bombY = random.nextInt(numBlocksHigh - 1) + 1;
-    }
-
-    /**
-     * Processes a snake eating a apple, increasing its length and the score by 1.
-     * Spawns a new apple at a random location.
-     * Also checks if the snake has reached its maximum length to determine whether the difficulty
-     * should be increased.
-     */
-    private void eatApple() {
-        snakeLength++;
-        spawnApple();
-        score = score + 1;
-        spawnBomb();
-
-        if ((snakeLength) % (MAX_SNAKE_SIZE) == 0) {
-            increaseDifficulty();
-        }
-    }
-
-    /**
-     * Moves all segments of the snake by one.
-     */
-    private void moveSnake() {
-        for (int i = snakeLength; i > 0; i--) {
-            snakeXs[i] = snakeXs[i - 1];
-            snakeYs[i] = snakeYs[i - 1];
-        }
-        switch (direction) {
-            case UP:
-                snakeYs[0]--;
-                break;
-            case RIGHT:
-                snakeXs[0]++;
-                break;
-            case DOWN:
-                snakeYs[0]++;
-                break;
-            case LEFT:
-                snakeXs[0]--;
-                break;
-        }
-    }
-
-    /**
-     * Returns whether the snake has died, either through hitting the wall of the game area or by
-     * making contact with one of its own body segments. If the snake[0] touches a bomb the game
-     * ends as well and the snake is now dead.
-     *
-     * @return whether the snake has died
-     */
-    public boolean detectDeath() {
-        boolean dead = false;
-        if (snakeXs[0] == -1) dead = true;
-        if (snakeXs[0] >= NUM_BLOCKS_WIDE) dead = true;
-        if (snakeYs[0] == -1) dead = true;
-        if (snakeYs[0] == numBlocksHigh) dead = true;
-        if (snakeXs[0] == bombX && snakeYs[0] == bombY) {
-            dead = true;
-        }
-        for (int i = snakeLength - 1; i > 0; i--) {
-            if ((i > 4) && (snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
-                dead = true;
-            }
-        }
-        return dead;
-    }
-
-    /**
-     * Returns an object array of all the data necessary for loading up the game again at a later
-     * point.
-     *
-     * @return an object array of game data
-     */
-    public Object[] createSaveData() {
-        return new Object[]{snakeXs.clone(), snakeYs.clone(), appleX, appleY,
-                snakeLength, score, difficulty, direction, FPS, bombX, bombY};
-    }
-
-    /**
-     * Creates a save point every time the player gets a number of points equal to
-     * SAVE_POINT_EVERY.
-     */
-    public void createSavePoint() {
-        if (getScore() % SAVE_POINT_EVERY == 0 && getScore() != 0) {
-            savePoint = createSaveData();
-        }
-    }
-
-    /**
-     * Returns the current autoSave data of this Snake game.
-     *
-     * @return this game's current autoSave data
-     */
-    public Object[] getAutoSaveData() {
-        return this.autoSaveData;
-    }
-
-    /**
-     * Returns the data of the latest savePoint of this Snake game.
-     *
-     * @return the data of the latest savePoint
-     */
-    public Object[] getSavePoint() {
-        return savePoint;
-    }
-
-    /**
-     * Processes when a snake eats a apple on contact and the movement of the snake.
-     */
-    private void updateGame() {
-        if (snakeXs[0] == appleX && snakeYs[0] == appleY) {
-            eatApple();
-            createSavePoint();
-        }
-        if (!detectDeath()) {
-            moveSnake();
-        }
-    }
-
-    /**
-     * Increases the difficulty of the game, resetting the snake's length to 1 and increasing
-     * the FPS.
-     */
-    private void increaseDifficulty() {
-        FPS += FPS_INCREASE;
-        snakeLength = 1;
-    }
-
-    /**
      * Creates the display of the game.
      */
     private void drawGame() {
@@ -517,6 +194,8 @@ public class SnakeView extends SurfaceView implements Runnable {
     private void drawBomb() {
         Paint p = new Paint();
         Bitmap bomb = BitmapFactory.decodeResource(context.getResources(), R.drawable.bomb);
+        int bombX = snakeController.getBombX();
+        int bombY = snakeController.getBombY();
         canvas.drawBitmap(bomb, null, new Rect(bombX * blockSize,
                 (bombY * blockSize),
                 (bombX * blockSize) + blockSize,
@@ -528,6 +207,8 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     private void drawApple() {
         Paint p = new Paint();
+        int appleX = snakeController.getAppleX();
+        int appleY = snakeController.getAppleY();
         Bitmap apple = BitmapFactory.decodeResource(context.getResources(), R.drawable.apple);
         canvas.drawBitmap(apple, null, new Rect(appleX * blockSize,
                 (appleY * blockSize),
@@ -541,12 +222,13 @@ public class SnakeView extends SurfaceView implements Runnable {
     private void drawText() {
         paint.setColor(Color.BLACK);
         paint.setTextSize(SMALL_TEXT_SIZE);
+        int score = snakeController.getScore();
         canvas.drawText("Score:" + score, 10, SMALL_TEXT_SIZE, paint);
-        if (getScore() % SAVE_POINT_EVERY == 0 && getScore() != 0) {
+        if (score % SnakeController.SAVE_POINT_EVERY == 0 && score != 0) {
             canvas.drawText("New save point!", screenWidth / 4,
                     SMALL_TEXT_SIZE, paint);
         }
-        if (detectDeath()) {
+        if (snakeController.detectDeath()) {
             paint.setTextSize(GAME_OVER_SIZE);
             canvas.drawText("GAME OVER", screenWidth / 8, screenHeight / 3, paint);
         }
@@ -557,7 +239,9 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     private void drawSnake() {
         paint.setColor(Color.argb(255, 255, 255, 255));
-        for (int i = 0; i < snakeLength; i++) {
+        int[] snakeXs = snakeController.getSnakeXs();
+        int[] snakeYs = snakeController.getSnakeYs();
+        for (int i = 0; i < snakeController.getSnakeLength(); i++) {
             canvas.drawRect(snakeXs[i] * blockSize,
                     (snakeYs[i] * blockSize),
                     (snakeXs[i] * blockSize) + blockSize,
@@ -594,19 +278,10 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     private boolean checkForUpdate() {
         if (nextFrameTime <= System.currentTimeMillis()) {
-            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND / FPS;
+            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND / snakeController.getFps();
             return true;
         }
         return false;
-    }
-
-    /**
-     * Returns the current score of the Snake game.
-     *
-     * @return the current score of the game
-     */
-    public int getScore() {
-        return score;
     }
 
     /**
@@ -629,32 +304,33 @@ public class SnakeView extends SurfaceView implements Runnable {
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         performClick();
+        SnakeController.Direction direction = snakeController.getDirection();
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
                 if (motionEvent.getX() >= screenWidth / 3
                         && motionEvent.getX() <= 2 * screenWidth / 3
                         && motionEvent.getY() <= 7 * screenHeight / 9
                         && motionEvent.getY() >= 2 * screenHeight / 3
-                        && direction != Direction.DOWN) {
-                    direction = Direction.UP;
+                        && direction != SnakeController.Direction.DOWN) {
+                    snakeController.setDirection(SnakeController.Direction.UP);
                 } else if (motionEvent.getX() >= screenWidth / 3
                         && motionEvent.getX() <= 2 * screenWidth / 3
                         && motionEvent.getY() <= screenHeight
                         && motionEvent.getY() >= 8 * screenHeight / 9
-                        && direction != Direction.UP) {
-                    direction = Direction.DOWN;
+                        && direction != SnakeController.Direction.UP) {
+                    snakeController.setDirection(SnakeController.Direction.DOWN);
                 } else if (motionEvent.getX() >= 2 * screenWidth / 3
                         && motionEvent.getX() <= screenWidth
                         && motionEvent.getY() <= 8 * screenHeight / 9
                         && motionEvent.getY() >= 7 * screenHeight / 9
-                        && direction != Direction.LEFT) {
-                    direction = Direction.RIGHT;
+                        && direction != SnakeController.Direction.LEFT) {
+                    snakeController.setDirection(SnakeController.Direction.RIGHT);
                 } else if (motionEvent.getX() >= 0
                         && motionEvent.getX() <= screenWidth / 3
                         && motionEvent.getY() <= 8 * screenHeight / 9
                         && motionEvent.getY() >= 7 * screenHeight / 9
-                        && direction != Direction.RIGHT) {
-                    direction = Direction.LEFT;
+                        && direction != SnakeController.Direction.RIGHT) {
+                    snakeController.setDirection(SnakeController.Direction.LEFT);
                 } else if (motionEvent.getX() >= 2 * screenWidth / 3
                         && motionEvent.getX() <= screenWidth
                         && motionEvent.getY() <= screenHeight
@@ -666,13 +342,6 @@ public class SnakeView extends SurfaceView implements Runnable {
     }
 
     /**
-     * The directions used for controlling movement.
-     */
-    public enum Direction {
-        UP, RIGHT, DOWN, LEFT
-    }
-
-    /**
      * Changes the status of the playing boolean when the pause button is clicked.
      */
     private void pauseGameClick() {
@@ -681,5 +350,13 @@ public class SnakeView extends SurfaceView implements Runnable {
         } else {
             resume();
         }
+    }
+
+    /**
+     * Returns the controller of the current Snake game.
+     * @return the game's controller
+     */
+    public SnakeController getSnakeController() {
+        return snakeController;
     }
 }

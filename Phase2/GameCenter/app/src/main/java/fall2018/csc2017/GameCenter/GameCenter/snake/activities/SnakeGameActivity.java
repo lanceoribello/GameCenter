@@ -60,7 +60,7 @@ public class SnakeGameActivity extends AppCompatActivity {
      * Updates the high scores of the currentUserAccount if a new high score was achieved.
      */
     private void updateHighScore() {
-        int score = snakeView.getScore();
+        int score = snakeView.getSnakeController().getScore();
         if (this.currentUserAccount.getTopScore(difficulty) < score) {
             this.currentUserAccount.setTopScore(difficulty, score);
             updateUserAccounts();
@@ -81,7 +81,7 @@ public class SnakeGameActivity extends AppCompatActivity {
      * Writes the current Snake Game to the current userAccount.
      */
     private void createAutoSave() {
-        currentUserAccount.addSnakeGame("autoSave", snakeView.getAutoSaveData());
+        currentUserAccount.addSnakeGame("autoSave", snakeView.getSnakeController().getAutoSaveData());
         updateUserAccounts();
     }
 
@@ -89,7 +89,7 @@ public class SnakeGameActivity extends AppCompatActivity {
      * Writes the last savePoint of the Snake Game to the current userAccount.
      */
     private void createSavePoint() {
-        Object[] saveData = snakeView.getSavePoint();
+        Object[] saveData = snakeView.getSnakeController().getSavePoint();
         if (saveData != null) {
             currentUserAccount.addSnakeGame("Last savePoint: score " + saveData[5], saveData);
             updateUserAccounts();
@@ -156,7 +156,7 @@ public class SnakeGameActivity extends AppCompatActivity {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(SnakeMenuActivity.TEMP_SAVE_FILENAME, MODE_PRIVATE));
-            outputStream.writeObject(snakeView.getAutoSaveData());
+            outputStream.writeObject(snakeView.getSnakeController().getAutoSaveData());
             outputStream.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
