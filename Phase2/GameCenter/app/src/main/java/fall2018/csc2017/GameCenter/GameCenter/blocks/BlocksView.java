@@ -30,7 +30,7 @@ public class BlocksView extends SurfaceView implements Runnable {
     /**
      * The gridManager of the Blocks game.
      */
-    GridManager gridManager;
+    public GridManager gridManager;
 
     /**
      * The rectangle object representations of the ones which have been drawn on the grid.
@@ -238,39 +238,86 @@ public class BlocksView extends SurfaceView implements Runnable {
         return true;
     }
 
+    /**
+     * Method for when different parts of the screen are touched
+     * Checks to see if the 4 movement buttons are pressed, if they are the correct movement
+     * command will take place
+     * Also checks to see if the user has clicked a rectangle on the grid, if so it will place a
+     * 'block' on that rectangle if its an empty rectangle.
+     */
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         performClick();
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
-                if (motionEvent.getX() >= screenWidth / 3
-                        && motionEvent.getX() <= 2 * screenWidth / 3
-                        && motionEvent.getY() >= screenWidth
-                        && motionEvent.getY() <= screenWidth + (screenHeight - screenWidth) / 3) {
+                double x = motionEvent.getX();
+                double y = motionEvent.getY();
+
+                if (withinTop(x, y)){
                     gridManager.movePlayer("down");
-                } else if (motionEvent.getX() >= screenWidth / 3
-                        && motionEvent.getX() <= 2 * screenWidth / 3
-                        && motionEvent.getY() <= screenHeight
-                        && motionEvent.getY() >= screenHeight - (screenHeight - screenWidth) / 3) {
+
+                } else if(withinBottom(x, y))  {
                     gridManager.movePlayer("up");
-                } else if (motionEvent.getX() >= 2 * screenWidth / 3
-                        && motionEvent.getX() <= screenWidth
-                        && motionEvent.getY() <= screenHeight - (screenHeight - screenWidth) / 3
-                        && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
+
+                } else if (withinRight(x, y)) {
                     gridManager.movePlayer("right");
-                } else if (motionEvent.getX() >= 0
-                        && motionEvent.getX() <= screenWidth / 3
-                        && motionEvent.getY() <= screenHeight - (screenHeight - screenWidth) / 3
-                        && motionEvent.getY() >= screenWidth + (screenHeight - screenWidth) / 3) {
+
+                } else if (withinLeft(x, y)) {
                     gridManager.movePlayer("left");
                 }
                 for (int i = 0; i < rectangles.size(); i++) {
-                    if (rectangles.get(i).contains((int) motionEvent.getX(), (int) motionEvent.getY())) {
+                    if (rectangles.get(i).contains((int) x, (int) y)) {
                         gridManager.placeBlock(rectangles.get(i).left / blockSize,
                                 rectangles.get(i).top / blockSize);
                     }
                 }
         }
         return true;
+    }
+
+    /**
+     * Helper method for onTouch to see if user has clicked the top movement button
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if within the bounds of the button
+     */
+    private boolean withinTop(double x, double y){
+        return (x >= screenWidth / 3 && x <= 2 * screenWidth / 3  && y >= screenWidth  &&
+                y <= screenWidth + (screenHeight - screenWidth) / 3);
+    }
+
+    /**
+     * Helper method for onTouch to see if user has clicked the bottom movement button
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if within the bounds of the button
+     */
+    private boolean withinBottom(double x, double y){
+        return (x >= screenWidth / 3 && x <= 2 * screenWidth / 3 && y <= screenHeight &&
+                y >= screenHeight - (screenHeight - screenWidth) / 3);
+    }
+
+    /**
+     * Helper method for onTouch to see if user has clicked the Right movement button
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if within the bounds of the button
+     */
+    private boolean withinRight(double x, double y){
+        return (x >= 2 * screenWidth / 3 && x <= screenWidth &&
+                y <= screenHeight - (screenHeight - screenWidth) / 3 &&
+                y >= screenWidth + (screenHeight - screenWidth) / 3);
+    }
+
+    /**
+     * Helper method for onTouch to see if user has clicked the Left movement button
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return true if within the bounds of the button
+     */
+    private boolean withinLeft(double x, double y){
+        return (x >= 0 && x <= screenWidth / 3  &&
+                y <= screenHeight - (screenHeight - screenWidth) / 3 &&
+                y >= screenWidth + (screenHeight - screenWidth) / 3);
     }
 }
