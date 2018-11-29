@@ -3,6 +3,8 @@ package fall2018.csc2017.GameCenter.GameCenter.snake;
 import android.graphics.Point;
 import android.view.Display;
 
+import net.bytebuddy.dynamic.loading.ClassInjector;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -106,7 +108,7 @@ public class SnakeControllerTest {
         assertTrue(snakeController.detectDeath());
     }
     /**
-     * Test that a snake doesn't die while playing
+     * Test that a snake doesn't die while playing in non-lethal conditions.
      */
     @Test
     public void testDetectDeathFalse() {
@@ -175,82 +177,230 @@ public class SnakeControllerTest {
     public void testCreateSavePoint(){
         int[] snakeXs = new int[15];
         int[] snakeYs = new int[15];
-        snakeXs[0] = 3;
-        snakeXs[1] = 2;
+        snakeXs[0] = 4;
+        snakeXs[1] = 3;
         snakeYs[0] = 0;
         snakeYs[1] = 0;
         Object[] savedData = {snakeXs, snakeYs, 4, 0, 1, 2, "Snake Easy Mode",
                 SnakeController.Direction.RIGHT, fps, 6, 6};
         snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
         snakeController.updateGame();
-        snakeController.updateGame();
-        //
         assertNotEquals(null,snakeController.getSavePoint());
-
     }
 
+    /**
+     * test that savedData is created with the right data.
+     */
 
     @Test
     public void createSaveData() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertArrayEquals(savedData, snakeController.createSaveData());
+
     }
 
+    /**
+     * Test that the right AutoSaveData is returned.
+     */
     @Test
     public void getAutoSaveData() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        snakeController.setAutoSaveData(savedData);
+        assertArrayEquals(savedData, snakeController.getAutoSaveData());
     }
 
-    @Test
-    public void getSavePoint() {
-    }
+
 
     @Test
     public void updateGame() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        snakeController.updateGame();
+        int[] snakeXs1 = new int[15];
+        int[] snakeYs1 = new int[15];
+        snakeXs1[0] = 1;
+        snakeYs1[0] = 0;
+        Object[] expected = {snakeXs1, snakeYs1, 2, 2, 15,1, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        Object[] got = {snakeController.getSnakeXs(), snakeController.getSnakeYs(),
+                snakeController.getAppleX(), snakeController.getAppleY(), snakeController.getScore(),
+                snakeController.getSnakeLength(), "Snake Easy Mode",
+                snakeController.getDirection(), snakeController.getFps(),
+                snakeController.getBombX(), snakeController.getBombY()} ;
+        assertArrayEquals(expected, got);
+
     }
 
     @Test
     public void getScore() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 15, 1, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(1, snakeController.getScore());
     }
 
     @Test
     public void getAppleX() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(2, snakeController.getAppleX());
     }
 
     @Test
     public void getAppleY() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(2, snakeController.getAppleY());
     }
 
     @Test
     public void getBombX() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(5, snakeController.getBombX());
     }
 
     @Test
     public void getBombY() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(5, snakeController.getBombY());
     }
 
     @Test
     public void getSnakeXs() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(snakeXs, snakeController.getSnakeXs());
     }
 
     @Test
     public void getSnakeYs() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(snakeYs, snakeController.getSnakeYs());
     }
 
     @Test
     public void getSnakeLength() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(1, snakeController.getSnakeLength());
     }
 
     @Test
+    /**
+     * test that a correct direction is outputted.
+     */
     public void getDirection() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(SnakeController.Direction.RIGHT, snakeController.getDirection());
     }
 
     @Test
     public void setDirection() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        snakeController.setDirection(SnakeController.Direction.DOWN);
+        assertEquals(SnakeController.Direction.DOWN,snakeController.getDirection());
     }
 
+    /**
+     * test that the correct fps is outputted when getFps is called.
+     */
     @Test
-    public void getFps() {
+    public void testGetFps() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 0;
+        snakeYs[0] = 0;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        assertEquals(fps, snakeController.getFps());
     }
 
+    /**
+     * test that setAutoSaveData sets the correct data. The getter has already been tested
+     */
     @Test
-    public void setAutoSaveData() {
+    public void testSetAutoSaveData() {
+        int[] snakeXs = new int[15];
+        int[] snakeYs = new int[15];
+        snakeXs[0] = 1;
+        snakeYs[0] = 1;
+        Object[] savedData = {snakeXs, snakeYs, 2, 2, 1, 15, "Snake Easy Mode",
+                SnakeController.Direction.RIGHT, fps, 5, 5};
+        snakeController = new SnakeController(difficulty, savedData, numBlocksHigh);
+        snakeController.setAutoSaveData(savedData);
+        assertArrayEquals(savedData, snakeController.getAutoSaveData());
+
     }
 }
