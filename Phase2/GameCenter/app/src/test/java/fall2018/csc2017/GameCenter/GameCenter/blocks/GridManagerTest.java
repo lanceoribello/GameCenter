@@ -143,7 +143,7 @@ public class GridManagerTest {
         testGridManager.setGrid(fourMove);
         testGridManager.addToSavedGrids();
         testGridManager.undo(3);
-        Grid tester = new Grid(3, 3, blockXs1, blockYs1, foodXs, foodYs, -5);
+        Grid tester = new Grid(3, 3, blockXs1, blockYs1, foodXs, foodYs, -3);
         testerSavedGrids.add(tester);
         assertTrue((testerSavedGrids.equals(testGridManager.getSavedGrids())) &&
                 (tester.equals(testGridManager.getGrid())));
@@ -154,6 +154,17 @@ public class GridManagerTest {
      */
     @Test
     public void testMovePlayerSuccess() {
+        int[] blockXs = {1};
+        int[] blockYs = {3};
+        int[] foodXs = {2, 3, 4, 5};
+        int[] foodYs = {2, 3, 4, 5};
+        Grid canMoveGrid = new Grid(1, 1, blockXs, blockYs, foodXs, foodYs, 0);
+        testGridManager.setGrid(canMoveGrid);
+        testGridManager.movePlayer("down");
+        ArrayList<Grid> testerSavedGrids = testGridManager.getSavedGrids();
+        Grid afterMoveGrid = new Grid(1, 2, blockXs, blockYs, foodXs, foodYs, 0);
+        testerSavedGrids.add(afterMoveGrid);
+        assertEquals(testerSavedGrids, testGridManager.getSavedGrids());
     }
 
     /**
@@ -161,5 +172,17 @@ public class GridManagerTest {
      */
     @Test
     public void testMovePlayerFailed() {
+        int[] blockXs = {1, 2};
+        int[] blockYs = {2, 1};
+        int[] foodXs = {2, 3, 4, 5};
+        int[] foodYs = {2, 3, 4, 5};
+        Grid cannotMoveGrid = new Grid(1, 1, blockXs, blockYs, foodXs, foodYs, 0);
+        testGridManager.setGrid(cannotMoveGrid);
+        ArrayList<Grid> testerSavedGrids = testGridManager.getSavedGrids();
+        testGridManager.movePlayer("up");
+        testGridManager.movePlayer("down");
+        testGridManager.movePlayer("left");
+        testGridManager.movePlayer("right");
+        assertEquals(testerSavedGrids, testGridManager.getSavedGrids());
     }
 }
