@@ -168,10 +168,10 @@ public class Grid implements Serializable {
     /**
      * Spawns a food at a random empty location.
      */
-    private void spawnFood() {
+    private void spawnFood(int x, int y) {
         Random random = new Random();
-        int foodX = random.nextInt(GRID_LENGTH - 3) + 1;
-        int foodY = random.nextInt(GRID_LENGTH - 3) + 1;
+        int foodX = x;
+        int foodY = y;
         while (this.gridState[foodX][foodY] != EMPTY) {
             foodX = random.nextInt(GRID_LENGTH - 3) + 1;
             foodY = random.nextInt(GRID_LENGTH - 3) + 1;
@@ -186,7 +186,10 @@ public class Grid implements Serializable {
      */
     private void spawnMultipleFoods() {
         for (int a = 0; a < FOOD_NUM; a++) {
-            spawnFood();
+            Random random = new Random();
+            int foodX = random.nextInt(GRID_LENGTH - 3) + 1;
+            int foodY = random.nextInt(GRID_LENGTH - 3) + 1;
+            spawnFood(foodX, foodY);
         }
     }
 
@@ -325,7 +328,8 @@ public class Grid implements Serializable {
      * @param y the y-value where the food is eaten
      */
     private void eatFood(int x, int y) {
-        spawnFood();
+
+        spawnFood(x, y);
         this.gridState[x][y] = EMPTY;
         for (int i = 0; i < foodXs.size(); i++) {
             if (this.foodXs.get(i) == x && this.foodYs.get(i) == y) {

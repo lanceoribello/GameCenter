@@ -29,15 +29,15 @@ public class GridTest {
      */
     final static int FOOD = 3;
 
-    private int[] blockXs = {};
-    private int[] blockYs = {};
+    private int[] blockXs = {5};
+    private int[] blockYs = {5};
     private int[] foodXs = {1, 7, 1, 7};
     private int[] foodYs = {1, 1, 7, 7};
     private Grid testerGrid = new Grid(4, 4, blockXs, blockYs, foodXs, foodYs, 0);
 
     /**
      * Sets up a new grid where the player starts in the middle, with 1 food object
-     * in each corner of the grid.
+     * in each corner of the grid and one block at (5,5)
      *
      * @throws Exception
      */
@@ -115,22 +115,22 @@ public class GridTest {
     }
 
     /**
-     * Gets the array of non-border block x values on the grid. Should be empty as we haven't placed
-     * any blocks
+     * Gets the array of non-border block y values on the grid. Should be the same as our
+     * initialized blockXs
      */
     @Test
     public void getBlockXsIntArray() {
 
-        assertEquals(0, testerGrid.getBlockXsIntArray().length);
+        assert(Arrays.equals(blockXs, testerGrid.getBlockXsIntArray()));
     }
 
     /**
-     * Gets the array of non-border block y values on the grid. Should be empty as we haven't placed
-     * any blocks
+     * Gets the array of non-border block y values on the grid. Should be the same as our
+     * initialized blockYs
      */
     @Test
     public void getBlockYsIntArray() {
-        assertEquals(0, testerGrid.getBlockYsIntArray().length);
+        assert(Arrays.equals(blockYs, testerGrid.getBlockYsIntArray()));
 
     }
 
@@ -174,21 +174,31 @@ public class GridTest {
     }
 
     /**
-     * Gets the current score of the player. Should be 0 as the game starts at 0
+     * Gets and Sets the current score of the player. Should be 0 as the game starts at 0
      */
     @Test
-    public void getScore() {
-        assertEquals(0, testerGrid.getScore());
+    public void getSetScore() {
+        testerGrid.setScore(1);
+        assertEquals(1, testerGrid.getScore());
     }
 
+
     /**
-     * Tests if two of the same grid return equal for our equals method
+     * Tests if a hard copy of a test grid returns true if the equals method is applied between them
      */
     @Test
     public void equalsCorrect() {
         Grid test = new Grid();
-        Grid test2 = test;
-        assert (test.equals(test2));
+        int pX = test.getPlayerX();
+        int pY = test.getPlayerY();
+        int[] blockXs = test.getBlockXsIntArray();
+        int[] blockYs = test.getBlockYsIntArray();
+        int[] foodXs = test.getFoodXsIntArray();
+        int[] foodYs = test.getFoodYsIntArray();
+        int score = test.getScore();
+        Grid testCopy = new Grid(pX, pY, blockXs, blockYs, foodXs, foodYs, score);
+
+        assert (test.equals(testCopy));
     }
 
     /**
