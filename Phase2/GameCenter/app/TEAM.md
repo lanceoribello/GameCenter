@@ -98,6 +98,30 @@ moving the player, placing objects on the grid, eating food, etc.
 Implemented the logic behind the copying and loading of Grids for use in undoing and autoSaving.
 Developed how the Grid is displayed within BlocksView.
 
+## Ishan Sharma
+
+##Sliding Tiles Menu Activity and test
+Made The sliding Tiles menu activity page, specifically the saving of a game and loading a game from
+a list of games.
+Also added tests for the controller class
+
+## Snake Menu Activity and test
+Made the snake game button switch in GameSelectActivity and the snake menu activity page with 
+more focus on saving new snake games and loading from a list of saved games.
+Also added tests for the controller class.
+
+## Blocks Menu Activity
+Similar to Snake and Sliding tiles, made the menu activity page of this class with more focus on 
+saving a game and loading a game.
+Added tests for the controller class.
+
+## Snake Pause
+Implemented the Pause feature in Snake.
+
+## Snake Controller tests
+Added tests for the snake controller class, which is a controller class for snakeview.
+
+
 # Meeting Notes
 
 ## October 21, 2018
