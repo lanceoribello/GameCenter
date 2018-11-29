@@ -35,6 +35,69 @@ Facebook
 
 # Work Division
 
+## Nancy Zhao
+
+### Lobby
+
+Implemented file writing and reading for accounts.ser, which contains the user account list.
+Developed LoginActivity and LoginController (display and logic), and optimized UserAccount for 
+adding more games.
+Developed GameSelectActivity and GameSelectController (display and logic).
+Developed ScoreboardActivity and ScoreboardController (display and logic), using Intents and 
+accounts.ser to update top scores immediately after a top score is achieved in a game.
+Implemented the Model View Controller (MVC) design pattern in all lobby classes to allow for 
+easier testing of the logic for each screen.
+Achieved 100% code coverage for all lobby controller classes and UserAccount.
+Configured the xml files for lobby activities for display.
+
+### Sliding Tiles
+
+Implemented Sliding Tiles BoardManager so it always initializes a solvable game, by starting with
+a solved board and making 1000 valid taps.
+Implemented update high scores so it updates the user account list for the scoreboard.
+Implemented try catch in undo for invalid inputs.
+
+### Snake
+
+Implemented update high scores so it updates the user account list for the scoreboard.
+Developed the dialog box for selecting difficulty level (easy/hard).
+Implemented drawing text for the Snake view, for score and game over.
+
+### Blocks
+
+Achieved 100% code coverage for GridManager.
+Implemented logic for undo moves (moving the player and placing blocks) and undo display.
+Implemented update high scores so it updates the user account list for the scoreboard.
+Implemented loading, saving, and loading auto saved games.
+
+## Lance Oribello
+
+### Lobby
+
+Developed UserAccount.
+
+### Sliding Tiles
+
+Implemented the logic behind the copying of Boards for use in autoSaving and undo functionality.
+Developed undo functionality to work in a way where an arbitrary number of moves can be undone.
+Implemented the autoSave functionality to write onto file upon exiting the game.
+
+### Snake
+
+Developed the SnakeController class after splitting it from the SnakeView class.
+Implemented the initial setting of difficulty levels in a Snake game.
+Implemented the increasing difficulty functionality after a certain snake length is reached.
+Implemented the automatic creation of save points whenever certain scores are reached.
+Developed the logic in which game data is saved and loaded within an Object array.
+
+### Blocks
+
+Developed the underlying logic for both the Grid and GridManager classes.
+Encompasses any methods that modify the 2d int array that represents the states of each grid square:
+moving the player, placing objects on the grid, eating food, etc.
+Implemented the logic behind the copying and loading of Grids for use in undoing and autoSaving.
+Developed how the Grid is displayed within BlocksView.
+
 # Meeting Notes
 
 ## October 21, 2018

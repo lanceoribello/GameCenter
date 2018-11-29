@@ -20,12 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
-import fall2018.csc2017.GameCenter.GameCenter.blocks.BlockMenuController;
+import fall2018.csc2017.GameCenter.GameCenter.blocks.BlocksMenuController;
 import fall2018.csc2017.GameCenter.GameCenter.blocks.BlocksView;
 import fall2018.csc2017.GameCenter.GameCenter.blocks.GridManager;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
@@ -126,7 +124,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadFromTempFile();
-                BlockMenuController.updateUserAccounts(currentUserAccount, blocksView.gridManager,
+                BlocksMenuController.updateUserAccounts(currentUserAccount, blocksView.gridManager,
                         LoginActivity.userAccountList);
                 userAccountsToFile();
                 makeToastSavedText();
@@ -154,7 +152,7 @@ public class BlocksMenuActivity extends AppCompatActivity {
                         BlocksMenuActivity.this);
                 builder.setTitle("Choose a game");
                 int checkedItem = 1; //Sets the choice to the first element.
-                builder.setSingleChoiceItems(BlockMenuController.savedGamesList(currentUserAccount),
+                builder.setSingleChoiceItems(BlocksMenuController.savedGamesList(currentUserAccount),
                         checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

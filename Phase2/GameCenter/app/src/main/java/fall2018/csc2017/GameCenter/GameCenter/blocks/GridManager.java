@@ -76,7 +76,7 @@ public class GridManager implements Serializable {
      *
      * @return whether the game is over
      */
-    public boolean gameOver() {
+    boolean gameOver() {
         return (this.grid.horizontalMove(1, false) == 0 &&
                 this.grid.horizontalMove(-1, false) == 0 &&
                 this.grid.verticalMove(1, false) == 0 &&

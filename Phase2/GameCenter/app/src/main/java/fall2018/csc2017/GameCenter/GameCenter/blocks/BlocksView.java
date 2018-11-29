@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -13,7 +14,9 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 /**
- * The view for Blocks.
+ * The view for Blocks; displays the Blocks game on the screen.
+ * Contains the directional input buttons and the displayed game grid.
+ * Processes movement and block placement taps.
  */
 public class BlocksView extends SurfaceView implements Runnable {
 
@@ -43,36 +46,44 @@ public class BlocksView extends SurfaceView implements Runnable {
      * Used to display the game.
      */
     Canvas canvas;
+
     /**
      * The context of the Blocks game.
      * Used to reference the game's activity.
      */
     Context context;
+
     /**
      * The height of the screen being displayed upon.
      */
     private int screenHeight;
+
     /**
      * The thread of the Snake game.
      */
     private Thread thread = null;
+
     /**
      * The volatile that determines whether the game is currently being played.
      * As a volatile, it can be accessed from inside and outside the thread.
      */
     private volatile boolean playing;
+
     /**
      * The SurfaceHolder used by the Canvas class to display the game.
      */
     private SurfaceHolder holder;
+
     /**
      * The paint used to select colors for displaying the game.
      */
     private Paint paint;
+
     /**
      * The width of the screen being displayed upon.
      */
     private int screenWidth;
+
     /**
      * The size in pixels of a block for the game display.
      * Corresponds to the size of a grid square.
@@ -128,7 +139,7 @@ public class BlocksView extends SurfaceView implements Runnable {
         try {
             thread.join();
         } catch (InterruptedException e) {
-            // Error
+            Log.e("blocks view", "Interrupted: " + e.toString());
         }
     }
 
@@ -222,9 +233,8 @@ public class BlocksView extends SurfaceView implements Runnable {
      * @param col the grid col associated with the grid square
      */
     private void drawGridSquare(int row, int col) {
-        canvas.drawRect(row * blockSize, col * blockSize,
-                (row * blockSize) + blockSize, (col * blockSize) + blockSize,
-                paint);
+        canvas.drawRect(row * blockSize, col * blockSize, (row * blockSize) +
+                blockSize, (col * blockSize) + blockSize, paint);
     }
 
     /**
@@ -252,16 +262,12 @@ public class BlocksView extends SurfaceView implements Runnable {
             case MotionEvent.ACTION_UP:
                 double x = motionEvent.getX();
                 double y = motionEvent.getY();
-
                 if (withinTop(x, y)) {
                     gridManager.movePlayer("up");
-
                 } else if (withinBottom(x, y)) {
                     gridManager.movePlayer("down");
-
                 } else if (withinRight(x, y)) {
                     gridManager.movePlayer("right");
-
                 } else if (withinLeft(x, y)) {
                     gridManager.movePlayer("left");
                 }

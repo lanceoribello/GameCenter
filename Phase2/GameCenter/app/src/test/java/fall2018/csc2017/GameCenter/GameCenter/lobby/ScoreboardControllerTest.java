@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test Class for ScoreboardController.
+ */
 public class ScoreboardControllerTest {
 
     /**

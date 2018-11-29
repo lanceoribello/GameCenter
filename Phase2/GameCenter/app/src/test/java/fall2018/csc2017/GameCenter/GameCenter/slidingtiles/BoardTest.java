@@ -10,13 +10,15 @@ import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test Class for Board.
+ */
 public class BoardTest {
 
     /**
      * The arraylist of background IDs representing the tile images in R.drawable in row-major
      * order for a 3x3 board
      */
-
     private List<Integer> threeByList = Arrays.asList(2131099773, 2131099784, 2131099790, 2131099791,
             2131099792, 2131099793, 2131099794, 2131099795, 2131099796);
 
@@ -26,7 +28,6 @@ public class BoardTest {
      * The arraylist of background IDs representing the tile images in R.drawable in row-major
      * order for a 4x4 board
      */
-
     private List<Integer> fourByList = Arrays.asList(2131099773, 2131099784, 2131099790, 2131099791,
             2131099792, 2131099793, 2131099794, 2131099795, 2131099796, 2131099774,
             2131099775, 2131099776, 2131099777, 2131099778, 2131099779, 2131099780);
@@ -37,7 +38,6 @@ public class BoardTest {
      * The arraylist of background IDs representing the tile images in R.drawable in row-major
      * order for a 5x5 board
      */
-
     private List<Integer> fiveByList = Arrays.asList(2131099773, 2131099784, 2131099790, 2131099791,
             2131099792, 2131099793, 2131099794, 2131099795, 2131099796, 2131099774,
             2131099775, 2131099776, 2131099777, 2131099778, 2131099779, 2131099780,
@@ -131,15 +131,12 @@ public class BoardTest {
      */
     @Test
     public void getTiles() {
-
         for (int start = 3; start <= 5; start++) {
             Board.numRows = Board.numCols = start;
-
             numTiles = Board.numRows * Board.numCols;
             List<Tile> tiles = setTileList();
             Board board = new Board(tiles);
             Iterator<Tile> iter = board.iterator();
-
             for (int a = 0; a != board.numTiles(); a++) {
                 Tile currentTile = iter.next();
                 assertEquals(tiles.get(a), currentTile);
@@ -153,19 +150,14 @@ public class BoardTest {
     @Test
     public void swapFirstTwoTiles() {
         Board.numRows = Board.numCols = 3;
-
         numTiles = Board.numRows * Board.numCols;
         List<Tile> tiles = setTileList();
         Board board = new Board(tiles);
-
         Tile tileHold = board.getTile(0, 0);
         Tile tileHold2 = board.getTile(0, 1);
-
         board.swapTiles(0, 0, 0, 1);
-
         assert (board.getTile(0, 0) == tileHold2 &&
                 board.getTile(0, 1) == tileHold);
-
     }
 
     /**
@@ -174,19 +166,14 @@ public class BoardTest {
     @Test
     public void swapLastTwoTiles() {
         Board.numRows = Board.numCols = 3;
-
         numTiles = Board.numRows * Board.numCols;
         List<Tile> tiles = setTileList();
         Board board = new Board(tiles);
-
         Tile tileHold = board.getTile(2, 1);
         Tile tileHold2 = board.getTile(2, 2);
-
         board.swapTiles(2, 1, 2, 2);
-
         assert (board.getTile(2, 1) == tileHold2 &&
                 board.getTile(2, 2) == tileHold);
-
     }
 
     /**
@@ -194,23 +181,18 @@ public class BoardTest {
      */
     @Test
     public void iterator() {
-
         for (int start = 3; start <= 5; start++) {
             Board.numRows = Board.numCols = start;
-
             numTiles = Board.numRows * Board.numCols;
             List<Tile> tiles = setTileList();
             Board board = new Board(tiles);
             Iterator<Tile> iter = board.iterator();
-
             for (int row = 0; row != Board.numRows; row++) {
                 for (int col = 0; col != Board.numCols; col++) {
                     assertEquals(board.getTile(row, col), iter.next());
                 }
             }
         }
-
-
     }
 
     /**
@@ -219,12 +201,10 @@ public class BoardTest {
     @Test(expected = NoSuchElementException.class)
     public void iteratorOutOfRange() {
         Board.numRows = Board.numCols = 3;
-
         numTiles = Board.numRows * Board.numCols;
         List<Tile> tiles = setTileList();
         Board board = new Board(tiles);
         Iterator<Tile> iter = board.iterator();
-
         for (int row = 0; row != Board.numRows; row++) {
             for (int col = 0; col != Board.numCols; col++) {
                 iter.next();
@@ -239,16 +219,10 @@ public class BoardTest {
     @Test
     public void toStringCorrect() {
         Board.numRows = Board.numCols = 3;
-
         numTiles = Board.numRows * Board.numCols;
         List<Tile> tiles = setTileList();
         Board board = new Board(tiles);
-
-        String testerString = "Board{" +
-                "tiles=" + Arrays.toString(board.getTiles()) +
-                '}';
-
+        String testerString = "Board{" + "tiles=" + Arrays.toString(board.getTiles()) + '}';
         assertEquals(testerString, board.toString());
-
     }
 }

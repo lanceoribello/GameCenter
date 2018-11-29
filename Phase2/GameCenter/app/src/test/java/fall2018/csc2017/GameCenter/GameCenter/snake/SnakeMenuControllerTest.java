@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
-
-import difflib.myers.Snake;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
-
 
 import static org.junit.Assert.*;
 
-public class SnakeMenuControllerTest{
+/**
+ * Test Class for SnakeMenuController.
+ */
+public class SnakeMenuControllerTest {
 
     /**
      * An instance of UserAccount for testing purposes.
@@ -54,13 +54,13 @@ public class SnakeMenuControllerTest{
      * Test for updateUserAccounts
      */
     @Test
-    public void testUpdateUserAccounts(){
+    public void testUpdateUserAccounts() {
         SnakeMenuController.updateUserAccounts(account, savedData, testUserAccountList);
         Calendar c = Calendar.getInstance();
         DateFormat dateFormat =
                 DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
         String datetime = dateFormat.format(c.getTime());
-        assertTrue(testUserAccountList.contains(account)&&
+        assertTrue(testUserAccountList.contains(account) &&
                 Arrays.equals(account.getSnakeGame(datetime), savedData));
     }
 
@@ -68,7 +68,7 @@ public class SnakeMenuControllerTest{
      * Test that the saved games list has all the names of previously saved games and an autosave
      */
     @Test
-    public void testSavedGamesList(){
+    public void testSavedGamesList() {
         int[] snakeXs = {0};
         int[] snakeYs = {0};
         String gameName1 = "Game 1";

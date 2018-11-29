@@ -30,7 +30,7 @@ import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesMenuContr
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuController;
 
 /**
- * The menu activity for the Sliding Tile game.
+ * The menu activity for the Sliding Tiles game.
  */
 public class SlidingTilesMenuActivity extends AppCompatActivity {
 
