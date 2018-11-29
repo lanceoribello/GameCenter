@@ -6,6 +6,9 @@ import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 
+/**
+ * The controller for BlocksMenuActivity.
+ */
 public class BlockMenuController {
     /**
      * Update the user Account List.
