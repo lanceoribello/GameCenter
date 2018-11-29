@@ -4,7 +4,7 @@ Open Android Studio
 
 Select Checkout from version control --> select GIT and paste this URL and clone directory:
 
-URL: https://markus.teach.cs.toronto.edu/git/csc207-2018-09-reg/group_0493
+URL: https://markus.teach.cs.toronto.edu/git/csc207-2018-09-reg/group_0633
 
 Select yes when you are prompted to create an android studio project for the sources
 
@@ -22,7 +22,9 @@ Now, go to file --> Close project
 You should now be back to the Android studio home page. Select Open an existing Android studio
 project
 
-Open up group_493 -> Phase 1 -> build.gradle
+Open up group_0633 -> Phase 2 -> GameCentre
+
+Once the project is open, File -> Sync Project With Gradle Files
 
 Create new virtual device: Pixel 2, Oreo API 27 Android 8.1
 
