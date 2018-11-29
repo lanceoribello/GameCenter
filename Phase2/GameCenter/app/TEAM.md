@@ -48,27 +48,28 @@ accounts.ser to update top scores immediately after a top score is achieved in a
 Implemented the Model View Controller (MVC) design pattern in all lobby classes to allow for 
 easier testing of the logic for each screen.
 Achieved 100% code coverage for all lobby controller classes and UserAccount.
-Configured the xml files for lobby activities for display.
+Configured the .xml files for lobby activities for display.
 
 ### Sliding Tiles
 
 Implemented Sliding Tiles BoardManager so it always initializes a solvable game, by starting with
-a solved board and making 1000 valid taps.
+a solved board and making 1000 valid taps to shuffle the board.
 Implemented update high scores so it updates the user account list for the scoreboard.
-Implemented try catch in undo for invalid inputs.
+Implemented try catch in undo for invalid number of moves to undo inputs.
 
 ### Snake
 
 Implemented update high scores so it updates the user account list for the scoreboard.
-Developed the dialog box for selecting difficulty level (easy/hard).
+Developed the dialog box for selecting difficulty level (easy/hard) and game play for each level.
 Implemented drawing text for the Snake view, for score and game over.
+Achieved 100% code coverage for SnakeController tests.
 
 ### Blocks
 
-Achieved 100% code coverage for GridManager.
-Implemented logic for undo moves (moving the player and placing blocks) and undo display.
+Implemented undo functionality (undo moving the player and placing blocks) and undo display.
 Implemented update high scores so it updates the user account list for the scoreboard.
 Implemented loading, saving, and loading auto saved games.
+Achieved 100% code coverage for GridManager tests.
 
 ## Lance Oribello
 
@@ -100,27 +101,26 @@ Developed how the Grid is displayed within BlocksView.
 
 ## Ishan Sharma
 
-##Sliding Tiles Menu Activity and test
+### Sliding Tiles Menu Activity and test
 Made The sliding Tiles menu activity page, specifically the saving of a game and loading a game from
 a list of games.
 Also added tests for the controller class
 
-## Snake Menu Activity and test
+### Snake Menu Activity and test
 Made the snake game button switch in GameSelectActivity and the snake menu activity page with 
 more focus on saving new snake games and loading from a list of saved games.
 Also added tests for the controller class.
 
-## Blocks Menu Activity
+### Blocks Menu Activity
 Similar to Snake and Sliding tiles, made the menu activity page of this class with more focus on 
 saving a game and loading a game.
 Added tests for the controller class.
 
-## Snake Pause
+### Snake Pause
 Implemented the Pause feature in Snake.
 
-## Snake Controller tests
+### Snake Controller tests
 Added tests for the snake controller class, which is a controller class for snakeview.
-
 
 # Meeting Notes
 
@@ -175,7 +175,7 @@ Finalized docstring.
 Finished everything else that needs doing for Phase 1!
 
 ## November 13, 2018
-Set up repository for Phase 2
+Set up repository for Phase 2.
 
 ## November 18, 2018
 Removed Jorjani mode.
@@ -238,11 +238,13 @@ Testing on Grid and GridManager.
 Save point functionality added to Snake.
 
 ## November 28, 2018
-Need to do:
-Finish testing
-Go into more detail here on design decisions (from phase 1 feedback)
-Docstring updates
-Write instructions on application usage on README
-Write WALKTHROUGH.pdf
-Delete this list
+Go into more detail here on design decisions (from phase 1 feedback).
+Docstring updates.
+Write instructions on application usage on README.
+Write WALKTHROUGH.pdf.
 
+## Novmember 29, 2018
+Finish testing.
+List contributions of each team member.
+Complete WALKTHROUGH.pdf.
+C'est fini!
