@@ -81,7 +81,8 @@ public class SnakeGameActivity extends AppCompatActivity {
      * Writes the current Snake Game to the current userAccount.
      */
     private void createAutoSave() {
-        currentUserAccount.addSnakeGame("autoSave", snakeView.getSnakeController().getAutoSaveData());
+        currentUserAccount.addSnakeGame("autoSave",
+                snakeView.getSnakeController().getAutoSaveData());
         updateUserAccounts();
     }
 
@@ -91,7 +92,8 @@ public class SnakeGameActivity extends AppCompatActivity {
     private void createSavePoint() {
         Object[] saveData = snakeView.getSnakeController().getSavePoint();
         if (saveData != null) {
-            currentUserAccount.addSnakeGame("Last savePoint: score " + saveData[5], saveData);
+            currentUserAccount.addSnakeGame("Last savePoint: score " + saveData[5],
+                    saveData);
             updateUserAccounts();
         }
     }

@@ -275,7 +275,8 @@ public class SnakeView extends SurfaceView implements Runnable {
      */
     private boolean checkForUpdate() {
         if (nextFrameTime <= System.currentTimeMillis()) {
-            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND / snakeController.getFps();
+            nextFrameTime = System.currentTimeMillis() + MILLIS_IN_A_SECOND /
+                    snakeController.getFps();
             return true;
         }
         return false;
