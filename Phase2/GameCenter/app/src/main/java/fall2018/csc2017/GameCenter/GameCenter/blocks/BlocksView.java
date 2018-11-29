@@ -13,7 +13,9 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 /**
- * The view for Blocks.
+ * The view for Blocks; displays the Blocks game on the screen.
+ * Contains the directional input buttons and the displayed game grid.
+ * Processes movement and block placement taps.
  */
 public class BlocksView extends SurfaceView implements Runnable {
 
