@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Manage a board, including swapping tiles, checking for a win, and managing taps.
- * Also keeps track of the number of moves made and the boards corresponding to each move.
+ * Manage a board, including initializing a solvable game, swapping tiles, undo, checking for a
+ * win, and managing taps. Keeps track of the number of moves made and the boards corresponding
+ * to each move.
  */
 public class BoardManager implements Serializable {
 
@@ -28,14 +29,14 @@ public class BoardManager implements Serializable {
     private int complexity;
 
     /**
-     * The list of each board that is associated with each move
+     * The list of each board that is associated with each move.
      */
     private ArrayList<Board> savedBoards;
 
     /**
      * The list of background Ids of the tile images in the drawable folder based on game level
      * This was done in order to get rid of the switch statement code smell in the tiles class
-     * as now the tile class can be set up for any arbitrary complexity
+     * as now the tile class can be set up for any arbitrary complexity.
      */
     private ArrayList<Integer> tileIdList;
 
