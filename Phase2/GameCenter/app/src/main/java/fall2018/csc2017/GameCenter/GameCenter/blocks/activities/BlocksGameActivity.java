@@ -18,7 +18,7 @@ import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 
 /**
- * The Blocks starting activity.
+ * The game activity for the Blocks game.
  */
 public class BlocksGameActivity extends AppCompatActivity {
 
@@ -33,7 +33,7 @@ public class BlocksGameActivity extends AppCompatActivity {
     private UserAccount currentUserAccount;
 
     /**
-     * An instance of BlocksViews that will initialized in onCreate after getting more details
+     * An instance of BlocksView that will be initialized in onCreate after getting more details
      * about the device.
      */
     private BlocksView blocksView;
@@ -43,18 +43,14 @@ public class BlocksGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         currentUserAccount =
                 (UserAccount) getIntent().getSerializableExtra("currentUserAccount");
-        // Find out the width and height of the screen
         Display display = getWindowManager().getDefaultDisplay();
-        // Load the resolution into a Point object
         Point size = new Point();
         display.getSize(size);
-        // Create a new View based on the BlocksView class
         blocksView = new BlocksView(this, size);
         loadFromTempFile();
-        // Make blocksView the default view of the Activity
         setContentView(blocksView);
     }
-    
+
     /**
      * Updates the high scores of the currentUserAccount if a new high score was achieved.
      */
