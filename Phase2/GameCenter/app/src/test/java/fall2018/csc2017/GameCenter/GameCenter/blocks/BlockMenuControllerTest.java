@@ -48,7 +48,7 @@ public class BlockMenuControllerTest {
     @Test
     public void updateUserAccounts() {
         gridManager = new GridManager();
-        BlockMenuController.updateUserAccounts(account, gridManager, testUserAccountList);
+        BlocksMenuController.updateUserAccounts(account, gridManager, testUserAccountList);
         Calendar c = Calendar.getInstance();
         DateFormat dateFormat =
                 DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
@@ -70,6 +70,6 @@ public class BlockMenuControllerTest {
         account.addBlocksGame(gameName2, gameGridManager2);
         account.addBlocksGame(gameName3, gameGridManager3);
         String[] gameNames = {gameName1, gameName2, gameName3};
-        assertArrayEquals(gameNames, BlockMenuController.savedGamesList(account));
+        assertArrayEquals(gameNames, BlocksMenuController.savedGamesList(account));
     }
 }
