@@ -34,6 +34,23 @@ Facebook
 * If I do not understand a concept or code, I will immediately ask my team for help.
 
 # Work Division
+## Lance Oribello
+###Sliding Tiles
+Implemented the logic behind the copying of Boards for use in autoSaving and undo functionality.
+Developed undo functionality to work in a way where an arbitrary number of moves can be undone.
+Implemented the autoSave functionality to write onto file upon exiting the game.
+###Snake
+Developed the SnakeController class after splitting it from the SnakeView class.
+Implemented the initial setting of difficulty levels in a Snake game.
+Implemented the increasing difficulty functionality after a certain snake length is reached.
+Implemented the automatic creation of save points whenever certain scores are reached.
+Developed the logic in which game data is saved and loaded within an Object array.
+###Blocks
+Developed the underlying logic for both the Grid and GridManager classes.
+Encompasses any methods that modify the 2d int array that represents the states of each grid square:
+moving the player, placing objects on the grid, eating food, etc.
+Implemented the logic behind the copying and loading of Grids for use in undoing and autoSaving.
+Developed how the Grid is displayed within BlocksView.
 
 # Meeting Notes
 
