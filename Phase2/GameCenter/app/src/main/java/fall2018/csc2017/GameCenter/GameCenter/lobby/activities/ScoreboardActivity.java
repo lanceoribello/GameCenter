@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.ScoreboardController;

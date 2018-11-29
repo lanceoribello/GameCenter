@@ -6,16 +6,14 @@ import org.junit.Test;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Set;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 
 import static org.junit.Assert.*;
 
 public class BlockMenuControllerTest {
+
     /**
      * An instance of UserAccount for testing purposes.
      */
@@ -27,10 +25,8 @@ public class BlockMenuControllerTest {
     private ArrayList<UserAccount> testUserAccountList = new ArrayList<>();
 
     /**
-     * Some data to write and load.
+     * Set up before each test.
      */
-    private GridManager gridManager;
-
     @Before
     public void setUp() {
         testUserAccountList.add(account);
@@ -44,20 +40,24 @@ public class BlockMenuControllerTest {
         testUserAccountList = new ArrayList<>();
     }
 
-
+    /**
+     * Test that user accounts list is updated correctly.
+     */
     @Test
     public void updateUserAccounts() {
-        gridManager = new GridManager();
+        GridManager gridManager = new GridManager();
         BlocksMenuController.updateUserAccounts(account, gridManager, testUserAccountList);
         Calendar c = Calendar.getInstance();
         DateFormat dateFormat =
                 DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
         String datetime = dateFormat.format(c.getTime());
-        assertTrue(testUserAccountList.contains(account)&&
+        assertTrue(testUserAccountList.contains(account) &&
                 account.getBlocksGame(datetime).equals(gridManager));
-
     }
 
+    /**
+     * Test that games list is saved correctly.
+     */
     @Test
     public void savedGamesList() {
         String gameName1 = "Game 1";

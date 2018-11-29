@@ -17,9 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
@@ -27,7 +25,6 @@ import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.Board;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.BoardManager;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.SlidingTilesMenuController;
-import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuController;
 
 /**
  * The menu activity for the Sliding Tiles game.
@@ -157,7 +154,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             }
         });
     }
-
 
     /**
      * Display that a game was loaded successfully.
@@ -301,7 +297,6 @@ public class SlidingTilesMenuActivity extends AppCompatActivity {
             Log.e("Exception", "File write failed: " + e.toString());
         }
     }
-
 
     /**
      * Saves the userAccountList to a file.

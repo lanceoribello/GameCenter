@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 import fall2018.csc2017.GameCenter.GameCenter.R;
 
-
 /**
  * A Tile in a sliding tiles puzzle.
  */

@@ -27,14 +27,17 @@ public class Grid implements Serializable {
      * The int representing a block's location on the grid.
      */
     final static int BLOCK = 2;
+
     /**
      * The length of the grid.
      */
     final static int GRID_LENGTH = 9;
+
     /**
      * The int representing a food's location on the grid.
      */
     final static int FOOD = 3;
+
     /**
      * The number of food that must be on the grid at any point in the game.
      */
@@ -328,7 +331,6 @@ public class Grid implements Serializable {
      * @param y the y-value where the food is eaten
      */
     private void eatFood(int x, int y) {
-
         spawnFood(x, y);
         this.gridState[x][y] = EMPTY;
         for (int i = 0; i < foodXs.size(); i++) {
