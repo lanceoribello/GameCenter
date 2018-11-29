@@ -74,7 +74,7 @@ automatically created in your account whenever you exit the game screen; pressin
 Save button in the menu loads that autoSave game back up.
 
 ## Snake
-Pressing the Snake button in in the Game Select Screen leads you to the Snake game menu.
+Pressing the Snake button in the Game Select Screen leads you to the Snake game menu.
 Here you can find buttons for loading and saving the game, loading an auto save, and starting a new
 game.
 
