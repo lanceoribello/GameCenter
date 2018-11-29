@@ -13,6 +13,9 @@ import static org.junit.Assert.*;
  */
 public class GridManagerTest {
 
+    /**
+     * Grid Manager to be tested on.
+     */
     private GridManager testGridManager;
 
     /**

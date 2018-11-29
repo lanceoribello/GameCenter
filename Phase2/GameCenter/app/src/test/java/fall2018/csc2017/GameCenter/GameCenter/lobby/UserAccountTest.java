@@ -7,14 +7,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import difflib.myers.Snake;
 import fall2018.csc2017.GameCenter.GameCenter.blocks.GridManager;
 import fall2018.csc2017.GameCenter.GameCenter.slidingtiles.BoardManager;
 import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeController;
-import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test Class for UserAccount.
+ */
 public class UserAccountTest {
 
     /**

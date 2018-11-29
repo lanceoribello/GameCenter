@@ -4,23 +4,23 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test Class for Tile.
+ */
 public class TileTest {
 
     /**
      * The Tile for testing, creates a tile with id 4 set to the background image of 4 in drawables
      */
-
     private Tile tile = new Tile(3, 2131099791);
 
     /**
      * Checks if the tile returns the correct background based on its id
      */
-
     @Test
     public void getBackgroundIsCorrect() {
         int tile4BackgroundId = 2131099791; // The resource id for the tile image representing 4
         assertEquals(tile4BackgroundId, tile.getBackground());
-
     }
 
     /**
@@ -38,7 +38,7 @@ public class TileTest {
     @Test
     public void compareToDifferentTile() {
         Tile tileCompare = new Tile(5, 2131099793);
-        assertNotEquals(tile.compareTo(tileCompare),0);
+        assertNotEquals(tile.compareTo(tileCompare), 0);
     }
 
     /**
@@ -46,6 +46,6 @@ public class TileTest {
      */
     @Test
     public void compareToSameTile() {
-        assertEquals(tile.compareTo(tile),0);;
+        assertEquals(tile.compareTo(tile), 0);
     }
 }

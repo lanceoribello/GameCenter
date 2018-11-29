@@ -10,12 +10,14 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
-import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeMenuController;
-import fall2018.csc2017.GameCenter.GameCenter.snake.SnakeView;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test Class for SlidingTilesMenuController.
+ */
 public class SlidingTilesMenuControllerTest {
+
     /**
      * an Instance of UserAccount for testing purposes.
      */
@@ -25,11 +27,6 @@ public class SlidingTilesMenuControllerTest {
      * The user account list for testing.
      */
     private ArrayList<UserAccount> testUserAccountList = new ArrayList<>();
-
-    /**
-     * Board Manager
-     */
-    private BoardManager boardManager;
 
     /**
      * Drawable tile ID's for 3x3 board.
@@ -55,22 +52,29 @@ public class SlidingTilesMenuControllerTest {
             2131099780, 2131099781, 2131099782, 2131099783, 2131099785,
             2131099786, 2131099787, 2131099788, 2131099789, 0};
 
+    /**
+     * Set up before each test.
+     */
     @Before
     public void setUp() {
         testUserAccountList.add(account);
     }
 
+    /**
+     * Tear done after each test.
+     */
     @After
     public void tearDown() {
         testUserAccountList = new ArrayList<>();
     }
 
+    /**
+     * Test that user accounts list is updated correctly.
+     */
     @Test
     public void updateUserAccounts() {
-        setUp();
         ArrayList<Integer> gameTileIds = new ArrayList<>(Arrays.asList(this.tileIds3x3));
-        boardManager = new
-                BoardManager(3, gameTileIds);
+        BoardManager boardManager = new BoardManager(3, gameTileIds);
         SlidingTilesMenuController.updateUserAccounts(account, boardManager, testUserAccountList);
         Calendar c = Calendar.getInstance();
         DateFormat dateFormat =
@@ -78,12 +82,13 @@ public class SlidingTilesMenuControllerTest {
         String datetime = dateFormat.format(c.getTime());
         assertTrue(testUserAccountList.contains(account)&&
                 account.getSlidingTilesGame(datetime).equals(boardManager)) ;
-        tearDown();
     }
 
+    /**
+     * Test that games list is saved correctly.
+     */
     @Test
     public void savedGamesList() {
-        setUp();
         String gameName1 = "Game 1";
         ArrayList<Integer> gameTileIds3x3 = new ArrayList<>(Arrays.asList(this.tileIds3x3));
         BoardManager gameBoardManager1 = new BoardManager(3, gameTileIds3x3);
@@ -98,6 +103,5 @@ public class SlidingTilesMenuControllerTest {
         account.addSlidingTilesGame(gameName3, gameBoardManager3);
         String[] gameNames = {gameName1, gameName2, gameName3};
         assertArrayEquals(gameNames, SlidingTilesMenuController.savedGamesList(account));
-        tearDown();
     }
 }
