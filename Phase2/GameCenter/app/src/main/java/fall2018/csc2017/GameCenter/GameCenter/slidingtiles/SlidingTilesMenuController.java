@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
-import fall2018.csc2017.GameCenter.GameCenter.lobby.activities.LoginActivity;
 
 /**
  * The controller for the Sliding Tiles Menu.
