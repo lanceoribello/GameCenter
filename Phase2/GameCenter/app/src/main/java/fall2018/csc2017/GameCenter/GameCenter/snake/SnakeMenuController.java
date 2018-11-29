@@ -6,29 +6,31 @@ import java.util.Calendar;
 
 import fall2018.csc2017.GameCenter.GameCenter.lobby.UserAccount;
 
+/**
+ * The controller for the Snake Menu.
+ */
 public class SnakeMenuController {
-    /**
-     * Update the user Account List.
-     */
-    public static void updateUserAccounts(UserAccount ua, Object[] savedData, ArrayList<UserAccount>
-            ual) {
-        Calendar c = Calendar.getInstance();
-        DateFormat dateFormat =
-                DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-        String datetime = dateFormat.format(c.getTime());
-        ual.remove(ua);
-        ua.addSnakeGame(datetime, savedData);
-        ual.add(ua);
 
+    /**
+     * Saves a new game to the currentUserAccount with game name as date and time.
+     */
+    public static void updateUserAccounts(UserAccount userAccount, Object[] savedData,
+                                          ArrayList<UserAccount> userAccountArrayList) {
+        Calendar c = Calendar.getInstance();
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+        String datetime = dateFormat.format(c.getTime());
+        userAccountArrayList.remove(userAccount);
+        userAccount.addSnakeGame(datetime, savedData);
+        userAccountArrayList.add(userAccount);
     }
 
     /**
      * Make a list of games names for displaying in load games.
      */
-    public static String[] savedGamesList(UserAccount ua) {
-        String[] games = new String[(ua.getSnakeGameNames().size())];
+    public static String[] savedGamesList(UserAccount userAccount) {
+        String[] games = new String[(userAccount.getSnakeGameNames().size())];
         int i = 0;
-        for (String s : ua.getSnakeGameNames()) {
+        for (String s : userAccount.getSnakeGameNames()) {
             games[i++] = s;
         }
         return games;
