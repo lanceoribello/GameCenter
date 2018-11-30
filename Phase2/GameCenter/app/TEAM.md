@@ -38,10 +38,12 @@ Facebook
 ## Neel Patel
 
 ## Lobby
+
 Implemented the login button onClick logic which checks if a user
 which is trying to log in is a valid user or not, as well as switches to GameSelect if valid.
 
 ## Sliding Tiles
+
 Completely reworked the Tile class in sliding tiles to a newer model which hadn't abused switch
 statements for the many arbitrary cases of sliding tiles. In the new version of Tile, I developed
 a new constructor which allows the Board to take in any arbitrary dimensions of tiles, rather than
@@ -51,8 +53,8 @@ options for the player. Also implemented the prompt for the user to be able to c
 these different modes in the GUI of the starting activity.
 Created unit tests with 100% coverage for Board, BoardManager and Tiles
 
-
 ## Snake
+
 Implemented the directional input which actually allows the user to control the Snake in a simple
 manner of pressing directions on a D-pad set at the bottom of the SnakeView. Also made the GUI
 of the D-pad itself.
@@ -61,6 +63,7 @@ This adds an extra loss condition aside from just crashing into the wall.
 Worked on the general logic of the game
 
 ## Blocks
+
 Implemented the directional input which actually allows the user to Player block a similar manner
 to how I implemented it within Snake: pressing directions on a D-pad set at the bottom of the
 BlocksView. Also made the GUI of the D-pad itself and the logic behind converting button presses
@@ -70,7 +73,6 @@ it possible for the user to place blocks on the generated grid based on where th
 Created unit tests with 100% coverage for Grid
 Helped develop logic in both Grid and GridManager to get the game working in its current final state
 bug free.
-
 
 ## Nancy Zhao
 
