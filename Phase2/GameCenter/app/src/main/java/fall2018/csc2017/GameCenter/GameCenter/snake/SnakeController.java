@@ -278,7 +278,7 @@ public class SnakeController {
         if (snakeXs[0] == bombX && snakeYs[0] == bombY) {
             dead = true;
         }
-        for (int i = snakeLength; i > 0; i--) {
+        for (int i = snakeLength - 1; i > 0; i--) {
             // Impossible for snake to eat itself if length is <= 4
             if ((i >= 4) && (snakeXs[0] == snakeXs[i]) && (snakeYs[0] == snakeYs[i])) {
                 dead = true;
