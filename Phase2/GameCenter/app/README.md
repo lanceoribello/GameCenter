@@ -134,7 +134,9 @@ Blocks are used to purposefully impede your own movement to obtain any food that
 reach.
 
 As with Sliding Tiles, pressing the back button gives you access to the menu once again, where you
-can save the game in progress or undo a number of moves (you input how many you wish to undo).
+can save the game in progress or undo a number of moves (you input how many you wish to undo).  
+If a valid number of undo moves is inputted, the number of moves undid is subtracted from the score 
+of the current game. 
 When games are saved manually, they are labelled with the exact time and date of saving.
 
 If you have any past saved games, pressing load game will bring up a list of all your previous
