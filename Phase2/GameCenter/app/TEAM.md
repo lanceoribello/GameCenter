@@ -38,12 +38,10 @@ Facebook
 ## Neel Patel
 
 ## Lobby
-
 Implemented the login button onClick logic which checks if a user
 which is trying to log in is a valid user or not, as well as switches to GameSelect if valid.
 
 ## Sliding Tiles
-
 Completely reworked the Tile class in sliding tiles to a newer model which hadn't abused switch
 statements for the many arbitrary cases of sliding tiles. In the new version of Tile, I developed
 a new constructor which allows the Board to take in any arbitrary dimensions of tiles, rather than
@@ -54,7 +52,6 @@ these different modes in the GUI of the starting activity.
 Created unit tests with 100% coverage for Board, BoardManager and Tiles
 
 ## Snake
-
 Implemented the directional input which actually allows the user to control the Snake in a simple
 manner of pressing directions on a D-pad set at the bottom of the SnakeView. Also made the GUI
 of the D-pad itself.
@@ -63,7 +60,6 @@ This adds an extra loss condition aside from just crashing into the wall.
 Worked on the general logic of the game
 
 ## Blocks
-
 Implemented the directional input which actually allows the user to Player block a similar manner
 to how I implemented it within Snake: pressing directions on a D-pad set at the bottom of the
 BlocksView. Also made the GUI of the D-pad itself and the logic behind converting button presses
@@ -77,7 +73,6 @@ bug free.
 ## Nancy Zhao
 
 ### Lobby
-
 Implemented file writing and reading for accounts.ser, which contains the user account list.
 Developed LoginActivity and LoginController (display and logic), and optimized UserAccount for 
 adding more games.
@@ -90,21 +85,18 @@ Achieved 100% code coverage for all lobby controller classes and UserAccount.
 Configured the .xml files for lobby activities for display.
 
 ### Sliding Tiles
-
 Implemented Sliding Tiles BoardManager so it always initializes a solvable game, by starting with
 a solved board and making 1000 valid taps to shuffle the board.
 Implemented update high scores so it updates the user account list for the scoreboard.
 Implemented try catch in undo for invalid number of moves to undo inputs.
 
 ### Snake
-
 Implemented update high scores so it updates the user account list for the scoreboard.
 Developed the dialog box for selecting difficulty level (easy/hard) and game play for each level.
 Implemented drawing text for the Snake view, for score and game over.
 Achieved 100% code coverage for SnakeController tests.
 
 ### Blocks
-
 Implemented undo functionality (undo moving the player and placing blocks) and undo display.
 Implemented update high scores so it updates the user account list for the scoreboard.
 Implemented loading, saving, and loading auto saved games.
@@ -113,17 +105,14 @@ Achieved 100% code coverage for GridManager tests.
 ## Lance Oribello
 
 ### Lobby
-
 Developed UserAccount.
 
 ### Sliding Tiles
-
 Implemented the logic behind the copying of Boards for use in autoSaving and undo functionality.
 Developed undo functionality to work in a way where an arbitrary number of moves can be undone.
 Implemented the autoSave functionality to write onto file upon exiting the game.
 
 ### Snake
-
 Developed the SnakeController class after splitting it from the SnakeView class.
 Implemented the initial setting of difficulty levels in a Snake game.
 Implemented the increasing difficulty functionality after a certain snake length is reached.
@@ -131,7 +120,6 @@ Implemented the automatic creation of save points whenever certain scores are re
 Developed the logic in which game data is saved and loaded within an Object array.
 
 ### Blocks
-
 Developed the underlying logic for both the Grid and GridManager classes.
 Encompasses any methods that modify the 2d int array that represents the states of each grid square:
 moving the player, placing objects on the grid, eating food, etc.
@@ -287,3 +275,5 @@ Finish testing.
 List contributions of each team member.
 Complete WALKTHROUGH.pdf.
 C'est fini!
+
+We did it!
